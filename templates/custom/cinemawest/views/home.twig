@@ -1,0 +1,159 @@
+{% extends 'common/base.twig' %}
+{% set page_class = "homepage" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css_header %}
+<link rel="stylesheet" href="/assets/css/horaires2017.min.css" type="text/css">
+<link rel="stylesheet" href="/assets/css/picker/classic.css" type="text/css">
+<link rel="stylesheet" href="/assets/css/picker/classic.date.css" type="text/css">
+<link rel="stylesheet" href="/assets/css/picker/classic.time.css" type="text/css">
+{{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% set groupedMoviesData = npcs_MoviesData(active_house_id, data.movies.movies, data.showdates) %}
+
+    {% set home_letterbox = 'Letterbox-' ~ active_house_id %}
+
+    {% if data.slides.slides.global is defined %}
+        {% set slides_global = data.slides.slides.global.images %}
+    {% else %}
+        {% set slides_global = [] %}
+    {% endif %}
+
+    {% if data.slides.slides[home_letterbox] is defined %}
+        {% set slides_theater = data.slides.slides[home_letterbox].images %}
+    {% else %}
+        {% set slides_theater = [] %}
+    {% endif %}
+
+    {% set new_slides = mergeSlides(slides_theater, slides_global) %}
+
+    {% if new_slides is defined and new_slides is not empty %}
+        <div id="mod_slider_v2" class="">
+            {{ include('helper/home-slides.twig', {slides: new_slides, movies:data.movies.movies, ticketing: data.houses[active_house_id].ticketing}, with_context = false) }}
+        </div>
+    {% endif %}
+
+    <div class="home-content">
+        {% set home_message_1 = 'Home-top-' ~ active_house_id %}
+        {% for page in data.pages %}
+            {% if page['site_headline'] == home_message_1 %}
+                <div class="home-free-content-box">
+                    <div id="mod_evenement" class="ct_left"></div>
+                    {{ page.content|raw }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div id="bfs_sem_proch" class="grid">
+        <div class="page-top-controls {{ (show_house_block) ? 'with-location-picker' : '' }}">
+            <div id="bfs_home_liens">
+            </div>
+            {% if show_house_block %}
+                <div class="location-picker">
+                    <span class="label">My Theater:</span>
+                    <span class="active-theater active-theater-btn">{{ data.houses[active_house_id].name }}</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% set groupedMoviesData = showdatesPageMoviesData(active_house_id, data.movies.movies, data.showdates)|sortByReleaseDate %}
+    <div class="sticky-tab-seances-wrapper">
+        <div class="sticky-tab-seances">
+            {{ include('helper/showtimes-buttons.twig', {}, with_context = false) }}
+        </div>
+    </div>
+
+    <div id="content" class="showdates-container">
+        <div id="ct_main">
+            <div id="maincontent-x-large" class="ct_left">
+                <div class="cadre-out">
+                    <div class="cadre-in">
+                        <div>
+                            {% if data.houses[active_house_id]['drivein'] %}
+                                {% set groupedMoviesData1 = showdatesPageMoviesDataDriveIn(groupedMoviesData) %}
+                                {{ include('helper/grid-showtimes-drivein.twig', {movies: groupedMoviesData1}) }}
+                            {% else %}
+                                {{ include('helper/grid-showtimes.twig', {movies: groupedMoviesData}) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="resa_mail" class=""></div>
+        </div>
+    </div>
+
+    <div class="home-content">
+        {% set home_message = 'Home-' ~ active_house_id %}
+        {% for page in data.pages %}
+            {% if page['site_headline'] == home_message %}
+                <div class="home-free-content-box">
+                    <div id="mod_evenement" class="ct_left"></div>
+                    {{ page.content|raw }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    {% if site.config.template_options.ad_home is defined and site.config.template_options.ad_home != '' %}
+        <div class="megaban">
+            <div class="footer_ad">
+                {{ site.config.template_options.ad_home|raw }}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block footer_scripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="/assets/js/picker/picker.js"></script>
+    <script type="text/javascript" src="/assets/js/picker/picker.date.js"></script>
+    <script type="text/javascript" src="/assets/js/picker/picker.time.js"></script>
+    <script type="text/javascript" src="/assets/js/movies-script.js"></script>
+
+    <div id="habillage" class=""></div>
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/owlcarousel/owl.carousel.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/css/owlcarousel/owl.theme.default.min.css"/>
+    <script type="text/javascript" src="/assets/js/owl.carousel.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".block_films-slider").each(function () {
+                if ($(this).find('.bloc_film').length == 0) {
+                    return;
+                }
+                $(this).owlCarousel({
+                    center: true,
+                    items: 7,
+                    loop: true,
+                    margin: 0,
+                    dots: false,
+                    navText: ['', ''],
+                    responsive: {
+                        1024: {
+                            items: 7
+                        },
+                        980: {
+                            items: 7
+                        },
+                        560: {
+                            items: 5
+                        },
+                        320: {
+                            items: 3
+                        }
+                    }
+                });
+            });
+            $(window).trigger('fancyboxBindOnCloned');
+        });
+
+    </script>
+{% endblock %}

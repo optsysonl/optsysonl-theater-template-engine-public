@@ -1,0 +1,15 @@
+<div id="wrapper">
+    <main id="main-content" class="clearfix about-page">
+        <div class="two-columns-container">
+            <div class="content-container">
+                <h1>{{ data.pages[this_page.page_id].site_headline }}</h1>
+                {{ data.pages[this_page.page_id].content|raw }}
+            </div>
+            <div class="sidebar-block blocks">
+                <div class="sidebar">
+                    {{ include('parts/sidebar.twig') }}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,10 @@
+{% for slide in slides %}
+    <figure class='slide'>
+        <a href='{{- slide.url -}}' target='{{- slide.target -}}'>
+            <img src='{{- slide.image -}}' alt='{{- slide['altTag'] -}}'/>
+        </a>
+            {% if slide['image_text'] != '' %}
+                <figcaption><div class='slider-text'><a href='{{- slide.url -}}' target='{{- slide.target -}}'>{{ slide['image_text'] }}</a></div></figcaption>
+            {% endif %}
+    </figure>
+{% endfor %}

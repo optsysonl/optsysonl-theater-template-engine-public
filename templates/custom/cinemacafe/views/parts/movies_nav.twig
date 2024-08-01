@@ -1,0 +1,10 @@
+{% set movies = data.movies.movies|NowPlayingComingSoon %}
+<li><span class='subHeader'>Now Playing</span></li>
+{% for movie in movies.np %}
+    <li><a href='/movie/{{- movie.id -}}/{{- movie.url -}}'>{{ movie.name }}</a></li>
+{% endfor %}
+<li><span class='subHeader'>Coming Soon</span></li>
+{% for movie in movies.cs|slice(0, 5) %}
+    <li><a href='/movie/{{- movie.id -}}/{{- movie.url -}}'>{{ movie.name }}</a></li>
+{% endfor %}
+<li><span class='subHeader'><a href='/movies#coming-soon'>See All...</a></span></li>

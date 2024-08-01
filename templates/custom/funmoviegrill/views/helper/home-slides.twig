@@ -1,0 +1,86 @@
+<div id='slider_cont' class='swipe_cont'>
+    <div id="home_slider" class="swipe">
+        <div class="swipe-wrap">
+            {% for slide in slides %}
+                <div id="home_slide{{- loop.index0 -}}" class="gabarit4">
+                    <a href="{{- slide.url -}}"
+                       title="{{ slide['image_text'] }}"
+                       target='{{- slide.target -}}'>
+                        <img class="vignette-photo" alt="{{- slide['altTag'] -}}" src="{{- slide.image -}}"/>
+                    </a>
+                    <div class="slide_en_bg nope" style="background:url({{- slide.image -}});"></div>
+
+                    {% if slide.movie_id is defined and (slide.movie_id != '' or slide.movie_id != '0') and slide.movie_id in movies|keys %}
+                        <div class="slideContent">
+                            <div class="padd_10">
+                                {% if movies[slide.movie_id].trailer.url != '' %}
+                                    <a class="play_trailer btn_slider btn_fa" data-fancybox-type="iframe" title="Trailer"
+                                       href="{{- movies[slide.movie_id].trailer.url|url_decode -}}"
+                                       aria-label="Trailer for {{ movies[slide.movie_id].name }}">
+                                        Trailer
+                                    </a>
+                                {% endif %}
+                                <a class="btn_slider resa-link3" href="{{- slide.url -}}" rel="nofollow" title="Movie Page"
+                                   aria-label="View Showtimes for {{ movies[slide.movie_id].name }}">
+                                    {% if ticketing is defined and ticketing %}
+                                        Buy Tickets
+                                    {% else %}
+                                        View Showtimes
+                                    {% endif %}
+                                </a>
+
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div id="home_position" class="slider_nav bottom">
+    <div id="home_prev-slide" class="prev-slide"></div>
+    {% for slide in slides %}
+        <span class="bul" id="nav{{- loop.index0 -}}" onclick="home_slider.slide({{- loop.index0 -}});"
+              onkeypress="home_slider.slide({{- loop.index0 -}});" tabindex="{{- loop.index0 -}}">&#x25cf;&#xfe0e;</span>
+    {% endfor %}
+    <div id="home_next-slide" class="next-slide"></div>
+</div>
+
+<script type="text/javascript" src="/assets/js/swipe.js"></script>
+<script type="text/javascript">
+    var home_slider = new Swipe(document.getElementById('home_slider'), {
+        auto: 5000,
+        callback: function (index, pos) {
+            var i = home_bullets.length;
+            while (i--) {
+                home_bullets[i].className = 'bul';
+            }
+            home_bullets[index].className = 'bul on';
+        }
+    });
+
+    if (document.getElementById('home_position')) {
+        var home_bullets = document.getElementById('home_position').getElementsByTagName('span');
+        home_bullets[0].classList.add('on');
+    }
+
+    var swipe = document.getElementsByClassName('swipe')[0];
+    swipe.onmouseover = function() {
+        home_slider.stop();
+    }
+    swipe.onmouseout = function() {
+        home_slider.restart();
+    }
+
+    document.getElementById('home_prev-slide').addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        home_slider.prev();
+    });
+    document.getElementById('home_next-slide').addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        home_slider.next();
+    });
+</script>

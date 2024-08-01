@@ -1,0 +1,76 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Movies {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% set blockPromotions %}
+        <div class="promotions-block blocks">
+            <h2>{{ data.slides.slides.promotions_home.name }}</h2>
+            <div class="banners">
+                {{ include('helper/banners.twig', {slides: data.slides.slides.promotions_home.images}, false) }}
+            </div>
+        </div>
+    {% endset %}
+
+    <div id="wrapper">
+        <main id="main-content" class="{{ site.config.template_options.sidebar }} clearfix">
+            {% if site.config.template_options.sidebar == 'top' %}
+                {{- blockPromotions -}}
+            {% endif %}
+            {% set movies = nowPlayingComingSoon(data.movies.movies, data.showdates) %}
+            {% if movies.np is not empty %}
+                <div id="now-playing" class="now_playing-block blocks">
+                    <h2>Now Playing</h2>
+                    <div class="items">
+                        {{ include('helper/grid-poster.twig', {movies: movies.np}, false) }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if movies.cs is not empty %}
+                <div id="coming-soon" class="coming_soon-block blocks">
+                    <h2>Coming Soon</h2>
+                    <div class="items">
+                        {{ include('helper/grid-poster.twig', {movies: movies.cs}, false) }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if site.config.template_options.sidebar != 'top' %}
+                {{- blockPromotions -}}
+            {% endif %}
+        </main>
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <!-- Footer JS -->
+    <script type="text/javascript">
+        $(function () {
+            // slider promotion banners
+            $slick_slider = $('.promotions-block .banners');
+            settings_slider = {
+                dots: false,
+                arrows: false,
+                centerMode: true,
+                infinite: true,
+                variableWidth: true
+            };
+            slick_only_mobile($slick_slider, settings_slider);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,49 @@
+<div id="header">
+	<a href="/" id="logos"><img src="/assets/img/logo.png" alt="logo"></a>
+	<nav id="nav" class="nav">
+		<ul>
+			<li class="subNavContainer">
+				<a class="nav_link" href="/locations" id="nav_showtimes">Showtimes</a>
+				<ul class="subNav">
+                    {{ include('parts/houses_nav.twig') }}
+				</ul>
+			</li>
+			<li class="subNavContainer">
+				<a class="nav_link" href="/rentals" id="nav_rentals">Rentals</a>
+				<ul class="subNav">
+					<li><a href="/rentals?#auditorium">Auditorium Rentals</a></li>
+					<li><a href="/rentals?#birthday">Birthday Parties</a></li>
+					<li><a href="/rentals?#church">Church Services</a></li>
+					<li><a href="/rentals?#private">Private Showings</a></li>
+					<li><a href="/rentals?#school">School Field Trips</a></li>
+				</ul>
+			</li>
+			<li class="subNavContainer">
+				<a class="nav_link" href="https://marqueecinemas.cardfoundry.com/giftcards.php" id="nav_giftcards" target="_blank">Gift Cards</a>
+			</li>
+			<li class="subNavContainer">
+				<a class="nav_link" href="/about" id="nav_info">Series</a>
+				<ul class="subNav">
+					<li><a href="/flashback-cinema">Flashback Cinema</a></li>
+					<li><a href="/page/11352/Sensory-Shows">Sensory Series</a></li>
+					<li><a href="/page/12604/Kids-Summer-Movies">Kids Summer Movies</a></li>
+				</ul>
+			</li>
+			<li class="subNavContainer">
+				<a class="nav_link" href="/contactus" id="nav_contact">Contact</a>
+				<ul class="subNav">
+					<li><a href="/contactus">Customer Care</a></li>
+					<li><a href="/employment">Employment</a></li>
+					<li><a href="/donation">Donation Requests</a></li>
+					<li><a href="/advertising">Screen Advertising</a></li>
+					<li><a href='//csxutils.fbmovies.cinema-source.com/subscribe/?cust_id=226&iframe=true&width=600&height=400' class="signup" data-fancybox-type="iframe">Newsletter</a></li>
+					<li><a href="/employeecomments">Employee Comments</a></li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</div>
+
+<script>
+    var movies = {{ getMovies(data.showdates, data.movies)|json_encode|raw }};
+</script>

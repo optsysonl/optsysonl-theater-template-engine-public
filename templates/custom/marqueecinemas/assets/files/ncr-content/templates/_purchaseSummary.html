@@ -1,0 +1,120 @@
+﻿<div class="purchaseSummary">
+    <h4><%= localize.confirmationPurchaseSummary %></h4>
+    <div class="row">
+        <% 
+        var orderModel = window.ObjectModels.OrderModel;
+         var holdSeats=''; var lockedSeats='';
+         if(orderModel.get('sentSeats') && orderModel.get('sentSeats').length > 0){
+            _.each(orderModel.get('sentSeats'), function(sentSeat, index){
+            var selectedSeat = sentSeat.get('seat');
+            var status = sentSeat.get('status');
+            if(status.toLowerCase() == 'hold'){
+                   holdSeats += selectedSeat.get('name') + ', ';
+            } else if(status.toLowerCase() == 'locked'){
+                lockedSeats += selectedSeat.get('name') + ', '
+        }});
+         lockedSeats = lockedSeats.substr(0,lockedSeats.length -2);
+         holdSeats = holdSeats.substr(0,holdSeats.length - 2);
+        }
+
+        var selectedTicketQuantity = orderModel.get('tickets').getSelectedTicketQuantity();
+        if( selectedTicketQuantity > 0){%>
+        <div class="span3 bold"><%= selectedTicketQuantity %> <%= selectedTicketQuantity > 1 ? 'Tickets' : 'Ticket' %></div>
+        <div class="span1"><%= orderModel.get('tickets').getTicketSubTotalDisplay(culture) %></div>
+        <div class="span3"><%= lockedSeats %></div>
+        <%}%>
+
+        <% var onHoldTicketQuantity = orderModel.get('tickets').getOnHoldTicketQuantity();
+        if( onHoldTicketQuantity > 0){%>
+        <div class="span3 bold"><%= onHoldTicketQuantity %> <%= onHoldTicketQuantity> 1 ? 'Hold tickets' : 'Hold ticket' %></div>
+        <div class="span1"><%= Globalize.format(0, 'c', culture)%></div>
+         <div class="span3"><%= holdSeats %></div>
+        <%}%>
+        
+        <% if(step == 'tickets' && orderModel.get('tickets').getTicketServiceCharge() > 0){%>
+        <div class="span3 bold"><%= localize.serviceCharge%></div>
+        <div class="span1"><%= orderModel.get('tickets').getTicketServiceChargeDisplay(culture) %></div>
+        <%} else {
+        var otherItems = orderModel.get('otherItems');
+        _.each(otherItems, function (o, index) {%>
+            <div class="span3 bold"><%= o.name  %></div>
+            <div class="span1"><%= Globalize.format(o.price, "c", culture) %></div>
+        <% });} %>
+    </div>
+
+    <% if( window.ObjectModels.TempOrder.concessions != null || step == 'concession'){ 
+    _.each(concessionSummary, function(item) { %>            
+    <div class="concession-summary-item" data-id="<%=item.id%>">
+        <div class="row separator" style="margin: 10px 0px;"></div>
+        <div class="row">
+            <div class="span3" style="min-height: 20px">
+                <b><%=item.quantity + ' ' + item.name %></b> <%= item.modifiers%>
+            </div>
+            <div class="span1"><%= Globalize.format( item.totalPrice, 'c', culture ) %></div>
+        </div>
+        <% if(step == 'concession'){ %>
+        <div class="row">
+            <a href="" class="span2 concession-remove-item branded-text" data-concession-id="<%=item.concessionItemId%>"><%=localize.remove%></a>
+        </div>
+        <% } %>
+    </div>
+    <% })};%>
+    <div class="row separator" style="margin: 10px 0px;"></div>
+    <!--This is quick fix. If concessions are not locked we need to calculate total and subtotal-->
+    <% if(step != 'concession' && step != 'tickets'){%>
+    <% if(receipt.totalFee && receipt.totalFee > 0){%>
+                <div class="row">
+                    <div class="span3"><b>Zones Fee:</b> </div>
+                    <div class="span1 bold"><%= Globalize.format( receipt.totalFee, 'c', culture ) %></div>
+                </div>
+    <% }%>
+                
+    <div class="row">
+        <div class="span3"><b><%= localize.total%></b></div>
+        <div class="span1 bold total-price" ><%= Globalize.format(orderModel.get('totalPrice'), 'c', culture) %></div>
+    </div>
+    <%if(orderModel.get('tax') && orderModel.get('tax') > 0){%>
+    <div class="row">
+        <p>(<%=localize.tpIncludes%> <%= Globalize.format(orderModel.get('tax'), 'c', culture) %>  <%=localize.inTax%>)</p>
+    </div>
+    <%}%>
+    <% } else {%>
+    <% if(step != 'tickets'){%>
+    <% if(receipt.totalFee && receipt.totalFee > 0){%>
+                <div class="row">
+                    <div class="span3"><b>Zones Fee:</b> </div>
+                    <div class="span1 bold"><%= Globalize.format( receipt.totalFee, 'c', culture ) %></div>
+                </div>
+    <% }%>
+    <% }%>
+    <div class="row">
+        <div class="span3"><b><%= localize.total%></b></div>
+        <div class="span1 bold total-price" ><%= Globalize.format(orderTotals.total, 'c', culture) %></div>
+    </div>
+    <%if(orderTotals.tax && orderTotals.tax > 0){%>
+    <div class="row">
+        <p>(<%=localize.tpIncludes%> <%= Globalize.format(orderTotals.tax, 'c', culture) %> <%=localize.inTax%>)</p>
+    </div>
+    <%}%>
+    <% } %>
+    <div class="row">
+        <% if(step == 'confirmation'){ %>
+        <input id="make-order" type="button" class="btn btn-large btn-danger summaryNext" value="<%= localize.confirmationCompletePurchase %>">
+        <%} %>
+
+        <% if(step =='concession'){ %>
+        <input id="continueAction" type="button" class="btn btn-large btn-danger summaryNext" value="<%= localize.lblContinue %>">
+        <%} %>
+
+        <% if(step == 'payment'){  %>
+        <input id="btnContinue" type="button" class="btn btn-large btn-danger summaryNext" value="<%= localize.reviewYourOrder %>">
+        <%} %>
+                    
+        <% if(step == 'tickets'){ %>
+        <input id="btnTicketContinue" type="button" class="btn btn-large btn-danger summaryNext" value="<%= localize.next %>"
+             <%= orderModel.get('tickets').getSelectedTicketQuantity() < 1 ? 'disabled' : '' %> >
+        <%} %>
+
+    </div>
+</div>
+

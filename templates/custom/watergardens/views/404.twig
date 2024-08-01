@@ -1,0 +1,23 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Page Not Found {% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix">
+            <div class="blocks">
+                <!--Page content goes here-->
+                <h1>
+                    <div class="width-wrapper">404 - Page Not Found</div>
+                </h1>
+                <div id="error-content" class="width-wrapper">
+                    <h2 id="error-sorry">Sorry, the page you were looking for seems to be missing</h2>
+                    <strong>Try using one of the links above or search our site or return to the homepage</strong>
+                    <a href="/">
+                        <button class="cta-404">Return to homepage</button>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

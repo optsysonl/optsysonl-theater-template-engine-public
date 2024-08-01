@@ -1,0 +1,15 @@
+<div>
+    {% for movie_id, movie in movies %}
+        <div class='showtimes-details'>
+            <div class="poster">
+                <a class="_cs-title" href='{{- movie.movie.url -}}'>
+                    <h3>{{ movie.movie.name }}</h3>
+                    <img class="desktop" src='{{ movie.movie.poster }}' alt='Poster of {{ movie.movie.name }}'/>
+                    <div class="btn_details">
+                        <span>More info</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+</div>

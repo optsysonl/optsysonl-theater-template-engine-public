@@ -1,0 +1,102 @@
+<article class="side_content">
+
+    {% if house.house_id == '1887' %}
+        <a style='text-decoration:none;' class='fancybox fancybox.iframe' href='https://GreenbrierCC.360PhotosNow.com' title='Take a Virtual Tour'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/360-GB.png'>
+        </a>
+        <hr>
+
+        <a style='text-decoration:none;' class='' target='_blank'
+           href='https://xd.adobe.com/view/74f7b78f-f046-4a59-9a1c-24e573b4ec13-21a4/?fullscreen' title='Download Our Menu'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/menubanner.png'>
+        </a>
+        <hr>
+    {% elseif house.house_id == '42617' %}
+        <a style='text-decoration:none;' class='fancybox fancybox.iframe' href='https://EdinburghCC.360PhotosNow.com' title='Take a Virtual Tour'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/360-EB.png'>
+        </a>
+        <hr>
+
+        <a style='text-decoration:none;' class='' target='_blank'
+           href='https://xd.adobe.com/view/546db04f-ed4a-4e2d-99d5-f8a6f07e1a2f-013e/?fullscreen' title='Download Our Menu'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/menubanner.png'>
+        </a>
+        <hr>
+    {% elseif house.house_id == '10401' %}
+        <a style='text-decoration:none;' class='fancybox fancybox.iframe' href='https://www.spinattic.com/1442/17671?full' title='Take a Virtual Tour'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/360-VB.png'>
+        </a>
+        <hr>
+
+        <a style='text-decoration:none;' class='' target='_blank'
+           href='https://xd.adobe.com/view/74f7b78f-f046-4a59-9a1c-24e573b4ec13-21a4/?fullscreen' title='Download Our Menu'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/menubanner.png'>
+        </a>
+        <hr>
+    {% elseif house.house_id == '4117' %}
+        <a style='text-decoration:none;' class='fancybox fancybox.iframe' href='https://KempsRiverCC.360PhotosNow.com' title='Take a Virtual Tour'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/360-KR.png'>
+        </a>
+        <hr>
+
+        <a style='text-decoration:none;' class='' target='_blank'
+           href='https://xd.adobe.com/view/74f7b78f-f046-4a59-9a1c-24e573b4ec13-21a4/?fullscreen' title='Download Our Menu'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/menubanner.png'>
+        </a>
+        <hr>
+    {% elseif house.house_id == '9661'  %}
+
+        <a style='text-decoration:none;' class='' target='_blank'
+           href='https://xd.adobe.com/view/74f7b78f-f046-4a59-9a1c-24e573b4ec13-21a4/?fullscreen' title='Download Our Menu'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/menubanner.png'>
+        </a>
+        <hr>
+    {% elseif house.house_id == '48350' %}
+        <a style='text-decoration:none;' class='fancybox fancybox.iframe' href='https://ChesterCC.360PhotosNow.com' title='Take a Virtual Tour'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/360-EB.png'>
+        </a>
+        <hr>
+
+        <a style='text-decoration:none;' class='' target='_blank'
+           href='https://xd.adobe.com/view/4ccc3715-3e74-4060-9762-233e83d51cc2-199f/?fullscreen' title='Download Our Menu'>
+            <img style="width:100%; max-width: 300px;" src='/assets/img/menubanner.png'>
+        </a>
+        <hr>
+    {% endif %}
+
+    {% if house.prices is not empty %}
+        <h3>Prices</h3>
+        {{ include('helper/prices.twig', {prices: house.prices}, with_context = false) }}
+    {% endif %}
+
+    <h3>Call us!</h3>
+    {{ house.movieline }}
+
+    <hr>
+    {% if house.map.url is not empty %}
+        <iframe src='{{ house.map.url }}' style='width:300px;height:300px;frameborder:0;border:0'
+                allowfullscreen></iframe>
+        <hr>
+    {% else %}
+        <iframe frameborder="0" style='width:300px;height:300px;frameborder:0;border:0'
+                src="https://www.google.com/maps/embed/v1/place?key={{- config['google_map_api'] -}}&q={{ house.map.address }}"
+                allowfullscreen>
+        </iframe>
+        <hr>
+    {% endif %}
+
+    {% if house.house_id == '1887' %}
+        <img src="/assets/img/Policies_VB-EB.png" style="max-width: 300px;" />
+    {% elseif house.house_id == '42617' %}
+        <img src="/assets/img/Policies_VB-EB.png" style="max-width: 300px;" />
+    {% elseif house.house_id == '10401' %}
+        <img src="/assets/img/Policies_VB-EB.png" style="max-width: 300px;" />
+    {% elseif house.house_id == '4117' %}
+        <img src="/assets/img/Policies_VB-EB.png" style="max-width: 300px;" />
+    {% elseif house.house_id == '9661' %}
+        <img src="/assets/img/Policies_VB-EB.png" style="max-width: 300px;" />
+    {% elseif house.house_id == '48350' %}
+        <img src="/assets/img/Policies_VB-EB.png" style="max-width: 300px;" />
+    {% endif %}
+
+</article>

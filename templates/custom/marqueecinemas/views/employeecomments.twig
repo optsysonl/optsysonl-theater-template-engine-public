@@ -1,0 +1,17 @@
+{% extends "common/base.twig" %}
+{% block meta_title %}{{ parent() }} | Contact Us {% endblock %}
+
+{% block content %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+
+        <div id="content" class="clearfix">
+            <h1 class="titlebar new_titlebar">Employee Comments</h1>
+            <p>Your comments help us make everyone's movie going experience better.  Please fill in the form below and let us know your comments, problems,  or suggestions. Anonymous entries are allowed and welcomed. Please select the corresponding link below:</p>
+
+            {{ include('forms/employeecomments_form.twig') }}
+        </div>
+        {{ include('parts/promotions.twig') }}
+        {{ include('common/footer.twig') }}
+    </div>
+{% endblock %}

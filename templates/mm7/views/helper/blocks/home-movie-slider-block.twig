@@ -1,0 +1,30 @@
+<div class="group-film-content {{ class }}" data-tab="{{ tab }}">
+    <div class="block_films-slider">
+        {% for movie in movies %}
+            <div class="bloc_film NUM" data-id="{{ movie.movie.id }}" data-relese="{{ movie.movie.release }}">
+                <div class="controls">
+                    {% if movie.movie.trailer.url != '' %}
+                        <a href="{{ movie.movie.trailer.url|url_decode }}" class="btn_slider fa play_trailer" data-fancybox-type="iframe"
+                           title="Trailer for {{ movie.movie.name }}"><span class="hidden">{{ movie.movie.name }} Trailer</span></a>
+                    {% endif %}
+                </div>
+                <a href="{{- movie.movie.url -}}" title="Film - {{ movie.movie.name }}">
+                    <img src="{{- movie.movie.poster -}}" alt="Still of {{ movie.movie.name }}" class="visuel_film"/>
+                </a>
+                {% if movie.movie.release > "now"|date('Y-m-d') and not movie.showdates is empty %}
+                    <div class="les_boutons">
+                        <div class="advance-showing-banner">
+                            <a href="{{- movie.movie.url -}}" title="Showtimes for {{ movie.movie.name }}" rel="nofollow"
+                               aria-label="Advance Tickets for {{ movie.movie.name }}">
+                                Advance Tickets
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if show_titles == '1' %}
+                    <div class="name">{{ movie.movie.name }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>

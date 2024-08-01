@@ -1,0 +1,167 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% set movies = NowPlayingComingSoon(data.movies.movies, data.showdates) %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+
+        <!-- WOW SLIDER -->
+        <div id="wowslider-container1">
+            <div class="ws_images">
+                <ul>
+                    {{ include('helper/slider.twig', {slides: data.slides.slides.home.images}, with_context = true) }}
+               </ul>
+            </div>
+            <div class="ws_thumbs">
+                <div>
+                    {{ include('helper/slider_small.twig', {slides: data.slides.slides.home.images}, with_context = true) }}
+                </div>
+            </div>
+        </div>
+        <div id="quick_tickets" class="content">
+            <form id="frmQuickTix" name="frmQuickTix" method="post">
+                <div class="quick_tickets-title">Quick Tickets</div>
+                <select id="location" name="location" class="quick_tix">
+                    <option value="">Select a Location</option>
+                    {{ include('parts/houses_nav_select.twig', {houses: data.houses}, with_context = false) }}
+                </select>
+                <select id="movie" name="movie" class="quick_tix" disabled>
+                    <option value="">Select a Movie</option>
+                </select>
+                <select id="date" name="date" class="quick_tix" disabled>
+                    <option value="">Select a Date</option>
+                </select>
+                <select id="showtime" name="showtime" class="quick_tix" disabled>
+                    <option value="">Select a Time</option>
+                </select>
+                <label class="hidden" for="location">Location</label><label class="hidden" for="movie">Movie</label>
+                <label class="hidden" for="date">Date</label><label class="hidden" for="showtime">Showtime</label>
+            </form>
+        </div>
+        <!-- Carousel -->
+        <div id="carousel_wrapper">
+            <div id="carousel_buttons" class="titlebar">
+                <div id="but_nowplaying" class="carousel_button">Now Playing</div>
+                {% if movies.cs is not empty %}
+                    <div id="but_comingsoon" class="carousel_button_active" style="margin-left:14px">Coming Soon</div>
+                {% endif %}
+            </div>
+
+            {% if movies.np is not empty %}
+            <div id="car_nowplaying" class="image_carousel">
+                <div id="nowplaying" class="inner_carousel">
+                    {{ include('helper/carousel.twig', {carousel: movies.np}, with_context = false) }}
+                </div>
+                <div class="clearfix"></div>
+                <a class="prev" id="nowplaying_prev" href="#"></a>
+                <a class="next" id="nowplaying_next" href="#"></a>
+                <div class="pagination" id="nowplaying_pag"></div>
+            </div>
+            {% endif %}
+            {% if movies.cs is not empty %}
+            <div id="car_comingsoon" class="image_carousel">
+                <div id="comingsoon" class="inner_carousel">
+                    {{ include('helper/carousel.twig', {carousel: movies.cs}, with_context = false) }}
+                </div>
+                <div class="clearfix"></div>
+                <a class="prev" id="comingsoon_prev" href="#"></a>
+                <a class="next" id="comingsoon_next" href="#"></a>
+                <div class="pagination" id="comingsoon_pag"></div>
+            </div>
+            {% endif %}
+        </div>
+
+        {{ include('parts/promotions.twig') }}
+
+        {{ include('common/footer.twig') }}
+    </div>
+
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <!-- Footer JS -->
+
+    <script type="text/javascript" src="/assets/files/wowslider/engine1/wowslider.js"></script>
+    <script type="text/javascript" src="/assets/files/wowslider/engine1/script.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            //toggle the carousel when NP or CS buttons are clicked
+            $('#but_nowplaying').click(function() {
+                $('#car_comingsoon').hide();
+                $('#car_nowplaying').fadeIn();
+                $(this).removeClass("carousel_button").addClass("carousel_button_active");
+                $('#but_comingsoon').removeClass("carousel_button_active").addClass("carousel_button");
+
+
+                $("#nowplaying").carouFredSel({
+                    circular: true,
+                    infinite: true,
+                    items: 6,
+                    scroll: {
+                        items:1,
+                        duration: 500,
+                    },
+                    auto: true,
+                    prev: {
+                        button: "#nowplaying_prev",
+                        key: "left"
+                    },
+                    next: {
+                        button: "#nowplaying_next",
+                        key: "right"
+                    }
+                });
+            });
+
+            //start the coming soon carousel on button click
+            $('#but_comingsoon').click(function() {
+                $('#car_nowplaying').hide();
+                $('#car_comingsoon').fadeIn();
+
+                $("#comingsoon").carouFredSel({
+                    circular: true,
+                    infinite: true,
+                    items: 6,
+                    scroll: {
+                        items:1,
+                        duration: 500,
+                    },
+                    auto: true,
+                    prev: {
+                        button: "#comingsoon_prev",
+                        key: "left"
+                    },
+                    next: {
+                        button: "#comingsoon_next",
+                        key: "right"
+                    }
+                });
+
+                $(this).removeClass("carousel_button").addClass("carousel_button_active");
+                $('#but_nowplaying').removeClass("carousel_button_active").addClass("carousel_button");
+            });
+
+            //hide the carousels on page load and trigger the now playing click
+            $('#car_comingsoon,#car_nowplaying').hide();
+            $('#but_nowplaying').trigger('click');
+        });
+    </script>
+{% endblock %}

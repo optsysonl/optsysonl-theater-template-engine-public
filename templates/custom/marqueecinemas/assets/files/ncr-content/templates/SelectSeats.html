@@ -1,0 +1,56 @@
+﻿
+<div class="row">
+    <div class="span10">
+        <div class="selectSeats-info"><%= localize.markedSeats %></div>
+    </div>
+    <div class="span6">
+        <div class="timeToOrder">
+            <%= localize.timeLeftToOrder %>
+            <h4 class="order-time"></h4>
+        </div>
+    </div>
+</div>
+<div class="clear" style="height: 15px;"></div>
+<div class="row" id="seatsSelection">
+    <div class="notification-container">
+        <div class="notification-top-bar">
+            <div class="seat-message">
+            </div>
+        </div>
+    </div>
+    <div class="SelectSeatsContainer">
+        <div class="selectSeatsVisible">
+            <div class="fullScreen">
+                <button id="makeModal" class="btn btn-mini" style="display: block;"><span></span></button>
+            </div>
+            <div id="seats-layout"></div>
+        </div>
+    </div>
+</div>
+<div class="clear" style="height: 30px;"></div>
+
+    <div class="row">
+        <div class="span3"><input type="button" id="btnSeatKey" class="btn btn-mini" value=" <%= localize.seatKey %>"/></div>
+        <div class="span8">
+            <div id='selectedSeats'></div>
+            <div id='numberSeats'></div>
+            <%if(performance.get('variableSeatPricing')) {%>
+                <span id='messageFee'></span>
+            <%}%>
+        </div>
+        <div class="span5">
+            <div class="selectTiketsNext">
+                <input id="skipOrCon" type="button" class="btn btn-danger summaryNext" disabled="disabled" value="<%= localize.youMustSelectSeats %>"/>
+            </div>
+        </div>
+    </div>    
+    
+
+<div id="friendsOwner">
+
+</div>
+
+<div id="legend">
+
+</div>
+  

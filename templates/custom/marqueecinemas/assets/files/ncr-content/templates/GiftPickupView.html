@@ -1,0 +1,67 @@
+﻿<%
+    var dateShowTime = DtHelper.convertDate(performance.showTime);
+    var formattedShowDate = Globalize.format(dateShowTime, "D", theater.get('culture'));
+    var formattedShowTime = Globalize.format(dateShowTime, "t", theater.get('culture'));
+    
+    %>
+<div id="gift-pickup-details">
+    <h5><%=localize.confirmationYourOrderIsComplete%></h5>
+    <p><%=localize.hi%> <%=user.name%> <br/>
+    <%=localize.thisIsYourReceipt%></p>
+    
+    <div class="divider"></div>
+
+    <h5><%=localize.movieDetails%></h5>
+    <table class="table">
+        <tr>
+            <td><%=localize.movieName%>:</td>
+            <td><b><%=movie.name%></b></td>
+        </tr>
+        <tr>
+            <td><%=localize.cinema%>:</td>
+            <td><%=theater.get('name')%></td>
+        </tr>
+        <tr>
+            <td><%=localize.address%>:</td>
+            <td><%=theater.getFormattedAddress()%></td>
+        </tr>
+        <tr>
+             <td><%=localize.phoneNumber%>:</td>
+            <td><%=theater.get("phone") %></td>
+        </tr>
+        <tr>
+            <td><%=localize.auditorium%>:</td>
+            <td><%=performance.auditorium%></td>
+        </tr>
+        <tr>
+            <td><%=localize.showDate%>:</td>
+              <td><%=formattedShowDate%></td>
+        </tr>
+        <tr>
+            <td><%=localize.showTime%>:</td>
+            <td><%=formattedShowTime%></td>
+        </tr>
+        <tr>
+            <td><%=localize.runtime%>:</td>
+            <td><%=DtHelper.getRuntime(movie.length)%></td>
+        </tr>
+
+    </table>
+    <div class="divider"></div>
+    <h5><%=localize.orderDetails%></h5>
+
+    <div id="qrCode"></div>
+    <h5 id="qrCodeText"></h5>
+
+    <div class="divider"></div>
+
+    <h5><%=localize.instructions%></h5>
+    <p>
+        <%=localize.giftPickupInstructions%>
+    </p>
+    <div style="text-align: center">
+        <%=localize.poweredBy%>: <%=window.appConfig.CompanyName%>
+        <br />
+        <!--<%=localize.purchasedOn%>: April 10, 2013 2:59 PM-->
+    </div>
+</div>

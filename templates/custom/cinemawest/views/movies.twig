@@ -1,0 +1,35 @@
+{% extends 'common/base.twig' %}
+{% set page_class = "films" %}
+{% block meta_title %} Movies | {{ parent() }} {% endblock %}
+
+{% block content %}
+    {% set groupedMoviesData = npcs_MoviesData(active_house_id, data.movies.movies, data.showdates) %}
+    <div id="content">
+        <div id="ct_main">
+            <div id="maincontent-x-large" class="ct_left">
+                <div id="bfs_sem_proch" class="">
+                    <div class="page-top-controls {{ (show_house_block) ? 'with-location-picker' : '' }}">
+                        <div id="bfs_home_liens">
+                            <span id="bfs_show_sem" class="bfs_btn group-tab-button" data-tab="1">Now Playing</span>
+                            <span id="bfs_show_proch" class="bfs_btn group-tab-button" data-tab="2">Coming Soon</span>
+                        </div>
+                        {% if show_house_block %}
+                            <div class="location-picker">
+                                <span class="label">My Theater:</span>
+                                <span class="active-theater active-theater-btn">{{ data.houses[active_house_id].name }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div id="bloc_films_semaine" class="">
+                        <div id="films_semaine">
+                            <div class="les_blocs_film">
+                                {{ include('helper/home-movie-grid.twig', {movies: groupedMoviesData, site:{'config':{'template_options':{'slider_npcs':'both'}}}, show_showtimes: true}, with_context = false) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="resa_mail" class=""></div>
+        </div>
+    </div>
+{% endblock %}

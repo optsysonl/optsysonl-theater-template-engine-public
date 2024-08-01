@@ -1,0 +1,160 @@
+{% extends "common/base.twig" %}
+{% set page_class = "about-page" %}
+
+{% block meta_title %} About {{ data.houses[active_house_id].name }} | {{ parent() }} {% endblock %}
+
+{% block css_header %}
+    <link rel="stylesheet" href="/assets/css/horaires2017.min.css" type="text/css">
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {{ parent() }}
+    {% set theaterData = data.houses[active_house_id] %}
+    {% set theaterPages = getHousePages(active_house_id, data.pages) %}
+
+    <div class="ct_head">
+        <div class="wrap">
+            <h1>{{- theaterData.name -}}</h1>
+            <h2>{{- theaterData.address -}}, {{ theaterData.city -}}, {{ theaterData.state_short }} {{ theaterData.zip -}}</h2>
+        </div>
+    </div>
+    {% if theaterData.map.url != '' %}
+        <div class="about-mobile-map">
+            <iframe src="{{- theaterData.map.url -}}" width="" height="" frameborder="0" style="border:0;" allowfullscreen></iframe>
+        </div>
+    {% endif %}
+    <div>
+        <div class="wrap">
+            <div class="tabs-container" role="navigation">
+                <div class="tab active" data-index="1" data-id="first_tab_cinema"><span>About Us</span></div>
+                {% if not theaterData.prices is empty %}
+                    <div class="tab" data-index="2" data-id="prices"><span>Prices</span></div>
+                {% endif %}
+                {% for page in theaterPages %}
+                    <div class="tab" data-index="{{ page.page_id }}" data-id="{{ page.data_id|lower }}">
+                        <span>{{ page.site_headline }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="content">
+                <div class="left-container">
+                    <div class="facade">
+                        {% if theaterData.photo %}
+                            <img src="{{- theaterData.photo -}}" alt="Photo of {{ theaterData.name }}" border="0">
+                        {% else %}
+                            <span style="color: #fff;">No photo</span>
+                        {% endif %}
+                    </div>
+                    {% if theaterData.map.url != '' %}
+                        <div id="mod_maps" class="">
+                            <iframe src="{{- theaterData.map.url -}}" width="" height="" frameborder="0" style="border:0;"
+                                    allowfullscreen></iframe>
+                        </div>
+                    {% endif %}
+                    <div class="contact">
+                        <h3>Contact Info:</h3>
+                        <p><strong>{{- theaterData.name -}}</strong><br/><br/>
+                            {{- theaterData.address -}}<br/>
+                            {{ theaterData.city -}}, {{ theaterData.state_short }} {{ theaterData.zip -}}<br/>
+                            {% if theaterData.phone != '0' and theaterData.phone != '' %}
+                                Main Phone: {{ theaterData.phone }}<br/>
+                            {% endif %}
+                            {% if theaterData.movieline != '0' and theaterData.movieline != '' %}
+                                Movieline: {{ theaterData.movieline }}<br/>
+                            {% endif %}
+                            <a href="/contact-us" style="text-decoration: underline;">Contact Us</a>
+                        </p>
+                        {% if theaterData.map['address'] != '' %}
+                            <p>
+                                <a href="https://www.google.com/maps/place/{{- theaterData.map['address'] -}}" target="_blank"
+                                   aria-label="View on Map" rel="external"><span class="hidden">Opens in new window</span>
+                                    <img src="/assets/img/g-map-icon.png" alt="Map Icon"> View on map.</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="right-container">
+                    <div class="tabs-data-container">
+                        <div class="tab-container active" data-tab="1">
+                            <div class="btxt">
+                                {% if theaterData.message_page_id is defined and theaterData.message_page_id != '' %}
+                                    {{ data.pages[theaterData.message_page_id].content|raw }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if not theaterData.prices is empty %}
+                            <div class="tab-container" data-tab="2">
+                                <div>
+                                    <div id='theaterPrices'>
+                                        {{ include('helper/prices.twig',{prices:theaterData.prices}, with_context = false) }}
+                                        {% if theaterData.policies != '' %}
+                                            <p class='disclaimer'>{{ theaterData.policies|raw }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% for page in theaterPages %}
+                            <div class="tab-container" data-tab="{{ page.page_id }}">
+                                <div>
+                                    {#<p class="tab-title">{{ page.site_headline }}</p>#}
+                                    <div class='about_tab_content'>
+                                        {{ page.content|raw }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_scripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                if(window.location.hash !== ''){
+                    let hashtag = window.location.hash.replace('#', '');
+                    $('.tabs-container .tab').each(function(){
+                        if($(this).data('id') === hashtag){
+                            changeTab($(this).data('index'));
+                        }
+                    });
+                }else{
+                    changeTab(1);
+                }
+                $('.tabs-container .tab').on('click', function () {
+                    changeTab($(this).data('index'), $(this).data('id'));
+                });
+                $(window).on('resize', function(){
+                    mobileElementsHelper();
+                });
+            });
+
+            function changeTab(_index, _id) {
+                $('.tabs-container .tab.active').removeClass('active');
+                $('.tabs-container .tab[data-index="' + _index + '"]').addClass('active');
+                $('.tabs-data-container .tab-container.active').removeClass('active');
+                $('.tabs-data-container .tab-container[data-tab="' + _index + '"]').addClass('active');
+
+                mobileElementsHelper();
+            }
+            function mobileElementsHelper(){
+                $('.mobile-hidden-element').removeClass('mobile-hidden-element');
+                if($(window).width() <= 768) {
+                    if($('.tabs-container .tab.active').data('id') !== 'first_tab_cinema') {
+                        $('.about-mobile-map, .left-container').addClass('mobile-hidden-element');
+                    }
+                }
+            }
+        })(jQuery)
+    </script>
+
+{% endblock %}

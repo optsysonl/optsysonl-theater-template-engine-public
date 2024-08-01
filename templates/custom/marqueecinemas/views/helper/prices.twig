@@ -1,0 +1,21 @@
+{% set formatedPrices = formatPrices(prices|sort) %}
+
+{% for price in prices|sort %}
+    <span class='category'>{{ price.cat }}</span>
+{%- endfor %}
+
+{% for price in formatedPrices %}
+    {% for key, a_price in price %}
+        {%  if key == 0 %}
+            <span class="type"><span>{{ a_price.type }}</span><span class="subtext">{{ a_price.type1 }}</span></span>
+        {% endif %}
+        {%  if a_price.base !='' %}
+            <div class="price">
+                <span class="price-total">{{ a_price.total }}</span><br />
+                <span class="price-base">${{ a_price.base }} + {{ a_price.tax }} tax</span>
+            </div>
+        {% else %}
+            <span class='price'>{{ a_price.total }}</span>
+        {% endif %}
+    {%- endfor %}
+{%- endfor %}

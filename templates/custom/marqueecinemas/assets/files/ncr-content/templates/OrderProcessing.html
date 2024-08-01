@@ -1,0 +1,73 @@
+﻿ <%
+var orderModel = window.ObjectModels.OrderModel;
+var performance = orderModel.get('performance');
+     var image = orderModel.get('movie').get('image');
+     if(image)
+            var movieImage = image.large;   
+
+      var displayImage = movieImage ? 'block' : 'none';
+      var dateShowTime = new Date(performance.get('showTime'));
+      var showTime = Globalize.format(dateShowTime, "h:mmtt");
+      var showDate = Globalize.format(dateShowTime, "MMM d, yyyy");
+       
+      %>
+<div class="processingOrder order-processing">
+    <div class="row">
+        <h3><%= localize.orderIsProcessed%></h3>
+    </div>
+    <div class="clear20"></div>
+    <div class="row">
+        <div class="span6">
+            <div style="width: 240px;height:360px" class="movie-placeholder movie-image">
+                <img id="movie-image" onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/movie-poster-default.png';" style="display: <%= displayImage %>" src="<%=movieImage%>">
+            </div>
+        </div>
+        <div class="span6">
+            <div class="movie-details">
+                <h4><a><%= orderModel.get('movie').get('name') %></a> </h4>
+                <p><span class="rating"><%= orderModel.get('movie').get('rating') %></span> <%= window.DtHelper.getRuntime(orderModel.get('movie').get('length')) %>
+                    <%= !performance.get('passesAllowed')?'<img src="/assets/files/ncr-content/img/noPasses.png" />' : ''%>
+                    <%= performance.get('dDDFlag') ?'<img src="/assets/files/ncr-content/img/3d.png" />' : ''%>
+                    <%= performance.get('imaxFlag') ?'<img src="/assets/files/ncr-content/img/imax.png" />' : ''%>
+                    <%= performance.get('isReservedSeating') ? '<img src="/assets/files/ncr-content/img/seatSelection.png" />' : ''%>
+                </p>
+                <div><%= orderModel.get('theater').get('name') %></div>
+                <div><%= performance.get('auditorium') %></div>
+                <div>
+                    <%
+                    var dateShowTime =  DtHelper.convertDate(performance.get('showTime'));
+                    var showTime = Globalize.format(dateShowTime, Globalize.findClosestCulture(orderModel.get('theater').get("culture")).calendar.patterns.t, orderModel.get('theater').get("culture"));
+                    var showDate = Globalize.format(dateShowTime, "D", orderModel.get('theater').get('culture'));
+                    %>
+                    <%= showTime %>, <%= showDate %>
+                </div>
+            </div>
+        </div>
+        <div class="span4">
+        <div class="timeToOrder">
+            <%= localize.timeLeftToOrder %>
+            <h4 class="order-time"></h4>
+        </div>
+        </div>
+        <div class="span10" style="margin-top: 20px; text-align: center">
+            <input id="tryAgain" type="button" class="btn btn-large btn-danger hide" value="<%= localize.tryAgain%>"/>
+        </div>
+    </div>
+  
+</div>
+
+<div style="display: none;" class="order-complete">
+    <div class="row">
+        <div class="span16" style="padding: 12px;">
+            <h3 style="background-color: #ccc; padding: 5px 30px;"><%= localize.confirmationYourOrderIsComplete %></h3>
+            <div id="inviteFriendsHoldTickets"></div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+

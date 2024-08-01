@@ -1,0 +1,42 @@
+{% set tab_index = 1 %}
+{{ include('helper/blocks/home-movie-slider-block.twig',
+    {   movies: movies.np,
+        class: 'now-playing',
+        tab: tab_index,
+        show_titles: true,
+        show_release: false
+    }) }}
+
+{% set tab_index = tab_index + 1 %}
+{{ include('helper/blocks/home-movie-slider-block.twig',
+    {   movies: movies.cs|sortByReleaseDateRev,
+        class: 'coming-soon',
+        tab: tab_index,
+        show_titles: true,
+        show_release: true
+    }) }}
+
+{% set tab_index = tab_index + 1 %}
+{{ include('helper/blocks/home-movie-slider-block.twig',
+    {   movies: movies.adv|sortByReleaseDateRev,
+        class: 'advance-tickets',
+        tab: tab_index,
+        show_titles: true,
+        show_release: true
+    }) }}
+
+{% set tab_index = tab_index + 1 %}
+{% if movies.filters is defined %}
+    {% for filter in movies.filters %}
+        {{ include('helper/blocks/home-movie-slider-block.twig',
+            {   movies: filter.items,
+                class: 'filter ' ~ filter.filter_id,
+                tab: tab_index,
+                show_titles: true
+            }) }}
+        {% set tab_index = tab_index + 1 %}
+    {% endfor %}
+{% endif %}
+<div class="view-all-movies-container">
+    <a href="/movies">View all Movies</a>
+</div>

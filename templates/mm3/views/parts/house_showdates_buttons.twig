@@ -1,0 +1,10 @@
+{% if data.house_showdate is not empty %}
+    {% for a_date in data.house_showdate.dates -%}        
+        <button data-date="{{- a_date.date -}}" class='showdate hvr-fade' onclick='change_date("{{- a_date.date -}}");'>
+            <span class='button_day'>{{- a_date.date|date("l") -}}</span><br>
+            <span class='button_date'>{{- a_date.date|date("M j") -}}</span>
+        </button>
+    {%- endfor %}
+{% else %}
+	No showtimes available
+{% endif %}

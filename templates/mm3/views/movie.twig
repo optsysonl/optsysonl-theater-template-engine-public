@@ -1,0 +1,270 @@
+{% extends "common/base.twig" %}
+{% set this_movie = data.movies.movies[this_page.movie_id] %}
+{% block meta_title %}{{ parent() }} | Movie | {{ this_movie.name }}{% endblock %}
+{% set house = data.houses|first %}
+{% set house_qty = data.houses|length %}
+{% if site.config.timestype == 'weekly' %}
+	{% set showtimes = getMovieTimesWeekly(data.showdates, this_page.movie_id) %}
+{% else %}
+	{% set showtimes = getMovieTimes(data.showdates, this_page.movie_id) %}
+{% endif %}
+{% block css %}
+    <!-- Slick Slider -->
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+	{{ parent() }}
+	
+    <!-- Slick Slider -->
+	<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>    
+{% endblock %}
+{% block social_meta_tags %}
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" value="summary">
+	<meta name="twitter:title" content="{{- this_movie.name }}">
+	<meta name="twitter:description" content="{{- this_movie.synopsis_short -}}">
+	<meta name="twitter:image" content="https:{{- this_movie.trailer.image }}">
+
+	<!-- Open Graph data -->
+	<meta property="og:title" content="{{- this_movie.name }}" />
+	<meta property="og:type" content="video.movie" />
+	<meta property="og:url" content="{{- site.baseurl -}}{{- this_movie.url -}}" />
+
+    {% if this_movie.stills is not empty %}
+        {% for key, img_url in this_movie.stills %}
+			<meta property="og:image" content="https:{{- img_url -}}" />
+        {% endfor %}
+    {% endif %}
+	<meta property="og:image" content="http:{{- this_movie.trailer.image -}}" />
+	<meta property="og:image:secure_url" content="https:{{- this_movie.trailer.image -}}" />
+	<meta property="og:description" content="{{- this_movie.synopsis_short -}}" />
+
+	<meta property="og:site_name" content="{{- site.config.title -}}" />
+    {% if this_movie.trailer.url != '' %}
+		<meta property="og:video" content="http:{{- this_movie.trailer.url|url_decode -}}" />
+		<meta property="og:video:secure_url" content="https:{{- this_movie.trailer.url|url_decode -}}" />
+    {% endif %}
+	<meta property="video:release_date" content="{{- this_movie.release|date('Y-m-d') -}}" />
+
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+{{ include('common/header.twig') }}
+<div id="background_wrap">
+        <div id="main-content">
+            <aside id="movie">
+                <div class="poster-container">
+                    <div style="background-image:url({{- this_movie.poster -}});" class="poster-blur"></div>
+                    <img src="{{- this_movie.poster -}}" class="poster" alt="{{ this_movie.name }} Poster"/>
+                </div>
+                <div class='clearfix'></div>
+                {%  if this_movie.trailer.url is defined %}
+					<a href='/trailer/{{- this_movie.trailer.url -}}' target='_blank' class='play-trailer' data-fancybox-type='iframe' title='{{ this_movie.name }}' />
+                    	<div id='trailer'><img class='ghost' src='{{- this_movie.trailer.image }}' alt='Trailer Thumbnail'/><img class='play' src='//www.filmsxpress.com/images/tpl/mm3/icoPlay.png' alt='Trailer Play Button'/></div>
+                    </a>
+                {% endif %}
+                <figure id="fill_stills"></figure>
+            </aside>
+            <div id="movie_content">
+                <figure id="mobile_poster"></figure>
+                <span id='movie_info'>
+                    <span class='name'>
+                        {{ this_movie.name }}
+						{% if this_movie.mpaa is not empty %}
+							<span class='mpaa'>
+								({{- this_movie.mpaa -}})
+							</span>
+						{% endif %}
+                    </span>
+
+                    {% if this_movie.release != '' %}
+                        <strong>Release Date:</strong> {{ this_movie.release }}<br>
+                    {% endif %}
+                    {% if this_movie.runtime != '' %}
+                        <strong>Run time:</strong> {{ this_movie.runtime|date('g\\h\\r\\. i\\m\\i\\n\\.') }}<br>
+                    {% endif %}
+                    {% if this_movie.director != '' %}
+						<strong>Director:</strong> {{ this_movie.director }}<br>
+                    {% endif %}
+                    {% if this_movie.genres != '' %}
+						<strong>Genres:</strong> {{ this_movie.genres|join(', ') }}<br>
+                    {% endif %}
+                    {% if this_movie.actors is defined and this_movie.actors %}
+						<strong>Starring:</strong> {{ this_movie.actors|slice(0, 5)|join(', ') }}<br>
+                    {% endif %}
+                </span>
+
+                {% if this_movie.synopsis != '' %}
+                    <span class='synopsis'>{{ this_movie.synopsis|raw }}</span>
+                    {% if this_movie.custom_text != '' %}
+						<p class='synopsis'>{{ this_movie.custom_text }}</p>
+                    {% endif %}
+				{% endif %}
+
+                <a href='/trailer/{{- this_movie.trailer.url -}}' target='_blank' class='play-trailer' data-fancybox-type='iframe' title='{{ this_movie.name }}' /><div id='view_trailer'>VIEW TRAILER</div></a>
+
+                <div id="showdates_wrapper">
+                    <div id="showdates">
+                        {{ include('parts/showdates_movie.twig', {showtimes: showtimes, movie_id: this_page.movie_id}, false) }}
+                    </div>
+                </div>
+
+				<figure id="showdates_left"><img src="//www.filmsxpress.com/images/tpl/mm3/arrow-left.png" alt="Showdates Left Arrow"></figure>
+				<figure id="showdates_right"><img src="//www.filmsxpress.com/images/tpl/mm3/arrow-right.png" alt="Showdates Right Arrow"></figure>
+
+
+
+                {% if house_qty > 1 %}
+					<p id="location-container">
+						<label for="locations">Choose a location</label>
+						<select id="locations">
+							<option value="all" selected disabled></option>
+                            {% for key,house in data.houses %}
+								{% set dates = [] %}
+								{% for key_date,showdate in showtimes.showtimes %}
+									{% if showdate.houses[key] is defined %}
+										{% set dates = dates|merge([key_date]) %}
+									{% endif %}
+								{% endfor %}
+                                {% if dates is not empty %}
+									<option  data-dates="{{ dates|join(',') }}" value="{{ house.house_id }}">{{ house.name }}, {{ house.state_short }}</option>
+                                {% endif %}
+                            {% endfor %}
+						</select>
+					</p>
+                {% endif %}
+
+				<article id="showtimes">
+                    {{ include('helper/showtimes_movie.twig', {showtimes: showtimes, houses: data.houses}, false) }}
+				</article>
+
+                <div class='clearfix'></div>
+            </div>
+            {{ include('parts/footer_promos.twig') }}
+            <div class="clearfix"></div>
+        </div>
+{{ include('common/footer.twig') }}
+</div>
+{% endblock %}
+{% block js_scripts_footer %}
+	{{ parent() }}
+	<script type="text/javascript">
+    function init(date){
+		var locations = $('#locations');
+		if(locations.length){
+		    showLocations(date);
+		}else{
+            showShowtimes(date, '{{ house.house_id }}' );
+		}
+        //hideShowtimes();
+	}
+
+	function hideShowtimes() {
+        $('.showtimes_1 .location_date').hide();
+    }
+
+	function showLocations(date,house = 'all'){
+        var locations = $('#locations option');
+
+        $('#locations').prop('selectedIndex',0);
+        $('#locations option[value='+house+']').attr('selected','selected');
+
+        locations.each(function () {
+        	var dates = '['+$(this).data('dates')+']';
+        	if(dates.search(date) == '-1' && $(this).val() !== 'all'){
+        	    $(this).hide();
+			}else{
+                $(this).show();
+			}
+        });
+	}
+
+	function showShowtimes(data, house = 'all'){
+		$('.showtimes_1 .location_date').hide();
+		$('.showtimes_1 #'+ data).show();
+
+		if(house == '') house = 'all';
+
+		$('.showtimes_1 #'+ data +' .theater').hide();
+
+		$('.showtimes_1 #'+ data +' .' +house).show();
+
+	}
+
+
+	
+	//Document ready
+	$(document).ready(function() {
+		sessionStorage.setItem('date', $('.showdate:first').data('date'));
+		$('button[data-date='+sessionStorage.getItem('date')+']').addClass('active');
+
+        init(sessionStorage.getItem('date'));
+
+        $('#showdates .showdate').on('click',function (e) {
+            e.preventDefault();
+
+            hideShowtimes();
+
+			var prev_date = sessionStorage.getItem('date'),  new_date = $(this).data('date');
+
+            $('button[data-date='+prev_date+']').removeClass('active');
+
+			$(this).addClass('active');
+
+            sessionStorage.setItem('date', new_date);
+
+            {% if house_qty > 1 %}
+            	showLocations(new_date,'all');
+			{% else %}
+            	showShowtimes(new_date, '{{ house.house_id }}' );
+			{% endif %}
+
+        });
+
+        $('#locations').on('change',function (e) {
+			e.preventDefault();
+
+			var date =  sessionStorage.getItem('date'), house = $(this).val();
+
+            showShowtimes(date,house);
+        })
+
+		$('#showdates').slick({
+			mobileFirst:true,
+			slidesToShow:3,
+			arrows:true,
+			autoplay:false,
+			infinite: false,
+			accessibility: false,
+            prevArrow : $('#showdates_left'),
+            nextArrow : $('#showdates_right'),
+			responsive:[
+				{
+					breakpoint:600,
+					settings:{
+						slidesToShow:4,
+					}
+				}
+			]
+		});
+
+        //Document ready
+        $(function () {
+            $('.featured').slick({
+                slidesToShow: 1,
+                arrows: true,
+                autoplay: true,
+                infinite: true,
+                dots: true,
+                accessibility: false,
+                autoplaySpeed: {{ site.config['slider_speed'] }},
+            });
+        });
+
+	});		
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% set newmovies = movies|mergeByParentID %}
+
+{% for this in newmovies %}
+<figure class='grid-poster'>
+    <a href='/movie/{{- this.id -}}/{{- this.slug -}}-trailer-and-info'>
+    	<img src='{{- this.poster -}}' alt='Still of {{- this.name }}' />
+    	<figcaption class='carousel-info'>{{ this.name }}<span class='click-details'>Click here for details</span></figcaption>
+    </a>
+</figure>
+{% endfor %}

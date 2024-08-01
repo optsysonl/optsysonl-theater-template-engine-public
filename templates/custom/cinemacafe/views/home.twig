@@ -1,0 +1,152 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+
+    <link rel="stylesheet" type="text/css" href="/assets/files/slick/slick-custom.css"/>
+
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+        <div id="content_wrapper" class="clearfix">
+            <div id="content">
+                <article id="main_slider" class="slider">
+                    {% if data.slides.slides.main is defined %}
+                        {{ include('helper/slider.twig', {slides: data.slides.slides.main.images}, with_context = false) }}
+                    {% endif %}
+                </article>
+                {% set movies = data.movies.movies|NowPlayingComingSoon %}
+                <article id="carousel">
+                    {{ include('helper/carousel.twig', {carousel: movies.np}, with_context = false) }}
+                </article>
+
+                <article id="home-card-balance">
+                    <!--figure id="store_banner">
+                        <a href="/page/11556/Summer-Movie-Series"><img src="/assets/img/2019-Summer-Series.jpeg"></a>
+                    </figure-->
+                    {{ data.pages[2711].content|raw }}
+
+                    <p style="text-align: center;">
+                        To check your gift card balance, please contact us at 757-523-SHOW(7469)
+                    </p>
+                    <p style="text-align: center;">
+						<span style="font-size: x-small;">
+							Mystery Shopper Gift Certificates must be checked on the <a href="http://shopper.cinemacafe.com" target="_blank">Shopper Home Page</a>.
+                        </span>
+                    </p>
+                </article>
+
+            </div>
+            <aside id="sidebar">
+                {{ include('parts/aside.twig') }}
+                {{ include('parts/aside_lower.twig') }}
+            </aside>
+        </div>
+    </div>
+    {{ include('common/footer.twig') }}
+{% endblock %}
+{% block js_scripts_footer %}
+    <!-- Footer JS -->
+
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('.slider').slick({
+            autoplay: true,
+            autoplaySpeed: {{ site.config['slider_speed'] }},
+            rtl: false,
+            infinite: true,
+            fade: true,
+        });
+
+        $('#carousel').slick({
+
+            dots: false,
+            arrows: false,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            speed: 60,
+            infinite: true,
+            slidesToShow: 6,
+            /*slidesToScroll: 6,*/
+            cssEase: 'linear',
+            swipe: true,
+            swipeToSlide: true,
+            touchMove: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 4,
+                        speed: 60,
+                        /*slidesToScroll: 1,*/
+                        infinite: true,
+                        swipe: true,
+                        swipeToSlide: true,
+                        touchMove: true,
+                        dots: false
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 4,
+                        speed: 60,
+                        /*slidesToScroll: 1,*/
+                        infinite: true,
+                        dots: false,
+                        swipe: true,
+                        swipeToSlide: true,
+                        touchMove: true,
+                        autoplay: false,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 3,
+                        speed: 60,
+                        /*slidesToScroll: 1,*/
+                        infinite: true,
+                        autoplay: false,
+                        swipe: true,
+                        swipeToSlide: true,
+                        touchMove: true,
+                        dots: false
+                    }
+                },
+                {
+                    breakpoint: 360,
+                    settings: {
+                        slidesToShow: 2,
+                        speed: 60,
+                        /*slidesToScroll: 1,*/
+                        infinite: true,
+                        autoplay: false,
+                        swipe: true,
+                        swipeToSlide: true,
+                        touchMove: true,
+                        dots: false
+                    }
+                }
+            ],
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /
+
+# All requests processed only via index.php NEW ENGINE
+RewriteRule ^.*$ App/index.php [NC,L]

@@ -1,0 +1,11 @@
+<div class="pricing-container">
+    <h2>PRICING</h2>
+    {% for price_cat in data.houses|first.prices %}
+        <p class="sub">{{ price_cat.cat }}</p>
+        <div class="pricing">
+            {% for price in price_cat.prices %}
+                <div class="item">{{- price.name }} - {{ price.value -}}</div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

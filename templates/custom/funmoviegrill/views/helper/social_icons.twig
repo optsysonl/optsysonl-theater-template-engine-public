@@ -1,0 +1,52 @@
+<div id="social-icons">
+    {%- if house_icons.facebook.link is defined and house_icons.facebook.link != '' -%}
+        <a href='{{ house_icons.facebook.link }}' aria-label="facebook link" target="_blank" title="Like us on Facebook" class="slink_facebook">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- elseif icons.facebook.link is defined and icons.facebook.link != '' -%}
+        <a href='{{ icons.facebook.link }}' aria-label="facebook link" target="_blank" title="Like us on Facebook" class="slink_facebook">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- endif -%}
+    {%- if house_icons.twitter.link is defined and house_icons.twitter.link != '' -%}
+        <a href='{{ house_icons.twitter.link }}' aria-label="twitter link" target="_blank" title="Follow us on Twitter" class="slink_twitter">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- elseif icons.twitter.link is defined and icons.twitter.link != '' -%}
+        <a href='{{ icons.twitter.link }}' aria-label="twitter link" target="_blank" title="Follow us on Twitter" class="slink_twitter">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- endif -%}
+    {%- if house_icons.instagram.link is defined and house_icons.instagram.link != '' -%}
+        <a href='{{ house_icons.instagram.link }}' aria-label="instagram link" target="_blank" title="Follow us on Instagram" class="slink_instagram">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- elseif icons.instagram.link is defined and icons.instagram.link != '' -%}
+        <a href='{{ icons.instagram.link }}' aria-label="instagram link" target="_blank" title="Follow us on Instagram" class="slink_instagram">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- endif -%}
+    {%- if house_icons.pintrest.link is defined and house_icons.pintrest.link != '' -%}
+        <a href='{{ house_icons.pintrest.link }}' aria-label="pintrest link" target="_blank" title="Follow us on Pinterest" class="slink_pinterest">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- elseif icons.pintrest.link is defined and icons.pintrest.link != '' -%}
+        <a href='{{ icons.pintrest.link }}' aria-label="pintrest link" target="_blank" title="Follow us on Pinterest" class="slink_pinterest">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- endif -%}
+    {%- if house_icons.youtube.link is defined and house_icons.youtube.link != '' -%}
+        <a href='{{ house_icons.youtube.link }}' aria-label="youtube link" target="_blank" title="Visit us on Facebook" class="slink_youtube">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- elseif icons.youtube.link is defined and icons.youtube.link != '' -%}
+        <a href='{{ icons.youtube.link }}' aria-label="youtube link" target="_blank" title="Visit us on Facebook" class="slink_youtube">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- endif -%}
+    {%- if email is not empty  -%}
+        <a href='mailto:{{- email -}}' title="Email the theater" class="slink_newsletter newsletter-svg">
+            <span class="s_icon"></span><span class="hidden">Opens in new window</span>
+        </a>
+    {%- endif -%}
+</div>

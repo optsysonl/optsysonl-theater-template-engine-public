@@ -1,0 +1,175 @@
+{% for this_key, this in movies.data %}
+
+    {% if(movie['categories'] is defined) %}
+        {% for id, movie_cat in movie['categories'] %}
+            {% set filter_class = filter_class ~ " filter_" ~ id %}
+        {% endfor %}
+        {% set movie_cat = movie.categories %}
+    {% else %}
+        {% set movie_cat = [] %}
+    {% endif %}
+
+    {% if this_key in movies['movies']|keys %}
+        {% set today = date('now') %}
+        {% set movie = movies['movies'][this_key] %}
+        {% set adv_class = '' %}
+
+        {% if(movie['movie']['playing_at'][active_house_id]['release_date'] is defined) %}
+            {% if(movie['movie']['playing_at'][active_house_id]['release_date'] > today and this.showdates is defined and this.showdates is not empty ) %}
+                {% set adv_class = 'advance-tickets' %}
+            {% endif %}
+        {% else %}
+            {% if(movie['movie']['playing_at'] is not defined) %}
+                {% if( this.showdates is defined and this.showdates is not empty) %}
+                    {% set adv_class = 'advance-tickets2' %}
+                {% endif %}
+            {% endif %}
+            {% if(movie['movie']['playing_at'][active_house_id] is defined) %}
+                {% if(this.showdates is defined and this.showdates is not empty) %}
+                    {% set adv_class = 'advance-tickets3' %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        {% if(movie['movie']['categories'] is defined) %}
+            {% set filter_class = movie['movie']['categories']|join(' ') %}
+        {% else %}
+            {% set filter_class = '' %}
+        {% endif %}
+
+
+
+        {% set dates_string = this.showdates|keys|join(' ') %}
+        <div class="hr_film {{ dates_string }} {{ adv_class }} {{ filter_class }}" data-release="{{ movie.release }}">
+            <div class="film-item-inner">
+                <div class="stick-film-item-container">
+                    <h2>
+                        <a href="{{- movie.url -}}" title="Detailed information about the movie {{ movie.name }}">
+                            <span class="flag_avp">Advance Showing</span>
+                            <span>{{ movie.name }}</span>
+                        </a>
+                    </h2>
+                    <div class="hr_film_infos">
+
+                        <div class="hr_aff_ct">
+                            <a href="{{- movie.url -}}" title="About the movie {{ movie.name }}">
+                                <img src="{{- movie.poster -}}" alt="Still of {{ movie.name }}" class="hr_aff"/>
+                            </a>
+                            {% if movie.trailer.url != '' %}
+                                <a href="{{- movie.trailer.url|url_decode -}}"
+                                   class="play_video ic_fa bt_fa play_trailer"
+                                   data-fancybox-type="iframe" title="Trailer for {{ movie.name -}}"><span
+                                            class="hidden">{{ movie.name }} Trailer</span></a>
+                            {% endif %}
+                        </div>
+                        <div class="hr_txt">
+                            {% if movie.runtime != '' %}
+                                <p class="hr_p hr_dur">Runtime:
+                                    {% if movie.mpaa is defined and movie.mpaa != '' and movie.mpaa != 'NR' %}
+                                        <strong>{{ movie.mpaa }}</strong>
+                                    {% endif %}
+                                    <strong>{{ movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</strong>
+                                </p>
+                            {% endif %}
+                            <p class="hr_p hr_real">Director: <strong>{{ movie.director }}</strong></p>
+                            {% if movie.actors is defined %}
+                                <p class="hr_p hr_cast">Actors:
+                                    <strong>{{ movie.actors|slice(0, 6)|join(', ') }}</strong></p>
+                            {% endif %}
+                            {% if movie.genres is defined and movie.genres != '' %}
+                                <p class="hr_p genre">Genre: <strong>{{ movie.genres|slice(0, 2)|join(', ') }}</strong>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hr_tablehor showtimes">
+                {{ include('helper/showtimes-item.twig', {showdates: this.showdates, site:site, movie_cat: movie_cat}) }}
+            </div>
+        </div>
+    {% else %}
+        {% for screen_id, screen in movies['data'][this_key] %}
+            <div class="hr_film grouped_film {{ this_key }}">
+                <div class="film-item-inner">
+                    <div class="stick-film-item-container">
+                        <div class="double-title">Double Feature</div>
+                        {% for movie_key, movie_data in screen.movies %}
+                            {% set movie = movies['movies'][movie_key] %}
+                            <div class="item" data-release="{{ movie.release }}">
+                                <h2>
+                                    <a href="{{- movie.url -}}"
+                                       title="Detailed information about the movie {{ movie.name }}">
+                                        <span class="flag_avp">Advance Showing</span>
+                                        <span>{{ movie.name }}</span>
+                                    </a>
+                                </h2>
+                                <div class="hr_film_infos">
+
+                                    <div class="hr_aff_ct">
+                                        <a href="{{- movie.url -}}" title="About the movie {{ movie.name }}">
+                                            <img src="{{- movie.poster -}}" alt="Still of {{ movie.name }}" class="hr_aff"/>
+                                        </a>
+                                        {% if movie.trailer.url != '' %}
+                                            <a href="{{- movie.trailer.url|url_decode -}}"
+                                               class="play_video ic_fa bt_fa play_trailer"
+                                               data-fancybox-type="iframe" title="Trailer for {{ movie.name -}}"><span
+                                                        class="hidden">{{ movie.name }} Trailer</span></a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="hr_txt">
+                                        {% if movie.runtime != '' %}
+                                            <p class="hr_p hr_dur">
+                                                {% if movie.mpaa is defined and movie.mpaa != '' and movie.mpaa != 'NR' %}
+                                                    <strong>{{ movie.mpaa }}</strong> -
+                                                {% endif %}
+                                                <strong>{{ movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</strong>
+                                            </p>
+                                        {% endif %}
+                                        <p class="hr_p hr_real">Director: <strong>{{ movie.director }}</strong></p>
+                                        {% if movie.actors is defined %}
+                                            <p class="hr_p hr_cast">Actors:
+                                                <strong>{{ movie.actors|slice(0, 6)|join(', ') }}</strong></p>
+                                        {% endif %}
+                                        {% if movie.genres is defined and movie.genres != '' %}
+                                            <p class="hr_p genre">Genre:
+                                                <strong>{{ movie.genres|slice(0, 2)|join(', ') }}</strong></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="hr_tablehor showtimes">
+                    <div class="tab_seances" style="display: block">
+                        {% for _format_key, format_val in screen.showdates %}
+                            {{ include('helper/showtimes-item-drivein.twig', {showdates: format_val, _movies: screen.movies, format_key: _format_key, key_date: this_key, site:site,movie_cat: movie_cat}) }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+<div class="hr_film no_showtimes_available">
+    <div class="film-item-inner">
+        <div class="stick-film-item-container">
+        </div>
+    </div>
+    <div class="hr_tablehor showtimes">
+        <div class="tab_seances tab_hide no-seances">
+            <div class="ftab">
+                <div class="frow">
+                    <div class="fcel celtags"></div>
+                    <div class="fcel aucune">
+                        No showtimes for this day.
+                        <div class="next-available-dates">
+                            <div class="item" style="display: block;">Next available showtime is on <span class="target-date" data-target-date=""></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

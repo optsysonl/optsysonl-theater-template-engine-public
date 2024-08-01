@@ -1,0 +1,26 @@
+{% extends 'common/app-base.twig' %}
+{% set page = data.pages[this_page.page_id] %}
+
+{% block meta_title %}{{ parent() }} | {{ page.site_headline }} {% endblock %}
+
+{% block content %}
+
+    <div class="ct_head">
+        <div class="wrap">
+            <h1>{{ page.site_headline }}</h1>
+        </div>
+    </div>
+    <div id="fxp-content">
+        {% if page.type == 'contact' %}
+            {{ include('parts/contact.twig') }}
+        {% elseif page.type == 'mpaa' %}
+            {{ include('parts/mpaa.twig') }}
+        {% elseif page.type == 'newsletter' %}
+            {{ page.content|raw }}
+            {#<iframe src="https://csxutils.fbmovies.cinema-source.com/subscribe/?cust_id={{- site.config['cust_id'] -}}" id="newsletter"></iframe>#}
+        {% else %}
+            {{ page.content|raw }}
+        {% endif %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+<article id="footer_promos" style="margin-bottom:14px">
+	<div id='gpt-rd-box'>
+		<script type='text/javascript'>
+			googletag.cmd.push(function() { googletag.display('gpt-rd-box'); });
+		</script>	
+	</div>
+    {% if data.slides.slides.bottom is defined %}
+    <div class="featured">
+    	{{ include('helper/slider.twig', {slides: data.slides.slides.bottom.images}, with_context = false)  }}
+    </div>
+    {% endif %}
+</article>
+<div class="clearfix"></div>
+

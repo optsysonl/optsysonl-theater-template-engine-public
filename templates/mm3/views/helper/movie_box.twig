@@ -1,0 +1,17 @@
+{% set newmovies = movies|mergeByParentID %}
+
+{% for movie in newmovies %}
+<a href='{{- movie.url -}}'>
+	<div class='movie_small'>
+    	<img src='{{- movie.poster -}}' />
+        <div class='info'>
+            <span class='name'>{{ movie.name }} ({{ movie.mpaa }})</span><br>
+            <strong>Runtime:</strong> {{ movie.runtime|date('g\\h\\r\\. i\\m\\i\\n\\.') }}<br>
+            <strong>Director:</strong> {{ movie.director }}<br>
+            {% if movie.actors is defined %}
+            <strong>Starring:</strong> {{ movie.actors|slice(0, 2)|join(', ') }}
+            {% endif %}
+        </div>
+    </div>
+</a>
+{% endfor %}

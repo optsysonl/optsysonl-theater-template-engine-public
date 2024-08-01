@@ -1,0 +1,93 @@
+﻿<%
+var orderModel = window.ObjectModels.OrderModel;
+var performance = orderModel.get('performance');
+var image = orderModel.get('movie').get('image');
+ var movieImage = "";
+     if(image)
+movieImage = image.small;   
+%>
+<div class="row">
+    <div class="span11">
+	    <div class="reviewOrder-top"><%= localize.reviewOrderTopMessage %></div> 
+        <div class="reviewOrder-message"><%= localize.reviewOrderWarningMessage %></div>
+    </div>
+    <div class="span5">
+        <div class="timeToOrder"> <!--addClass .minuteLeft when time < 1:00-->
+            <%= localize.timeLeftToOrder %>
+            <h4 class="order-time"></h4>
+        </div>
+    </div>
+</div>
+<div class="payment">
+    <div class="row">
+        <div class="span11">
+            <div class="row">
+                <h3><%= localize.confirmationMovie %></h3>
+            </div>
+            <div class="row">
+                <div class="summaryMovie">
+                    <div class="span2">
+                        <div class="movie-placeholder movie-image">
+                            <img onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/movie-poster-default.png';" style="display: <%= movieImage ? 'block' : 'none'%>" src="<%= movieImage %>">
+                        </div>
+                    </div>
+                    <div class="span5">
+                        <div class="movie-details">
+                            <h4><a><%= orderModel.get('movie').get('name') %></a> </h4>
+                            <p><span class="rating"><%= orderModel.get('movie').get('rating') %></span> <%= window.DtHelper.getRuntime(orderModel.get('movie').get('length')) %>
+                                <%= !performance.get('passesAllowed')?'<img src="/assets/files/ncr-content/img/noPasses.png" />' : ''%>
+                                <%= performance.get('dDDFlag') ?'<img src="/assets/files/ncr-content/img/3d.png" />' : ''%>
+                                <%= performance.get('imaxFlag') ?'<img src="/assets/files/ncr-content/img/imax.png" />' : ''%>
+                                <%= performance.get('isReservedSeating')? '<img src="/assets/files/ncr-content/img/seatSelection.png" />' : ''%>
+                            </p>
+                            <div><%= orderModel.get('theater').get('name') %></div>
+                            <div><%= performance.get('auditorium') %></div>
+                            <div>
+                                <%
+                                var dateShowTime = DtHelper.convertDate(performance.get('showTime'));
+                                var showTime = Globalize.format(dateShowTime, Globalize.findClosestCulture(orderModel.get('theater').get("culture")).calendar.patterns.t, orderModel.get('theater').get("culture"));
+                                var showDate = Globalize.format(dateShowTime, "D", orderModel.get('theater').get('culture'));
+                                 %>
+                            <%= showTime %>, <%= showDate %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear" style="height: 40px;"></div>
+             <% if (summaryInfo.creditCardInfo) {
+                var lastCard = summaryInfo.creditCardInfo[summaryInfo.creditCardInfo.length -1];
+            %>
+            <div class="row">
+                <h3><%= localize.confirmationPaymentInformation %></h3>
+            </div>
+            <div class="row">
+                <div class="span3"><b><%= lastCard.type %></b></div>
+                <div class="span8"><%= lastCard.number %></div>
+            </div>
+            <%}
+            if(subscriptionCards.length > 0){%>
+            <div class="row">
+                <h3><%= localize.confirmationSubscriptionInformation %></h3>
+            </div>
+            <%}
+            var subscriptionNames = _.keys(subscriptionCards);
+            _.each(subscriptionNames, function (name){%>
+            <div class="row">
+                <div class="span3"><b><%= name %></b></div>
+                <div class="span8" style="word-wrap: break-word"><%= subscriptionCards[name] %></div>
+            </div>
+            <% }); %>
+        </div>
+
+        <div class="span5">
+            <div class="clear" style="height: 20px;"></div>
+            <div class="row">
+                <div id="purchaseSummaryReview"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,458 @@
+{% extends "common/base.twig" %}
+{% block meta_title %}{{ parent() }} {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=ABeeZee|Open+Sans|Poiret+One&display=swap');
+
+        html,body{
+            background-color: transparent;
+            background-image: none !important;
+            height: 100%
+        }
+
+        .relay {
+            display: flex;
+            flex-direction: column;
+            font-family: "ABeeZee", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            min-height: 100%
+        }
+
+        .relay__copyright {
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            color: #FFF;
+            margin: 0;
+            max-width: 500px;
+            padding: .625em 0;
+            width: 100%
+        }
+
+        .relay__footer {
+            align-items: center;
+            background-color: #212121;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            width: 100%;
+            z-index: 100
+        }
+
+        .relay__footer-logo {
+            height: 2.3125em;
+            margin: 1.25em 0
+        }
+
+        .relay__header {
+            font-family: "Poiret One", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1.6875em;
+            margin: .5em 0
+        }
+
+        .relay__header-logo {
+            height: 2.3125em;
+            margin: 1em 0 0 0
+        }
+
+        .relay__layout-main {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1
+        }
+
+        @media screen and (min-width: 48em) {
+            .relay__layout-main {
+                align-items: flex-start;
+                flex-direction: row
+            }
+        }
+
+        .relay__main {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            width: 100%
+        }
+
+        @media screen and (min-width: 48em) {
+            .relay__main {
+                width: 66.66666%
+            }
+        }
+
+        .relay__side {
+            background: url(https://envision.wmpro.uk/images/bg.png), #e9eeef;
+            background-blend-mode: multiply;
+            -webkit-box-shadow: inset 0 16px 8px -8px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: inset 0 16px 8px -8px rgba(0, 0, 0, 0.1);
+            -ms-box-shadow: inset 0 16px 8px -8px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 16px 8px -8px rgba(0, 0, 0, 0.1);
+            display: none
+        }
+
+        @media screen and (min-width: 48em) {
+            .relay__side {
+                -webkit-box-shadow: inset 8px 0 10px rgba(0, 0, 0, 0.1);
+                -moz-box-shadow: inset 8px 0 10px rgba(0, 0, 0, 0.1);
+                -ms-box-shadow: inset 8px 0 10px rgba(0, 0, 0, 0.1);
+                box-shadow: inset 8px 0 10px rgba(0, 0, 0, 0.1);
+                display: block;
+                height: 100%;
+                position: fixed;
+                right: 0;
+                top: 0;
+                width: 33.33333%
+            }
+        }
+
+        .film {
+            margin: 0 0 1em 0;
+            overflow: hidden;
+            position: relative;
+            width: 100%
+        }
+
+        @media screen and (min-width: 48em) {
+            .film {
+                -webkit-border-radius: 6px;
+                border-radius: 6px;
+                background-clip: padding-box;
+                max-width: 28.125rem
+            }
+        }
+
+        .film__at {
+            margin: .75rem 0 0 0;
+            padding: .75rem 0 0 0;
+            position: relative
+        }
+
+        .film__at::before {
+            background-color: #dee2e6;
+            content: '';
+            display: block;
+            height: 1px;
+            left: 0;
+            margin: 0 auto;
+            opacity: .6;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 90%
+        }
+
+        .film__background {
+            background-position: center -35px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            -webkit-filter: blur(3px);
+            filter: blur(3px);
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 100
+        }
+
+        .film__data {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #FFF;
+            padding: 1em 0;
+            position: relative;
+            text-align: center;
+            z-index: 200
+        }
+
+        .film__experience {
+            font-size: .75em;
+            margin: .5rem 0 0 0
+        }
+
+        .film__info {
+            font-size: .75em;
+            margin: .5rem 0 0 0
+        }
+
+        .film__on {
+            margin: .5em 0 0 0
+        }
+
+        .film__title {
+            font-family: "Poiret One", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1.25em;
+            font-weight: 700
+        }
+
+        .summary {
+            color: #2f2d32;
+            font-family: "ABeeZee", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 100px auto 0 auto;
+            width: 95%
+        }
+
+        .summary__at {
+            margin: 1rem 0 0 0
+        }
+
+        .summary__film {
+            align-items: flex-start;
+            border-bottom: 1px solid #e1e1e1;
+            border-top: 1px solid #e1e1e1;
+            display: flex;
+            padding: 1em
+        }
+
+        .summary__info {
+            color: #444;
+            font-size: .75rem
+        }
+
+        .summary__header {
+            font-family: "Poiret One", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1.25em;
+            font-weight: 700;
+            padding: .75em 0;
+            text-align: center
+        }
+
+        .summary__on {
+            margin: .5rem 0 0 0
+        }
+
+        .summary__poster {
+            margin: 0 1em 0 0;
+            width: 5em
+        }
+
+        .summary__title {
+            font-family: "Poiret One", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 .25rem 0
+        }
+
+        .login {
+            border-bottom: 1px solid #e1e1e1;
+            font-size: 1em;
+            margin-bottom: 1em;
+            padding: 0 1em 1em 1em;
+            width: 100%
+        }
+
+        .login:last-of-type {
+            border-bottom: 0
+        }
+
+        @media screen and (min-width: 48em) {
+            .login {
+                max-width: 28.125rem;
+                padding: 0 0 1em 0
+            }
+        }
+
+        .login__arrow {
+            height: 1.625rem;
+            width: 1.625rem
+        }
+
+        .login__button {
+            background-color: #215c26;
+            border: 0;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            background-clip: padding-box;
+            -webkit-box-shadow: 0px 6px 1px #143616;
+            -moz-box-shadow: 0px 6px 1px #143616;
+            -ms-box-shadow: 0px 6px 1px #143616;
+            box-shadow: 0px 6px 1px #143616;
+            color: #FFF;
+            display: flex;
+            font-family: "Poiret One", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: .875em;
+            font-weight: 700;
+            justify-content: space-between;
+            line-height: 1.625rem;
+            padding: .75rem;
+            position: relative;
+            text-align: left;
+            text-decoration: none;
+            text-transform: uppercase;
+            top: 0;
+            width: 100%;
+            -webkit-transition: box-shadow 0.1s ease, top 0.1s ease, -webkit-box-shadow 0.1s ease;
+            -moz-transition: box-shadow 0.1s ease, top 0.1s ease, -webkit-box-shadow 0.1s ease;
+            -o-transition: box-shadow 0.1s ease, top 0.1s ease, -webkit-box-shadow 0.1s ease;
+            transition: box-shadow 0.1s ease, top 0.1s ease, -webkit-box-shadow 0.1s ease
+        }
+
+        .login__button:hover {
+            -webkit-box-shadow: 0px 8px 1px #dcdcdc;
+            -moz-box-shadow: 0px 8px 1px #dcdcdc;
+            -ms-box-shadow: 0px 8px 1px #dcdcdc;
+            box-shadow: 0px 8px 1px #dcdcdc;
+            top: -2px
+        }
+
+        .login__input {
+            border: 1px solid #ccc;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            background-clip: padding-box;
+            color: #383838;
+            font-size: 1em;
+            padding: .375em .75em;
+            width: 100%
+        }
+
+        .login__header {
+            font-family: "Poiret One", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1.75em;
+            font-weight: 700;
+            text-align: center
+        }
+
+        .login__label {
+            color: #414241;
+            display: block;
+            font-size: .75em;
+            margin: 0 0 .5rem 0;
+            text-align: left;
+            text-transform: uppercase;
+            width: 100%
+        }
+
+        .login__row {
+            margin: 0 0 1em 0
+        }
+
+        .login__sub-header {
+            color: #414241;
+            font-size: .875em;
+            margin: 1em 0 2em 0;
+            text-align: center
+        }
+
+    </style>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="relay">
+        <div class="relay__layout-main">
+            <main class="relay__main ">
+                <img src="https://wmp-dti-uat-cms.azurewebsites.net/media/1064/envision-logo-black.png" class="relay__header-logo"/>
+                <p class="relay__header">Have a loyalty account?</p>
+                {% if this_page.session['Film'] is defined %}
+                <?php if ($session['Film'] != null): ?>
+                <div class="film" >
+                    <div class="film__background" style="background-image:url(<?=$session['Film']['MediaItems']['Poster']?>);"></div>
+                    <section class="film__data">
+                        <header class="film__title"><?=$session['Film']['Title']?></header>
+                        <p class="film__info"><?=$session['Film']['Cert']?> • <?=floor($session['Film']['RunTime']/60)?> hr. <?=($session['Film']['RunTime']%60)?> min.</p>
+                        <p class="film__experience"><?=$experiences?></p>
+                        <p class="film__at">At: <?=$session['Cinema']['CinemaName']?></p>
+                        <p class="film__on">On: <?=date('l, F j, Y', strtotime($session['Times']['Date']))?> at <?=$session['Times']['StartTime']?></p>
+                    </section> <!-- END .film__data -->
+                </div> <!-- END .film -->
+                <?php endif;?>
+                {% endif %}
+
+                <section class="login">
+                    <header class="login__header">Existing Rewards Members</header>
+                    <p class="login__sub-header">To earn points or rewards for your booking. please login to your rewards account before you buy your tickets.</p>
+                    <p class="login__error errorMessage"></p>
+                    <form class="login__form loginForm" method="post" action="{{- this_page.params.login_path -}}">
+                        <div class="login__row">
+                            <label for="username" class="login__label">Email Address</label>
+                            <input id="username" name="username" type="text" class="login__input param username" placeholder="Email Address"/>
+                        </div>
+                        <div class="login__row">
+                            <label for="password" class="login__label">Password</label>
+                            <input id="password" name="password" type="password" class="login__input param password" placeholder="Password"/>
+                        </div>
+                        <input type="hidden" name="requestData" value=""/>
+                        <button class="login__button loginUser" type="button" value=''>
+                            <span>Log In</span>
+                            <img src="/assets/img/login-arrow.svg" class="login__arrow"/>
+                        </button>
+                    </form> <!-- END .login__form -->
+                </section> <!-- END .login -->
+
+                <section class="login">
+                    <header class="login__header">Not yet a member?</header>
+                    <p class="login__sub-header">Don't have a Rewards account? Just continue as a guest, or register for an account before trying to buy tickets.</p>
+                    <a href="{{- this_page.params.guest_path -}}" class="login__button">
+                        <span>Continue as guest</span>
+                        <img src="/assets/img/login-arrow.svg" class="login__arrow"/>
+                    </a>
+                </section> <!-- END .login -->
+            </main> <!-- END .relay__main -->
+
+            <aside class="relay__side">
+                <div class="summary">
+                    <header class="summary__header">Your Summary</header>
+                    {% if this_page.session['Film'] is defined and this_page.session['Film'] is not null %}
+                    <?php if ($session['Film'] != null): ?>
+                    <div class="summary__film">
+                        <img src="{{- this_page.session['Film']['MediaItems']['Poster'] -}}" class="summary__poster"/>
+                        <div class="summary__data">
+                            <header class="summary__title">{{ this_page.session['Film']['Title'] }}</header>
+                            <p class="summary__info">{{ this_page.session['Film']['Cert'] }} &dot; {{ (this_page.session['Film']['RunTime']/60)|round(0, 'floor') }} hr. ???<?=($session['Film']['RunTime']%60)?> min.</p>
+                            <p class="summary__at">At: {{ this_page.session['Cinema']['CinemaName'] }}</p>
+                            <p class="summary__on">On: {{ this_page.session['Times']['Date']|date('l, F j, Y') }} at {{ this_page.session['Times']['StartTime'] }}</p>
+                        </div> <!-- END .summary__info -->
+                    </div> <!-- END .summary__film -->
+                    <?php endif;?>
+                    {% endif %}
+                </div> <!-- END .summary -->
+            </aside> <!-- END .relay__side -->
+        </div> <!-- END .relay__layout-main -->
+
+        <footer class="relay__footer">
+            <img src="https://wmp-dti-uat-cms.azurewebsites.net/media/1064/envision-logo-black.png" class="relay__footer-logo"/>
+            <p class="relay__copyright">&copy; {{ site.config.title }} {{ "now"|date("Y") }}</p>
+        </footer> <!-- END .relay__footer -->
+
+    </div> <!-- END .relay -->
+
+
+
+    <script>
+        $(function() {
+            $('.loginUser').on('click', function() {
+                $('.errorMessage').text('').hide();
+                $('.error').removeClass('error');
+                $.each($('.param').toArray(), function(i, el) {
+                    if (!$(el).val()) {
+                        $(el).addClass('error');
+                    }
+                });
+
+                if (!!$('.error').length) {
+                    return false;
+                }
+
+                var userData = {
+                    username: $('input[name="username"]').val(),
+                    password: $('input[name="password"]').val()
+                }
+                //$.post('/includes/load_data?load=check_member_new&middleware_id=' + <?=$middleware_id?>, userData).done(function(data) {
+                $.post('/login/check_member', userData).done(function(data) {
+                    var response = JSON.parse(data);
+                    if (!!response.apiError) {
+                        $('.errorMessage').text(response.apiError).show();
+                        return false;
+                    }
+                    $('input[name="username"]').val('');
+                    $('input[name="password"]').val('');
+                    $('input[name="requestData"]').val(response.payload);
+                    $('.loginForm').submit();
+                });
+            });
+        });
+    </script>
+{% endblock %}
+

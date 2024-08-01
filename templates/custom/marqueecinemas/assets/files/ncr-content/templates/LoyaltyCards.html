@@ -1,0 +1,60 @@
+﻿<div class="loyalityCard">
+    <div class="row">
+        <div class="span4">
+            <div class="black-panel left">
+                <h4><%= localize.accountProfile%><a href="#loyaltycards/profile" id="edit-profile"><%= localize.edit%></a></h4>
+                <div class="margin15">
+                    <h3><%= model.get("firstName").value %> <%= model.get('lastName').value %></h3>
+                    <div><%= model.get("emailAddress").value %></div>
+                    <div><%= model.get("phoneNumber").value %></div>
+                    <div><%= model.get("address1").value %></div>
+                    <div><%= model.get("city").value %>, <%= model.get("stateProvince").value %> <%= $.trim(model.get("postalCode").value) %></div>
+                    <div>XXXXXXX<%= model.get('id').substring(model.get('id').length - 3) %></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="span12">
+            <div class="row">
+                <div id="account-profile">
+                    <h2><%= localize.rewards%></h2>
+                    <div class="loyality-items">
+                        <% _.each(model.get("planStatus"), function(item){ %>
+                        <% var targetAmount = item['targetAmount'] !== undefined ? item['targetAmount'].replace(',','') : '';
+                           var currentAmount = item['currentAmount'] !== undefined ? item['currentAmount'].replace(',','') : '';
+                        %>
+                        <div class="loyality-item">
+                            <h5><%= item['planName'] %></h5>
+                            <span class="loyalty-info"><%= item['planDescription'].replace(/\r\n/g, '<br />') %></span>
+                            <br />
+                            <%if (item['planType'] == 'points') { %>
+                            <div class="clear"></div>
+                            <div class="loyalty-next">
+                                <span><%= localize.youHaveAchieved %> <%= currentAmount %> <%= localize.points%>
+                                    <%if (targetAmount > 0) {%>  <%= localize.outOf %>
+                                    <%= targetAmount %> <%= item.planType %> <%= localize.towardYourNextReward %>
+                                    <%}%>
+                                </span><%if (item['nextReward'] != 'N/A') {
+                                var neededAmount;
+                                if ($.isNumeric(targetAmount) && $.isNumeric(currentAmount)) {
+                                    neededAmount = targetAmount - currentAmount;
+                                } 
+                                var loyaltyCollectMsg = $.sprintf(localize.loyaltyCollectMsg, neededAmount.toFixed(1), item['nextReward']);
+                                %>
+                                <br/> <%= loyaltyCollectMsg %>
+                                <%}%>
+                            </div>
+                            <%}%>
+                        </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="text-align: center; margin-top: 20px;">
+                <input id="btnRemoveLoyalty" type="button" class="btn btn-large btn-danger" value="<%= localize.removeLoyaltyCard%>">
+            </div>
+        </div>
+    </div>
+
+</div>
+

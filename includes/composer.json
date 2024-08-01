@@ -1,0 +1,25 @@
+{
+    "require": {
+        "twig/twig": "~2.0",
+        "symfony/cache": "^3.2",
+        "symfony/finder": "3.3.*",
+        "symfony/http-foundation": "~3.3",
+        "symfony/routing": "3.3.*",
+        "doctrine/inflector": "~1.0",
+        "danielstjules/stringy": "~1.8",
+        "chadsikorra/php-simple-enum": "1.*",
+        "symfony/debug": "^3.4",
+        "symfony/filesystem": "^3.4",
+        "symfony/http-client": "^4.3",
+        "espresso-dev/instagram-basic-display-php": "^1.1"
+    },
+    "autoload": {
+        "files": [
+            "../App/Core/Foundation/helpers.php",
+            "../App/Core/Support/helpers.php"
+        ],
+        "psr-4": {
+            "App\\": "../App/"
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{% set movie_data = getMovieData(data, movie_id) %}
+
+{% if movie_data is not empty %}
+    <div id="playing_at" class="infobox infobox_new">
+        <div class="sel_box">
+        <h6><span class="star">★</span>Playing At</h6>
+            <label for="location-data" class="hidden">Playing</label>
+        <select id="location-data" class="movie-data" style="width: 200px;">
+            <option value="">Select a Location</option>
+            {% for house_name, house in movie_data %}
+                <option value="{{ house_name }}">{{ house_name }}</option>
+            {% endfor %}
+        </select>
+        </div>
+        <div class="sel_box">
+        <h6><span class="star">★</span>Showtimes For</h6>
+            <label for="date-data" class="hidden">Showtimes</label>
+        <select id="date-data" class="movie-data" style="width: 200px;" disabled>
+            <option value="">Select a Date</option>
+        </select>
+        </div>
+        <div id="showtime-data"></div>
+    </div>
+{% else %}
+    {#  Live: CATEGORY/CHOICE ID #55 ( Demo: ID #216) #}
+    {% if (site.config.debug is defined) and (site.config.debug == false) %}
+        {% set featured_cat = '55' %}
+    {% else %}
+        {% set featured_cat = '216' %}
+    {% endif %}
+    {{ include('helper/featured_cs.twig', {movies: data.movies, movie_page: 1, featured_cat: featured_cat}, with_context = false) }}
+{%- endif -%}
+
+<script>
+    var movie_data = {{ movie_data|json_encode|raw }};
+</script>

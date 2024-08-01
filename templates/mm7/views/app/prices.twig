@@ -1,0 +1,25 @@
+{% extends 'common/app-base.twig' %}
+
+{% if this_page.params['middleware_id'] is defined %}
+    {% set house = data.houses[getHouseIDFromMiddleware(data.houses, this_page.params['middleware_id'])] %}
+{% else %}
+    {% set house = data.houses[this_page.house_id] %}
+{% endif %}
+
+{% block meta_title %}{{ parent() }} | Theater | {{ house.name }} {% endblock %}
+
+{% block content %}
+    {% if house.prices is not empty %}
+        <div class="tab-container standardpage">
+            <div>
+                <div id='theaterPrices'>
+                    <h2>Prices</h2>
+                    {{ include('helper/prices.twig', {prices: house.prices}, with_context = false)  }}
+                    {% if house.policies != '' %}
+                        <p class='disclaimer'>{{ house.policies|raw }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

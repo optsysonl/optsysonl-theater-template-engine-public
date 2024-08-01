@@ -1,0 +1,22 @@
+﻿<div class="modal hide fade" id="loyalty-login-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <h3><%= localize.loyaltyAccLogin %></h3>
+    </div>
+    <form id="loyaltyLoginForm" class="validate">
+        <div class="modal-body">
+            <label id="loyalty-data-error" class="error hide"></label>
+            <div class="row">
+                <input id="loyalty-account-number" type="text" placeholder="<%= localize.loyaltyAccountNumber%>" style="width: 300px;" class="required" />
+                <label id="loyalty-card-error" class="error hide"></label>
+            </div>
+            <div class="row">
+                <input id="security-pin" type="text" placeholder="<%= localize.loyaltyLastName%>" style="width: 150px;" class="required" />
+                <label id="security-pin-error" class="error hide"></label>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <button id="close-dialog" class="btn" data-dismiss="modal" aria-hidden="true"><%= localize.cancel %></button>
+        <button id="btn-login-loyaltycard" class="btn btn-inverse"><%= localize.logIn %></button>
+    </div>
+</div>

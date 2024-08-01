@@ -1,0 +1,92 @@
+{% set count = days_count is defined ? days_count : 9  %}
+{% for key_date, date_group in showdates %}
+    <div class="tab_seances tab_hide {{ key_date }}">
+        {% for key_format, format_group in date_group %}
+            <div class="ftab {{ key_format }}">
+                <div class="frow">
+                    <div class="fcel celtags">{{ key_format }}</div>
+                    {% for comment_key, grouped_times in format_group|groupByComment %}
+
+                        {% set new_filter_class = '' %}
+                        {% set comment_arr = comment_key|split(';') %}
+                        {% set new_comment_arr = [] %}
+                        {% for comment in comment_arr %}
+                            {% set str = comment|trim %}
+                            {% set new_comment_arr = new_comment_arr|merge([str|lower]) %}
+                        {% endfor %}
+                        {% for cat_item in movie_cat %}
+                            {% if cat_item.cat_name|replace({'filter[':'',']':''})|lower in new_comment_arr %}
+                                {% set new_filter_class = new_filter_class ~ ' filter_' ~ cat_item.cat_id  %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="grouped-times {{ new_filter_class }}">
+                            {% for time in grouped_times %}
+                                <div class="fcel">
+                                    {% if key_format == "Virtual" and time.time|date('G:i') == '0:00'  %}
+                                        <a href="{{ time.details.link }}" class="seance hr_seance sc_mor" target="_blank" rel="external" aria-label="Opens in new window">
+                                                <span class="hor">
+                                                    {{ time.details.button }}
+                                                </span>
+                                            <div class="infos_seance"></div>
+                                        </a>
+                                    {% elseif time.details.soldout is defined %}
+                                        <span class="seance hr_seance soldout sc_mor">
+                                            <span class="hor">
+                                                {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                            </span>
+                                        </span>
+                                    {% elseif not time.details.expired and time.details.link is defined %}
+                                        <a href="{{ time.details.link }}" class="seance hr_seance sc_mor" target="_blank" rel="external" aria-label="Opens in new window">
+                                            <span class="hor">
+                                                {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                            </span>
+                                            <div class="infos_seance"></div>
+                                        </a>
+                                    {% elseif not time.details.expired %}
+                                        <span class="seance hr_seance text sc_mor">
+                                            <span class="hor">
+                                                {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                            </span>
+                                        </span>
+                                    {% else %}
+                                        <span class="seance hr_seance past sc_mor">
+                                            <span class="hor">
+                                                {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                            </span>
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            {% if comment_key is not empty %}
+                                <div class="comment">
+                                    {{ comment_key|split(';')|join(' &bull; ')|raw }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+<div class="tab_seances tab_hide no-seances test">
+    <div class="ftab">
+        <div class="frow">
+            <div class="fcel celtags"></div>
+            <div class="fcel aucune">
+                No showtimes for this day.
+                <div class="next-available-dates">
+                    {% set last_date = "now"|date_modify("+"~count~" day")|date("Y-m-d") %}
+                    {% for i in 0..count %}
+                        {% set _date = "now"|date_modify("+"~i~" day")|date("Y-m-d") %}
+                        {% set data = getNextAvailableShowdate(_date, last_date, showdates) %}
+                        {% if data != '' %}
+                            <div class="item {{ _date }}">Next available showtime is on <span class="target-date" data-target-date="{{ data }}">{{ data|date('l, F d, Y') }}</span></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

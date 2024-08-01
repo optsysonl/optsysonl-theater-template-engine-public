@@ -1,0 +1,91 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix">
+                {% if data.houses|length == 1 %}
+                    {{ include('parts/home_single_location.twig') }}
+                {% elseif data.houses|length > 1 %}
+                    {{ include('parts/home_multi_location.twig') }}
+                {% endif %}
+        </main>
+        {{ include('common/footer.twig') }}
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <!-- Footer JS -->
+    <script>
+        $(document).ready(function () {
+
+            $('#content-slider').slick({
+                autoplay     : true,
+                fade         : true,
+                useCSS       : 'linear',
+                arrows       : true,
+                autoplaySpeed: {{ site.config['slider_speed'] }}
+            });
+
+            if ($('#theatre-info').length == 0) {
+                $('.slider').slick({
+                    autoplay: true,
+                    fade    : true,
+                    css     : 'linear',
+                    arrows  : false,
+                });
+
+                /*$('#carousel-np').slick(carouselSettings(true, false));
+                $('#carousel-cs').slick(carouselSettings(true, false));*/
+                $('.group-film-content').slick(carouselSettings(true, false));
+            }
+
+            groupFilmTabs();
+
+            function groupFilmTabs() {
+                var options = {}
+                main();
+
+                function main() {
+                    options.buttons = $('.group-tab-button');
+                    options.content = $('.group-film-content');
+                    changeTab(1);
+                    handlers();
+                }
+
+                function handlers() {
+                    options.buttons.on('click', function () {
+                        changeTab($(this).data('tab'));
+                    });
+                }
+
+                function changeTab(index) {
+                    options.buttons.removeClass('active');
+                    $('.group-tab-button[data-tab="' + index + '"]').addClass('active');
+
+                    options.content.removeClass('active');
+                    $('.group-film-content[data-tab="' + index + '"]').addClass('active');
+                    $('.group-film-content[data-tab="' + index + '"]').slick('setPosition');
+                }
+            }
+        });
+
+
+    </script>
+{% endblock %}

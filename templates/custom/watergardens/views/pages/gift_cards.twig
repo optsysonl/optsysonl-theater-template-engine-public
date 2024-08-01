@@ -1,0 +1,55 @@
+{% block content %}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix giftcard-page">
+            <div class="two-columns-container">
+                <div class="content-container">
+                    <h1>Giftcards</h1>
+                    <p>
+                        Gift cards are available for any occasion at the concessions counter.
+                        Reloadable gift cards may be used for tickets and concessions at our theatre.
+                    </p>
+                    <div class="gift-card-form">
+                        <div class="left">
+                            <a href="https://43620.formovietickets.com:2235/app/rtsweb/gift" title="Giftcard"
+                               target="_blank">
+                                <img src="/assets/img/Giftcard_Placeholder.svg" alt="Giftcard"/>
+                            </a>
+                        </div>
+                        <div class="right">
+                            <h2 class="form-title">Check your card balance</h2>
+                            <form action="#" id="gift-card-form">
+                                <label for="giftcard_number">Enter Your Giftcard Number:</label>
+                                <div class="form-line">
+                                    <input id="giftcard_number" type="number" name="giftcard_number"/>
+                                    <div id="preloader">
+                                        <div class="f_circleG" id="frotateG_01"></div>
+                                        <div class="f_circleG" id="frotateG_02"></div>
+                                        <div class="f_circleG" id="frotateG_03"></div>
+                                        <div class="f_circleG" id="frotateG_04"></div>
+                                        <div class="f_circleG" id="frotateG_05"></div>
+                                        <div class="f_circleG" id="frotateG_06"></div>
+                                        <div class="f_circleG" id="frotateG_07"></div>
+                                        <div class="f_circleG" id="frotateG_08"></div>
+                                    </div>
+                                    <button type="submit">Apply</button>
+                                </div>
+                            </form>
+                            <div class="error-container"><p>Incorrect Giftcard Number</p></div>
+                            <div class="balance-line">
+                                <p class="name">Your current balance is:</p>
+                                <p class="balance">$<span>0.00</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <img class="giftcard-image" src="/assets/img/gift_cards_image.jpg"/>
+                </div>
+
+                <div class="sidebar-block blocks">
+                    <div class="sidebar">
+                        {{ include('parts/sidebar.twig') }}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

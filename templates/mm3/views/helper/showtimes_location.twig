@@ -1,0 +1,44 @@
+
+{% set all_movies = movies.movies %}
+
+    {% for key_date,showdate in showtimes.showtimes %}
+        <div  id="{{ key_date }}" class="location_date" style="display: none">
+            {% for key_movie,movie in showdate.movies %}
+                <div class="movie" data-key-movie="{{ key_movie }}">
+                    <a href="{{- all_movies[key_movie].url -}}">
+                        <span class="name">
+                            {{- all_movies[key_movie].name -}}
+                            {% if all_movies[key_movie].mpaa is not empty %}
+                                <span class='mpaa'>
+								    ({{- all_movies[key_movie].mpaa -}})
+							    </span>
+                            {% endif %}
+                        </span>
+                    </a>
+                    {% if  all_movies[key_movie].actors is defined %}
+                        <span class="info">{{ all_movies[key_movie].actors|slice(0, 2)|join(', ') }} {{ all_movies[key_movie].runtime|date('g\\h\\r\\. i\\m\\i\\n\\.') }}</span>
+                    {% endif %}
+                    {%- for format, comments in movie -%}
+                        {%- for comment, times in comments -%}
+                            <span class='times'>
+                                {% if comment != '' %}
+                                    <br>
+                                    <span class="comment">{{- comment -}}</span>
+                                {%- endif -%}
+                                {%- for time, time_item in times %}
+                                    {%- if time_item.details.soldout is defined -%}
+                                        <span title="Sold Out" class="showtime_expired showtime_soldout">{{- time|date('g:ia') -}}</span>
+                                    {%- elseif not time_item.details.expired and time_item.details.link is defined -%}
+                                        <a class="time-link" href="{{ time_item.details.link }}">{{- time|date('g:ia') -}}</a>
+                                   {%- else -%}
+                                        <span class="{{ time_item.details.expired ? 'showtime_expired' : 'no_ticketing' }}">{{- time|date('g:ia') -}}</span>
+                                    {%- endif -%}
+                                {% endfor -%}
+                            </span>
+                        {%- endfor -%}
+                    {%- endfor -%}
+
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}

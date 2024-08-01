@@ -1,0 +1,159 @@
+{% set house = data.houses|first %}
+{% set showtimes = getHouseTimes(data.showdates, house.house_id) %}
+
+    {% if data.slides.slides.home is defined %}
+        <div id="main-slider">
+            {{ include('helper/slider.twig', {slides: data.slides.slides.home.images}, with_context = false) }}
+        </div>
+    {% endif %}
+
+{% if house.message is defined and house.message != '' %}
+    <div id='location_message'>
+        {{ house.message|raw }}
+    </div>
+{% endif %}
+
+<div id="theatre_info">
+    <section class='section locButton' data-role='genInfo'>
+        General Information
+        <figure class='arrow_container'>
+            <img src='//www.filmsxpress.com/images/tpl/mm3/glyphicons-right.png' class='toggle_arrow' alt='General Information Toggle'>
+        </figure>
+    </section>
+
+    <div id='genInfo' class='hidden'>
+        {% if house.photo != "" %}
+            <img src='{{- house.photo -}}' alt='{{ house.name }} Theatre Photo'><br>
+        {% endif %}
+        {{ include('helper/social_media.twig', {icons: house.social_icons}, with_context = false)  }}
+        <br />
+        {{ house.address }} <br />
+        {{ house.city -}}, {{ house.state_short }} {{ house.zip }}<br/>
+        {% if house['phone'] != '0' and house['phone'] != '' %}
+            <strong>Main Phone:</strong> {{ house['phone'] }}<br>
+        {% endif %}
+        {% if house['movieline'] != '0' and house['movieline'] != '' %}
+        <strong>Show Line: </strong> {{ house['movieline'] }}<br>
+        {% endif %}
+        {% if house.map.url is not empty %}<a href='{{- house.map.url -}}' target='_blank'>Click here for directions!</a>{% endif %}
+    </div>
+    <hr class='section_divider'>
+
+
+    <div id='theatreFeatures' class='hidden'>
+        {{ include('helper/amenities.twig', {amenities: house.amenities}, with_context = false)  }}
+    </div>
+
+    <hr class='section_divider'>
+    {% if house.prices is not empty %}
+        <section class='section locButton' data-role='ticketPrices'>
+            Ticket Prices
+            <figure class='arrow_container'>
+                <img src='//www.filmsxpress.com/images/tpl/mm3/glyphicons-right.png' class='toggle_arrow' alt='Ticket Prices Toggle'>
+            </figure>
+        </section>
+
+        <div id='ticketPrices' class='hidden'>
+            {{ include('helper/prices.twig',{prices:house.prices}, with_context = false) }}
+            {% if house.policies != '' %}
+                <p class='disclaimer'>{{ house.policies }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+
+<span class="theatre">{{ house.name }}</span>
+<span class="city">{{ house.city }}, {{ house.state_short }}</span>
+<div id="showdates_wrapper">
+    <div id="showdate_container" class="showdates">
+        {{ include('parts/showdates_movie.twig',{showtimes:showtimes}) }}
+    </div>
+</div>
+
+<figure id="showdates_left"><img src="//www.filmsxpress.com/images/tpl/mm3/arrow-left.png" alt="Showdates Left Arrow"></figure>
+<figure id="showdates_right"><img src="//www.filmsxpress.com/images/tpl/mm3/arrow-right.png" alt="Showdates Right Arrow"></figure>
+
+<article id="showtimes" class="movie_times">
+    {{ include('helper/showtimes_location.twig', {showtimes: showtimes, movies: data.movies}, false) }}
+</article>
+
+<script type="text/javascript">
+    function Showdates(){
+        sessionStorage.setItem('date', $('.showdate:first').data('date'));
+        $('button[data-date='+sessionStorage.getItem('date')+']').addClass('active');
+    }
+    function showShowtimes(data){
+        $('.movie_times .location_date').hide();
+        $('.movie_times #'+ data).show();
+    }
+    //Document ready
+    $(document).ready(function() {
+        sessionStorage.setItem('date', $('.showdate:first').data('date'));
+        $('button[data-date='+sessionStorage.getItem('date')+']').addClass('active');
+
+        Showdates();
+        showShowtimes(sessionStorage.getItem('date'));
+        $('.showdates .showdate').on('click',function (e) {
+            e.preventDefault();
+            var prev_date = sessionStorage.getItem('date'),  new_date = $(this).data('date');
+            $('button[data-date='+prev_date+']').removeClass('active');
+
+            $(this).addClass('active');
+
+            sessionStorage.setItem('date', new_date);
+            showShowtimes(new_date);
+        });
+
+        if ($(window).width() < 768) {
+            var sectionID = 0;
+            $('.locButton').on('click',function(){
+                $('.toggle_arrow_down').removeClass('toggle_arrow_down').addClass('toggle_arrow_up');
+                $(this).find("img").removeClass('toggle_arrow_up').addClass("toggle_arrow_down");
+
+                $('.hidden').slideUp('fast');
+                var id = $(this).data("role");
+                if (sessionStorage.getItem('prevID') == id){
+                    $('.toggle_arrow_down').removeClass('toggle_arrow_down').addClass('toggle_arrow_up');
+                    sessionStorage.setItem('prevID', '0');
+                }
+                else{
+
+                    sessionStorage.setItem('prevID', id);
+                    $('#'+ id).slideDown('slow');
+                }
+                return false;
+            });
+        }
+
+        $('.showdates').slick({
+            mobileFirst:true,
+            slidesToShow:3,
+            arrows:true,
+            autoplay:false,
+            infinite: false,
+            accessibility: false,
+            prevArrow : $('#showdates_left'),
+            nextArrow : $('#showdates_right'),
+            responsive:[
+                {
+                    breakpoint:600,
+                    settings:{
+                        slidesToShow:4,
+                    }
+                }
+            ]
+        });
+        $('#main-slider').slick({
+            slidesToShow:1,
+            arrows:true,
+            autoplay:true,
+            infinite: true,
+            dots:true,
+            accessibility: false,
+            autoplaySpeed: {{ site.config['slider_speed'] }},
+        });
+    });
+
+
+</script>

@@ -1,0 +1,8 @@
+{% for house_id, house in data.showtimes %}
+    {% set movie = house.movies|first %}
+    <div class='showtimes'>
+        {{ include('helper/showtimes.twig', {showtimes: movie.showtimes }, with_context = false) }}
+    </div>
+{% else %}
+    <div class='showtimes no-available-showtimes'>No showtimes available on this date.</div>
+{% endfor %}

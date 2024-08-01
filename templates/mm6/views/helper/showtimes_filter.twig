@@ -1,0 +1,8 @@
+<div id="filter">
+    <span class="name">Filter:</span>{#
+    #}<span class="filters">
+        {%- for key, format in formats -%}
+            <span class="filter {{ key }} active" data-name="{{ key }}">{{ format }}</span>
+        {%- endfor -%}
+    </span>
+</div>

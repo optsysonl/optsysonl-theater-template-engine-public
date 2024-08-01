@@ -1,0 +1,97 @@
+{% set movies_showdates_cs = [] %}
+{% set movies_showdates_np = [] %}
+{% set house_id = data.houses|first.house_id %}
+{% set movies = collectMovieData(house_id, data.showdates, data.movies.movies) %}
+
+{% extends 'common/base.twig' %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+
+        <main id="main-content" class="clearfix">
+
+            {% if data.slides.slides.home is defined %}
+                <div id="content-slider" class="blocks">
+                    {{ include('helper/slider.twig', {slides: data.slides.slides.home.images}, false) }}
+                </div>
+            {% endif %}
+            <div class="two-columns-container">
+                <div class="content-container">
+                    <div class="showdates-line">
+                        <nav id="showdates" class="clearfix">
+                            <div class="showdates-list" id="calendar-NP">
+
+                                <div class="inner">
+                                    {{- include('parts/showdates_buttons.twig', {showdates: movies.np.showdates|split(" "), state: 'np'}, false) -}}
+                                </div>
+                                {%- if data.showdates|first -%}
+                                    <div id="calendar"><input aria-label="calendar" id="datepicker" type="text"
+                                                              readonly="true"/></div>
+                                {%- endif -%}
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="showtimes-block blocks">
+                        <h2 class="box_title">Now playing</h2>
+                        <div id="NP" class="filter-content list-view active">
+                            {{ include('parts/movies_np.twig', {movies: movies.np, house_movies:data.showdates, movies_showdates: movies_showdates_np}, false) }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-block blocks">
+                    <div class="sidebar">
+                        {{ include('parts/sidebar.twig') }}
+                    </div>
+                </div>
+                <div id="CS" class="filter-content grid-view">
+                    <h2 class="box_title">Coming soon</h2>
+                    {{ include('parts/movies_cs.twig', {movies: movies.cs}, false) }}
+                </div>
+            </div>
+        </main>
+
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <!-- Footer JS -->
+    <script type="text/javascript">
+
+        let date = '{{ movies.np.showdates|split(" ")|first }}';
+
+        $(function () {
+            movies_trailer_lightbox('.movies-trailer');
+            $(window).trigger('cascadeSliderUpdate');
+
+            // slider top banners
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                useCSS: 'linear',
+                arrows: true,
+                dots: true,
+                autoplaySpeed: {{ site.config['slider_speed'] }},
+                prevArrow: '',
+                nextArrow: ''
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% for key_date, date_group in showdates %}
+    <div class="hr_film {% if (mv_release <= key_date) %} hideAdvanceShowing{% endif %}" >
+        <div class="stick-film-item-container">
+            <h2>
+                    <span>{{ key_date|date('l, F jS') }}</span>
+                    {#{% if movie.release > "now"|date('Y-m-d') and not this.showdates is empty %}#}
+                    <span class="flag_avp" >Advance Showing</span>
+                    {#{% endif %}#}
+            </h2>
+        </div>
+        <div class="tab_seances {{ key_date }}">
+            {% for key_format, format_group in date_group %}
+                <div class="ftab {{ key_format }}">
+                    <div class="frow">
+                        <div class="fcel celtags">{{ key_format }}</div>
+                        {% for comment_key, grouped_times in format_group|groupByComment %}
+                            <div class="grouped-times">
+                                {% for time in grouped_times %}
+                                    <div class="fcel">
+                                        {% if time.details.soldout is defined %}
+                                            <span class="seance hr_seance soldout sc_mor">
+                                            <span class="hor">
+                                                {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                            </span>
+                                        </span>
+                                        {% elseif not time.details.expired and time.details.link is defined %}
+                                            <a href="{{ time.details.link }}" class="seance hr_seance sc_mor" target="_blank" rel="external" aria-label="Opens in new window">
+                                            <span class="hor">
+                                                {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                            </span>
+                                                <div class="infos_seance"></div>
+                                            </a>
+                                        {% elseif not time.details.expired %}
+                                            <span class="seance hr_seance text sc_mor">
+                                            <span class="hor">
+                                                {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                            </span>
+                                        </span>
+                                        {% else %}
+                                            <span class="seance hr_seance past sc_mor">
+                                            <span class="hor">
+                                                {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                            </span>
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                                {% if comment_key is not empty %}
+                                    <div class="comment">
+                                        {{ comment_key|split(';')|join(' &bull; ')|raw }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endfor %}

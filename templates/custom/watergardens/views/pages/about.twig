@@ -1,0 +1,52 @@
+{% block content %}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix about-page">
+            <div class="two-columns-container">
+                <div class="content-container">
+                    <h1>About Us</h1>
+                    <div class="info-block">
+                        <div class="column first">
+                            <img src="/assets/img/about-image-1.jpg" alt="WaterGardens"/>
+                        </div>
+                        <div class="column second">
+                            <h3>What makes Water Gardens different?</h3>
+                            <p>
+                                Excellent Value on Tickets and Concession<br/>
+                                Clean Environment<br/>
+                                Friendly, Accommodating Staff<br/>
+                                Only G, PG and PG-13 Rated Films<br/>
+                                Closed on Sundays
+                            </p>
+                        </div>
+                    </div>
+                    <div class="info-block columns-revert">
+                        <div class="column second">
+                            <h3>Where can you find us?</h3>
+                            <p>
+                                Pleasant Grove:<br/>
+                                From I-15, take exit 275 (Pleasant Grove
+                                Blvd) toward the mountains.<br/>
+                                We are located across from Macey's.
+                            </p>
+                        </div>
+                        <div class="column first">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3039.8568716601253!2d-111.75536378415343!3d40.367697879370745!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x874d84047a9c4033%3A0x8196d8501869da81!2zOTEyIFcgR2FyZGVuIERyLCBQbGVhc2FudCBHcm92ZSwgVVQgODQwNjIsINCh0L_QvtC70YPRh9C10L3RliDQqNGC0LDRgtC4INCQ0LzQtdGA0LjQutC4!5e0!3m2!1suk!2sua!4v1524134328155"
+                                    width="385" height="290" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    {% set slides_page_name = 'Page-' ~ this_page.page_id %}
+                    {% if data.slides.slides[slides_page_name]['images'] is defined %}
+                        <h2>Gallery</h2>
+                        {{ include('helper/slider_page.twig', {slides: data.slides.slides[slides_page_name]['images']}, with_context = false) }}
+                    {% endif %}
+                </div>
+                <div class="sidebar-block blocks">
+                    <div class="sidebar">
+                        {{ include('parts/sidebar.twig') }}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+

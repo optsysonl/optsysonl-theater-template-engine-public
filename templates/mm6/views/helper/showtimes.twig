@@ -1,0 +1,36 @@
+{%- for format, comments in showtimes -%}
+    {%- for comment, times in comments|sort -%}
+        <div class="showtime_comment">
+            <div class="comments">{{- comment|raw -}}</div>
+            {%- for time, time_items in times -%}
+                {%- for time_item in time_items -%}
+                    {%- if time_item.soldout is defined -%}
+                        <span class="showtime soldout">
+                    <span class="time">
+                        <span class="number">{{- time|date('g:i') -}}</span>
+                        <span class="ampm">{{- time|date('A') -}}</span>
+                    </span>
+                    <span class="format">SOLD OUT</span>
+                </span>
+                    {%- elseif not time_item.expired and time_item.link is defined -%}
+                        <a class="showtime {{ time_item.format.name }}" href="{{ time_item.link }}" target="_blank">
+                    <span class="time">
+                        <span class="number">{{- time|date('g:i') -}}</span>
+                        <span class="ampm">{{- time|date('A') -}}</span>
+                    </span>
+                            <span class="format">{{ time_item.format.value }}</span>
+                        </a>
+                    {%- else -%}
+                        <span class="showtime {{ time_item.format.name }} {{ time_item.expired ? 'expired' : '' }}">
+                    <span class="time">
+                        <span class="number">{{- time|date('g:i') -}}</span>
+                        <span class="ampm">{{- time|date('A') -}}</span>
+                    </span>
+                    <span class="format">{{ time_item.format.value }}</span>
+                </span>
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endfor -%}
+        </div>
+    {%- endfor -%}
+{%- endfor -%}

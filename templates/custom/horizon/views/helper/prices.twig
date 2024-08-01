@@ -1,0 +1,7 @@
+{% for price in prices %}
+    <span class='price-category'>{{ price.cat }}</span><br>
+    {% for a_price in price.prices %}
+        <span class='field'>{{ a_price.name }}</span>
+        <span class='price'>{{ a_price.value }}</span><br>
+    {%- endfor %}
+{%- endfor %}

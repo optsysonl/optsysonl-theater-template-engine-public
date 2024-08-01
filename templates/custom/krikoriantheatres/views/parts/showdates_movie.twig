@@ -1,0 +1,23 @@
+{% set showtimes = getMovieTimes(showdates, movie_id) %}
+
+<header id="tickets-header"><label for="movie-showdates">Click Showtime to Buy Online</label></header>
+<div id="movie-showdates-wrapper">
+    <select id='movie-showdates'>
+        {% for key,showdate in showtimes.dates %}
+            <option value='{{- showdate -}}'>{{ showdate|date('l, F jS') }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div id="showtimes" class="clearfix">
+    {% for key_date,showdate in showtimes.showtimes %}
+        <div id="{{ key_date }}" class="location_date">
+            {% for key_house,house_times in showdate.houses %}
+                <div class='theater {{- key_house -}}'>
+                    <span class='name'><a href='{{ houses[key_house].url }}'>{{ houses[key_house].name }}</a></span>
+                    {{ include('helper/showtimes.twig', {showtimes: showdate.houses[key_house]}, false) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

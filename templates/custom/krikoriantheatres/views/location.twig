@@ -1,0 +1,129 @@
+{% extends "common/base.twig" %}
+{% set this_house = data.houses[this_page.house_id] %}
+{% block meta_title %}{{ parent() }} | Theater | {{ this_house.name }} {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+{% endblock %}
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix">
+
+            <header id="location-header" class="clearfix">
+                <h1>{{ this_house.name }}</h1>
+                <p>{{ this_house.address }} <br/>
+                    {{ this_house.city -}}, {{ this_house.state_short }} {{ this_house.zip }}</p>
+            </header>
+            <div class="width-wrapper">
+                {% if this_house.message_page_id is defined and this_house.message_page_id != '' %}
+                    <div id="fxp-message">
+                        {{ data.pages[this_house.message_page_id].content|raw }}
+                    </div>
+                {% endif %}
+                <div id="content-slider" class="clearfix">
+                    {% set location_slide_category = 'Location-' ~ this_page.house_id %}
+                    {% if slides.slides[location_slide_category]['images'] is defined %}
+                        {{ include('helper/slider.twig', {slides: this_house.slides}, with_context = false) }}
+                    {% endif %}
+                </div>
+                <section id="theatre-info">
+                    <h2>Theatre Information</h2>
+                    <div class='info-col'>
+                        <img src='{{- this_house.photo -}}' id='theatre-image' alt='Image of {{ this_house.name }}'>
+                    </div>
+                    <div class="info-col address">
+                        <div class=" loc-social">
+                            {{ include('helper/social_media.twig', {icons: this_house.social_icons}, with_context = false) }}
+                        </div>
+                        {{ this_house.address }} <br/>
+                        {{ this_house.city -}}, {{ this_house.state_short }} {{ this_house.zip }} <br/>
+
+                        {% if this_house['phone'] != '0' and this_house['phone'] != '' %}
+                            Main Phone: {{ this_house['phone'] }}<br/>
+                        {% endif %}
+
+                        Movieline: {{ this_house.movieline }}<br/>
+
+                        {% if this_house.address != '' %}
+                            <a href="{{- this_house.map.url -}}" target="_blank">
+                                <span id="get-directions">Click here for directions!</span>
+                            </a>
+                        {% endif %}
+                        {% if this_house.amenities is not empty %}
+                            <h2>Amenities</h2>
+                            {{ include('helper/amenities.twig', {amenities: this_house.amenities}, with_context = false) }} <br/>
+                        {% endif %}
+                    </div>
+                    <div class="info-col prices">
+                        {% if this_house.prices is not empty %}
+                            <h2>Prices</h2>
+                            {{ include('helper/prices.twig', {prices: this_house.prices}, with_context = false) }}
+                        {% endif %}
+                        {% if this_house.policies != '' %}
+                            <h2>Policies</h2>
+                            <span id='policies'>{{ this_house.policies }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="placeholder-300">
+                        {% if data.slides.slides.center is defined %}
+                            {{ include('helper/slider.twig', {slides: data.slides.slides.center.images}, with_context = false) }}
+                        {% endif %}
+                    </div>
+                </section>
+
+                <article id="showtimes-container" class="clearfix">
+                    {{- include('parts/showdates_house.twig', {showdates: data.showdates, house_id:this_page.house_id, movies: data.movies }, false) -}}
+                </article>
+            </div>
+
+        </main>
+        {{ include('common/footer.twig') }}
+    </div>
+{% endblock %}
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            //start location page slider
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                css: 'linear',
+                arrows: true,
+            });
+            //start showdate carousel
+            $('#showdates').slick(carouselSettings(false, false));
+
+            //change date on button click
+            $('.showdate').on('click', function () {
+                $('.showdate').removeClass('showdate-selected');
+                $(this).addClass('showdate-selected');
+
+                var sel_date = $(this).data("date");
+                var class_name = "location_date";
+                openDate(sel_date, class_name);
+
+                //prevent default
+                return false;
+            });
+
+            //load initial showtimes
+            $('.showdate:first').trigger('click');
+        });
+    </script>
+{% endblock %}

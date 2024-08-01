@@ -1,0 +1,31 @@
+<div class="clear"></div>
+<div class="theaters-list">
+    <div class="row">
+        <div class="span6">
+            <div class="black-panel left">
+
+                     <h4><%= localize.theaters %>
+                         <div class='pull-right'>
+                             <a target="_parent" id="view-map" href="#mapLightBox" data-toggle="lightbox" style="text-decoration: none;">View map</a>
+                         </div></h4>
+
+
+                <div id="theaters"></div>
+                </div>
+        </div>
+        <div class="span10">
+  
+            <div id="schedules"></div>
+        </div>
+    </div>
+</div>
+
+<div id="mapLightBox" class="lightbox hide fade" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class='lightbox-header'>
+        <button type="button" class="close" data-dismiss="lightbox" aria-hidden="true">
+            &times;</button>
+    </div>
+    <div id="map_canvas" class='lightbox-content'>
+    </div>
+</div>

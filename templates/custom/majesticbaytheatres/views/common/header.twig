@@ -1,0 +1,38 @@
+<input type="checkbox" id="nav-trigger" />
+
+<div class="header-spacing"></div>
+
+<div class="notice-container">
+    <div class="container">
+        <p>This is an important notice bar that takes over the top of the page. <a href="/">Read More Here.</a></p>
+    </div>
+</div>
+
+<header id="site-header" class="">
+    <div id="header-content" class="container">
+        <div class="header-top">
+            <a href="/" id="logo-home-link" class="">
+                <img class="for-mobile mobile-logo" src="/assets/img/logo-color.png" alt="Logo for {{ site.config.title }}"/>
+                <img class="for-desctop header-logo" src="/assets/img/logo.png" alt="Logo for {{ site.config.title }}"/>
+            </a>
+        </div>
+        <div id="nav-block">
+            <label for="nav-trigger" class="nav-trigger">
+                <div style="display: none">nav buttons</div>
+                <div class="menu-label">Menu</div>
+                <div class="menu-button">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </label>
+            <nav id="top-nav">
+                <span class="mobile-title">Menu</span>
+                {{- include('parts/pages_top_nav.twig') -}}
+            </nav>
+        </div>
+        <div id="site-social-icons">
+            {{ include('helper/social_media.twig', {icons: this_page.header.social_icons}, false) }}
+        </div>
+    </div>
+</header>

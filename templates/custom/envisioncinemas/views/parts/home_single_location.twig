@@ -1,0 +1,118 @@
+{% set house = data.houses|first %}
+<header id="location-header" class="clearfix">
+    <h1>{{ house.name }}</h1>
+    <p>
+        {{ house.address }} <br />
+        {{ house.city -}}, {{ house.state_short }} {{ house.zip }}
+    </p>
+</header>
+<div class="width-wrapper">
+    <div class="placeholder-728">
+        <div id='gpt-rd-leaderboard'>
+            <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('gpt-rd-leaderboard'); });
+            </script>
+        </div>
+    </div>
+
+    {% if this_house.message_page_id is defined and this_house.message_page_id != '' %}
+        <div id="fxp-message">
+            {{ data.pages[this_house.message_page_id].content|raw }}
+        </div>
+    {% endif %}
+
+    <div id="content-slider" class="clearfix">
+        {% set location_slide_category = 'Location-' ~ house.house_id %}
+        {% if data.slides.slides[location_slide_category]['images'] is defined %}
+        {{ include('helper/slider.twig', {slides: data.slides.slides[location_slide_category]['images']}, with_context = false) }}
+        {% endif %}
+    </div>
+    
+    <section id="theatre-info">
+        <h2>Theatre Information</h2>
+        <div class='info-col'>
+            <img src='{{- house.photo -}}' id='theatre-image' alt='Image of {{ house.name }}'>
+        </div>
+        <div class="info-col">
+            {{ include('helper/social_media.twig', {icons: house.social_icons, config:site.config}, with_context = false)  }}
+            {{ house.address }} <br />
+            {{ house.city -}}, {{ house.state_short }} {{ house.zip }} <br />
+        
+            {% if house['phone'] != '0' and house['phone'] != '' %}
+                Main Phone: {{ house['phone'] }}<br />
+            {% endif %}
+
+            {% if house['movieline'] != '0' and house['movieline'] != '' %}
+                Movieline: {{ house.movieline }}<br />
+            {% endif %}
+            
+            {% if house.map.url %}
+                <a href="{{- house.map.url -}}" target="_blank">
+                    <button id="get-directions">Click here for directions!</button>
+                </a>
+            {% endif %}
+            
+            {% if house.amenities is not empty %}
+                <h2>Amenities</h2> {{ include('helper/amenities.twig', {amenities: house.amenities}, with_context = false) }}<br />
+            {% endif %}
+        </div>
+        <div class="info-col">
+            {% if house.prices is not empty %}
+                <h2>Prices</h2> {{ include('helper/prices.twig', {prices: house.prices}, with_context = false) }}
+            {% endif %}
+            {% if house.policies is not empty %}
+                <h2>Policies</h2><span id='policies'>{{ house.policies }}</span>
+            {% endif %}
+        </div>
+    </section>
+    
+    <article id="showtimes-container" class="clearfix">
+        {{- include('parts/showdates_house.twig', {showdates: data.showdates, house_id:house.house_id, movies: data.movies }, false) -}}
+
+        {% if data.slides.slides.location_bottom is defined %}
+            <div id="content-bottom-slider">
+                {{ include('helper/slider.twig', {slides: data.slides.slides.location_bottom.images}, with_context = false) }}
+            </div>
+        {% endif %}
+    </article>
+</div>
+
+
+{% block js_scripts_footer %}
+    <script>
+        $(document).ready(function() {
+
+            //start location page slider
+            $('#content-slider').slick({
+                autoplay:    	true,
+                fade:        	true,
+                css:     		'linear',
+                arrows:      	true,
+            });
+            $('#content-bottom-slider').slick({
+                autoplay:    	true,
+                fade:        	true,
+                css:     		'linear',
+                arrows:      	true,
+            });
+            //start showdate carousel
+            $('#showdates').slick(carouselSettings(false, false));
+
+            //change date on button click
+            $('.showdate').on('click', function(){
+                $('.showdate').removeClass('showdate-selected');
+                $(this).addClass('showdate-selected');
+
+                var sel_date = $(this).data("date");
+                var class_name = "location_date";
+                openDate(sel_date, class_name);
+
+                //prevent default
+                return false;
+            });
+
+            //load initial showtimes
+            $('.showdate:first').trigger('click');
+        });
+    </script>
+{% endblock %}

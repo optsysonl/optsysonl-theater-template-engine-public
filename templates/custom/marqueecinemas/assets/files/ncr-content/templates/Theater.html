@@ -1,0 +1,121 @@
+﻿<div class="theater-details">
+    <div class="row">
+        <div class="span16">
+            <div class="theater-top relative">
+                <span class="triangle-up" style="z-index: 2;"></span>
+                <div class="span6">
+                    <div class="theater-data">
+                        <h3><%= theater.get("name") %></h3>
+                        <%= theater.get("addressLine1") %><br />
+                        <% if(theater.get("addressLine2")){%>
+                    <%= theater.get("addressLine2") %><br />
+                        <%}%>
+                        <%= theater.get("addressCity") %>,
+                        <%= theater.get("addressState") %>
+                        <%= theater.get("addressZip") %><br />
+                        <%= theater.get("phone") %>
+                        <br />
+                        <a target="_parent" id="view-map" href="#mapLightBox" data-toggle="lightbox" style="text-decoration: none;">View map</a>
+                        <div id="fbLike" class="fb-like" data-send="false" data-width="450" data-show-faces="true" data-colorscheme="dark"></div>
+                    </div>
+                </div>
+                <div class="span10">
+                    <div class="theater-data">
+                        <div class="brandingArea">
+                            <img src="<%= theater.get('heroImage')  || '/assets/files/ncr-content/shared/css/brand/images/theater.png' %>" onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/theater.png';" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <% if(theater.get('warningShort')){%>
+                 <div class="notification-container" style="position: absolute; bottom: 0;">
+                     <div class="notification-top-bar note-information" style="height: 30px; padding-top: 10px; z-index: 1; cursor: pointer;">
+                         <img src="/assets/files/ncr-content/img/info-icon.png" style="width: 22px; height: 22px;" />
+                         <span style="vertical-align: middle; padding: 10px;"><%= theater.get('warningShort') %></span>
+                     </div>
+                 </div>
+                <%}%>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <ul id="theaterTabs" class="nav nav-tabs">
+            <li class="active"><a id="show-schedules" data-toggle="tab"><%= localize.nowPlaying %></a></li>
+            <%if (window.ConfigurationProvider.useConssesion(theater) && concessions){%>
+            <li class=""><a id="show-concessions" data-toggle="tab"><%= localize.onlineConcessions %></a></li>
+            <%} %>
+        </ul>
+    </div>
+    <div class="row">
+        <div id="schedules">
+        </div>
+
+        <div id="concessions" style="display: none" class="span16">
+            <% if(message){%>
+        <div style="text-align: center">
+            <br />
+            <br />
+            <h4><%= message%></h4>
+        </div>
+            <% } else {%>
+            <% if(concessions){
+            _.each(concessions.models, function(item, i){ 
+                if(i % 2 == 0){%>
+            <div class="row">
+                <div class="span8">
+                    <div class="marginR10">
+                        <%} else{%>
+                        <div class="span8">
+                            <div class="marginL10">
+                                <%}%>
+                                <table class="table <%= i %>">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">
+                                                <span class="movie-placeholder movie-image">
+                                                    <img id="concessionImage_<%= i %>" onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/movie-poster-default.png';" style="display: <%= (item.get('image')) ? 'block' : 'none' %>" src="<%=item.get('image') %>" />
+
+                                                </span>
+                                                <span class="concessionsTitle"><%= item.get('name') %>
+                                                </span>
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% _.each(item.get('products'), function(product){ 
+                                        var concessionItem = _.find(concessions.products.models, function(item){ 
+                                        return product == item.get('id');
+                                        });  
+                                        if(concessionItem){%>
+                                        <tr>
+                                            <td><%=concessionItem.get('name')%></td>
+                                            <td><%= Globalize.format( concessionItem.get('price'), "c" )%></td>
+                                        </tr>
+                                        <% }}); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <% if(i % 2 != 0){%>
+                    </div>
+                    <%}%>
+                     <%});%>
+            <%}%>
+            <%}%>
+     
+   
+                </div>
+            </div>
+        </div>
+        <div id="mapLightBox" class="lightbox hide fade" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class='lightbox-header'>
+                <button type="button" class="close" data-dismiss="lightbox" aria-hidden="true">
+                    &times;</button>
+            </div>
+            <div id="map_canvas" class='lightbox-content'>
+            </div>
+        </div>
+        <div id="policy"></div>

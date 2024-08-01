@@ -1,0 +1,421 @@
+{% set movie_showdates = [] %}
+{% set house_id = data.houses|first.house_id %}
+{% set movie_showdates = getShowdatesMovie(house_id, this_page.movie_id, data.showdates, data.movies.movies) %}
+{% set showdates = movie_showdates.showdates|split(" ") %}
+
+{% extends "common/base.twig" %}
+
+{% set movie = data.movies.movies[this_page.movie_id] %}
+{% block meta_title %}{{ parent() }} | Movie | {{ movie.name }}{% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix movie-page-single">
+            <div class="two-columns-container">
+                <div class="content-container">
+                    <h1>{{ movie.name }}</h1>
+
+                    {%- if movie_showdates.showdates|join(" ") -%}
+                        <div class="showdates-line">
+                            <nav id="showdates" class="clearfix">
+                                {{- include('parts/showdates_buttons.twig', {showdates: showdates}, false) -}}
+                            </nav>
+                            <div id="calendar">
+                                <input aria-label="calendar" id="datepicker" type="text" readonly="true"/>
+                            </div>
+                        </div>
+                    {%- endif -%}
+                    <div class="showtimes-block showtimes-details">
+                        <div id="showtimes" class="clearfix showtimes">
+                            {{ include('helper/showtimes.twig', {showdates: movie_showdates}, false) }}
+                        </div>
+                    </div>
+
+                    <div class="movie-single">
+                        <div class="poster">
+                            <a href='{{- movie.url -}}'>
+                                <img class="desktop" src='{{ movie.poster }}' alt='Poster of {{ movie.name }}'/>
+                            </a>
+                        </div>
+                        <div class="inner">
+                            <div class="movie-tags">
+                                {% if movie.mpaa and movie.mpaa != '' %}
+                                    <span class="mpaa">{{ movie.mpaa }}</span>
+                                {% endif %}
+                                {% if movie.runtime %}
+                                    <span class="runtime">{{ movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</span>
+                                {% endif %}
+
+                                {% if movie.genres is defined %}
+                                    <span class="genres">{{ movie.genres|join(', ') }}</span>
+                                {% endif %}
+                            </div>
+                            {% if movie.actors is defined %}
+                                <div class='detail'>
+                                    <h3>Cast</h3>
+                                    <p>{{ movie.actors|slice(0, 5)|join(', ') }}</p>
+                                </div>
+                            {% endif %}
+                            {% if movie.director != '' %}
+                                <div class='detail'>
+                                    <h3>Director</h3>
+                                    <p>{{ movie.director }}</p>
+                                </div>
+                            {% endif %}
+                            {% if movie.mpaa and movie.mpaa != 'NR' %}
+                                <div class='detail'>
+                                    <h3>Advisory</h3>
+                                    <p>
+                                        Rated {{ movie.mpaa }} {% if movie.advisory != '' %}{{ movie.advisory }}{% endif %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                            <div class='detail'>
+                                <h3>{% if movie.release > 'now'|date('Y-m-d') %}Opens {% else %}Opened {% endif %}</h3>
+                                <p>
+                                    {{ movie.release|date('l, F jS') }}
+                                </p>
+                            </div>
+                            {% if movie.synopsis != '' %}
+                                <div class="synopsis">
+                                    <h3>Synopsis</h3>
+                                    <p>{{ movie.synopsis|raw }}</p>
+                                </div>
+                            {% endif %}
+                            <div id="movie-stills">
+                                {% if movie.trailer.url is defined and movie.trailer.url != '' %}
+                                    <div id="videoContainer">
+                                        <div class="overlay">
+                                            <div class="button"></div>
+                                        </div>
+                                        <div id="video">
+                                            <video poster="{{- movie.trailer.image }}">
+                                                <source src="{{- movie.trailer.url|url_decode -}}">
+                                            </video>
+                                        </div>
+                                        <div id="controls" class="cont_video">
+                                            <div class="playButton">
+                                                <div class="playPause"></div>
+                                            </div>
+                                            <div class="ProgressContainer">
+                                                <div class="timer intialTime"> 00:00</div>
+                                                <div class="progressBar">
+                                                    <div class="progress"></div>
+                                                </div>
+                                                <div class="time"> 00:00</div>
+                                                <div class="timer fullTime"> 00:00</div>
+                                            </div>
+                                            <div class="volume">
+                                                <div class="icon"></div>
+                                                <div class="intensityBar">
+                                                    <div class="intensity"></div>
+                                                </div>
+                                            </div>
+                                            <div class="scale">
+                                                <div class="icon"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% for img_url in movie.stills %}
+                                    <img src="{{ img_url }}"/>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="sidebar-block blocks">
+                    <div class="sidebar">
+                        {{ include('parts/sidebar.twig') }}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var availableDates = {{ showdates|json_encode|raw }};
+        let date = '{{ showdates|first }}';
+        $(function () {
+            movies_trailer_lightbox('.movies-trailer');
+
+            //start showdate carousel
+            $('#showdates').slick(carouselSettings(false, false));
+            $('#datepicker').datepicker({
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay: function available(date) {
+                    var ymd = date.getFullYear() + '-' +
+                        ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                        ('0' + date.getDate()).slice(-2);
+                    if ($.inArray(ymd, availableDates) != -1) {
+                        return [true, '', 'Available'];
+                    } else {
+                        return [false, '', 'unAvailable'];
+                    }
+                },
+                showButtonPanel: true,
+                closeText: 'Close',
+                onSelect: function (date, inst) {
+                    $('.showdate[data-date="' + date + '"]').click();
+                }
+            });
+            $('#datepicker').datepicker("setDate", availableDates[0]);
+
+            $('#movie-stills').slick({
+                arrows: false,
+                centerMode: true,
+                variableWidth: true
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            'use strict';
+            var play_pause = $('.playButton'),
+                container = $('#videoContainer'),
+                playIcon = $('.playButton .playPause'),
+                video = $('video'),
+                play = $('.play'),
+                volume = $('.volume .icon'),
+                volumeIntesity = $('.volume .intensityBar'),
+                intensity = $('.intensity'),
+                progressBar = $('.progressBar'),
+                progress = $('.progressBar .progress'),
+                timer = $('.intialTime'),
+                vidDuration = $('.fullTime'),
+                expandButton = $('.scale .icon'),
+                overlayScreen = $('.overlay'),
+                timeState = $('.time'),
+                overlayButton = $('.overlay .button'),
+                update;
+
+
+            $(window).resize(function () {
+                resizeVid();
+            });
+
+            resizeVid();
+
+            updateplayer();
+
+            play_pause.add(video).click(function () {
+                playVid();
+            });
+
+            progressBar.click(function (e) {
+                skip(e);
+            });
+
+            progressBar.mousemove(function (e) {
+                timeState.text(getTimeState(e));
+            });
+
+            volume.click(function () {
+                toggleMute();
+            });
+
+            volumeIntesity.click(function (e) {
+                changeVolume(e);
+            });
+
+            expandButton.click(function () {
+                if (video[0].requestFullscreen) {
+                    video[0].requestFullscreen();
+                } else if (video[0].mozRequestFullScreen) {
+                    video[0].mozRequestFullScreen();
+                } else if (video[0].webkitRequestFullscreen) {
+                    video[0].webkitRequestFullscreen();
+                } else if (video[0].msRequestFullscreen) {
+                    video[0].msRequestFullscreen();
+                }
+                else {
+                    video.dblclick(function () {
+                        fullScreen();
+                    });
+                }
+            });
+
+            overlayButton.click(function () {
+                playVid();
+            });
+
+            vidDuration.text(getFormatedFullTime());
+
+
+            function playVid() {
+                if (video.get(0).paused) {
+                    video.get(0).play();
+                    playIcon.css({
+                        'background': 'url(/assets/img/pause.svg)',
+                        'background-size': '100% 100%'
+                    });
+                    overlayScreen.hide();
+                    update = setInterval(updateplayer, 1);
+
+                } else {
+                    video.get(0).pause();
+                    playIcon.css({
+                        'background': 'url(/assets/img/play.svg)',
+                        'background-size': '100% 100%'
+                    });
+                    overlayScreen.show();
+                    clearInterval(update);
+                }
+            }
+
+            function updateplayer() {
+                var percentage = (video[0].currentTime / video[0].duration) * 100;
+                progress.css({'width': percentage + '%'});
+                timer.text(getFormatedTime());
+                vidDuration.text(getFormatedFullTime());
+
+                if (video[0].ended) {
+                    playIcon.css({
+                        'background': 'url(/assets/img/play.svg)',
+                        'background-size': '100% 100%'
+                    });
+                    overlayScreen.show();
+                    overlayButton.css({
+                        'background': 'url(/assets/img/replay.svg)',
+                        'background-size': '100% 100%'
+                    });
+                } else if (video[0].paused) {
+                    overlayButton.css({
+                        'background': 'url(/assets/img/play-button.svg)',
+                        'background-size': '100% 100%'
+                    });
+                }
+            }
+
+            function getTimeState(event) {
+
+                var mouseX = event.pageX - progressBar.offset().left,
+                    width = progressBar.outerWidth();
+
+                var currentSeconeds = Math.round((mouseX / width) * video[0].duration);
+                var currentMinutes = Math.floor(currentSeconeds / 60);
+
+                if (currentMinutes > 0) {
+                    currentSeconeds -= currentMinutes * 60;
+                }
+                if (currentSeconeds.toString().length === 1) {
+                    currentSeconeds = "0" + currentSeconeds;
+                }
+                if (currentMinutes.toString().length === 1) {
+                    currentMinutes = "0" + currentMinutes;
+                }
+
+                timeState.css('left', (mouseX / width) * progressBar.width() + 18 + 'px');
+
+                return currentMinutes + ':' + currentSeconeds;
+
+            }
+
+            function skip(event) {
+                var mouseX = event.pageX - progressBar.offset().left,
+                    width = progressBar.outerWidth();
+                video[0].currentTime = (mouseX / width) * video[0].duration;
+                updateplayer();
+            }
+
+            function getFormatedFullTime() {
+
+                var totalSeconeds = Math.round(video[0].duration);
+                var totalMinutes = Math.floor(totalSeconeds / 60);
+                if (totalMinutes > 0) {
+                    totalSeconeds -= totalMinutes * 60;
+                }
+                if (totalSeconeds.toString().length === 1) {
+                    totalSeconeds = "0" + totalSeconeds;
+                }
+                if (totalMinutes.toString().length === 1) {
+                    totalMinutes = "0" + totalMinutes;
+                }
+                return totalMinutes + ':' + totalSeconeds;
+            }
+
+            function getFormatedTime() {
+                var seconeds = Math.round(video[0].currentTime);
+                var minutes = Math.floor(seconeds / 60);
+
+                if (minutes > 0) {
+                    seconeds -= minutes * 60;
+                }
+                if (seconeds.toString().length === 1) {
+                    seconeds = "0" + seconeds;
+                }
+                if (minutes.toString().length === 1) {
+                    minutes = "0" + minutes;
+                }
+                return minutes + ':' + seconeds;
+            }
+
+            function toggleMute() {
+                if (!video[0].muted) {
+                    video[0].muted = true;
+                    volume.css({
+                        'background': 'url(/assets/img/mute.svg)',
+                        'background-size': '100% 100%'
+                    });
+                    intensity.hide();
+                } else {
+                    video[0].muted = false;
+                    volume.css({
+                        'background': 'url(/assets/img/volume.svg)',
+                        'background-size': '100% 100%'
+                    });
+                    intensity.show();
+                }
+            }
+
+            function changeVolume(event) {
+                var mouseX = event.pageX - volumeIntesity.offset().left,
+                    width = volumeIntesity.outerWidth();
+
+                video[0].volume = (mouseX / width);
+                intensity.css('width', (mouseX / width) * width + 'px');
+                video[0].muted = false;
+                volume.css({
+                    'background': 'url(/assets/img/volume.svg)',
+                    'background-size': '100% 100%'
+                });
+                intensity.show();
+            }
+
+            function resizeVid() {
+                if (container.width() < 600) {
+                    container.addClass('small');
+                } else {
+                    container.removeClass('small');
+                }
+            }
+
+            $(window).keypress(function (e) {
+                if (e.keyCode === 0 || e.keyCode === 32) {
+                    e.preventDefault()
+                    playVid();
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

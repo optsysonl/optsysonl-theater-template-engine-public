@@ -1,0 +1,156 @@
+<div class="order-complete">
+    <div class="row">
+        <h3><%=localize.confirmationYourOrderIsComplete%></h3>
+    </div>
+    <div class="clear20"></div>
+    <div class="row">
+        <div class="charge-info"><%= localize.yourReceiptMovieTicket%></div>
+    </div>
+    <div class="clear20"></div>
+    <div class="row">
+        <input id="printPage" type="button" class="btn btn-inverse printTicket" value="<%=localize.printYourTicket%>" />
+    </div>
+    <div class="clear20"></div>
+    <div class="row">
+        <%= localize.refundsNote%></div>
+    </div>
+    <div class="clear20"></div>
+    <div class="row">
+        <div class="span7">
+            <div class="row">
+                <div class="span6">
+                    <div class="movie-details">
+                        <%
+                        var orderModel = window.ObjectModels.OrderModel;
+                        var performance = orderModel.get('performance');
+                        %>
+                        <h4><a><%= orderModel.get('movie').get('name') %></a> </h4>
+                        <span class="rating"><%= orderModel.get('movie').get('rating') %></span> <%= window.DtHelper.getRuntime(orderModel.get('movie').get('length')) %>
+                        <%= !performance.get('passesAllowed')?'<img src="/assets/files/ncr-content/img/noPasses.png" />' : ''%>
+                        <%= performance.get('dDDFlag') ?'<img src="/assets/files/ncr-content/img/3d.png" />' : ''%>
+                        <%= performance.get('imaxFlag') ?'<img src="/assets/files/ncr-content/img/imax.png" />' : ''%>
+                        <%= performance.get('isReservedSeating')? '<img src="/assets/files/ncr-content/img/seatSelection.png" />' : ''%>
+                        <div><%= orderModel.get('theater').get('name') %></div>
+                        <div><%= performance.get('auditorium') %></div>
+                        <div>
+                            <%
+                            var dateShowTime = DtHelper.convertDate(performance.get('showTime'));
+                            var showTime = Globalize.format(dateShowTime,'t', orderModel.get('theater').get('culture'));
+                            var showDate = Globalize.format(dateShowTime, 'D', orderModel.get('theater').get('culture'));
+                            %>
+                            <%= showTime %>, <%= showDate %>
+                        </div>
+                    </div>
+                </div>
+                <div class="span1">
+                    <% if (window.ConfigurationProvider.allowSharing()) {%>
+                    <div id="facebook-share"></div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="clear20"></div>
+            <div class="rowsBordered">
+                <div class="row">
+                    <div class="span3"><%=localize.datePurchased%></div>
+                    <%
+                    var datePurchased = new Date(orderModel.get('confirmSaleReceipt').purchasedDateTime);
+                    var purchaseTime = Globalize.format(datePurchased,'t', orderModel.get('theater').get('culture'));
+                    var purchaseDate = Globalize.format(datePurchased, 'D', orderModel.get('theater').get('culture'));
+                    %>
+                    <div class="span4 text-right"><%= purchaseDate%> <%= purchaseTime%></div>
+                </div>
+
+                <% var totals = 0;
+                var groupedTickets = _.groupBy(orderModel.get('confirmSaleResult'), function (t) { return t.name; });
+
+                _.each(groupedTickets, function (gt) { 
+                var total = 0;
+                var name = gt[0].name;
+                var seat = '';
+               
+                _.each(gt, function(t, index) {
+                if(t.seatName != 'GA' && t.name.toUpperCase() !='HOLD')
+                seat += index ? ', ' + t.seatName : '- ' + t.seatName;
+                total += t.price;
+                });
+                totals += total%>
+                <div class="row">
+                    <div class="span4"><%= gt.length  %> <%= name %> <%= seat %></div>
+                    <div class="span3 text-right"><%= Globalize.format(parseFloat(total), "c", orderModel.get('theater').get('culture')) %></div>
+                </div>
+
+                <%});%>
+                
+                <% if( window.ObjectModels.TempOrder.concessions != null){
+                 _.each(concessionSummary, function(item) { %>
+                <div class="concession-summary-item">
+                    <div class="row">
+                        <div class="span4" style="min-height: 20px">
+                            <%=item.quantity + ' ' + item.name %><%= item.modifiers%>
+                        </div>
+                        <div class="span3 text-right"><%= Globalize.format( item.totalPrice, 'c', orderModel.get('theater').get('culture') ) %></div>
+                    </div>
+                </div>
+                <% });}%>
+                <%
+                var otherItems = orderModel.get('otherItems');
+                _.each(otherItems, function (o, index) {%>
+                <div class="row">
+                    <div class="span4"><%= o.name  %></div>
+                    <div class="span3 text-right"><%= Globalize.format(o.price, "c", orderModel.get('theater').get('culture')) %></div>
+                </div>
+                <% }); %>
+                <div class="row">
+                    <div class="span4"><b><%= localize.total%></b></div>
+                    <div class="span3 text-right"><b><%= Globalize.format(orderModel.get('totalPrice'), "c", orderModel.get('theater').get('culture')) %></b></div>
+                    <%if(orderModel.get('tax') && orderModel.get('tax') > 0){%>
+                    <p>(<%=localize.tpIncludes%> <%= Globalize.format(orderModel.get('tax'), 'c', orderModel.get('theater').get('culture')) %>  <%=localize.inTax%>)</p>
+
+                    <%}%>
+                </div>
+
+                <% if (summaryInfo.creditCardInfo && summaryInfo.creditCardInfo.length > 1) {%>
+                  <div class="span4" style="font-weight: bold"><%= localize.confirmationPaymentInformation %></div>
+                <br />
+                <% _.each(summaryInfo.creditCardInfo, function(card){%>
+                     <div style="width: 315px; font-size: 12px">
+                         <div>
+                             <span><%= card.type + ' ' + card.number %></span>
+                             <span style="float: right"><%= Globalize.format(card.payedAmount, 'c', orderModel.get('theater').get('culture')) %> </span>
+                         </div>
+                     </div>
+                <% }); }; %>
+            </div>
+            <div class="clear20"></div>
+            <div class="row">
+                <%if ($.trim(orderModel.get('ticketPickupMessage')) || $.trim(orderModel.get('concPickupMessage'))) {%>
+                <b><%= localize.instructions %>:</b>
+                <p class="instructions">
+                    <%= $.trim(orderModel.get('ticketPickupMessage'))%>
+                    <br />
+                    <%= $.trim(orderModel.get('concPickupMessage'))%>
+                </p>
+                <div class="clear20"></div>
+                <%} %>
+                <div class="row">
+                    <div id="qrCode">
+                    </div>
+                    <h5 id="qrCodeText" style="width: 163px;"></h5>
+                </div>
+                <div class="clear20"></div>
+
+            </div>
+        </div>
+        <div class="offset1 span7">
+            <div style="width: 360px; height: 300px;" id="map_canvas">[map]</div>
+        </div>
+    </div>
+
+    <div id="gift-container">
+    </div>
+</div>
+
+
+
+<div id="modal-facebook-container">
+</div>

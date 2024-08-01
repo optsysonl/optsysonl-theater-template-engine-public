@@ -1,0 +1,184 @@
+{% set movie = getTicketRequestData(data, this_page.params.screen_id, this_page.params.time) %}
+{% set options = getTicketRequestOptions() %}
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <div id="intro" class="ticket-request" style="height: auto; display: flex;">
+        <div class="inner">
+            <h1>Ticket Request</h1>
+            <div class="posters" style="float: left; width: 67%; display: flex;">
+                <div style="float: left;">
+                    <span>
+                        <a href="{{ movie.url }}"><img src='{{- movie.poster -}}' alt='Poster of {{- movie.name -}}'></a>
+                        <br>
+                    </span>
+                </div>
+                <div style="float: right; margin-left: 15px;">
+                    <p>Rated: {{ movie.mpaa }} {% if movie.advisory != '' %}{{ movie.advisory }}{% endif %}</p>
+                    <p>Duration: {{ movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</p>
+                    <p class="text">{{ movie.synopsis_short }} </p>
+                    <p>
+                        {% if movie.comments is defined %}
+                            <span class="commentsBox">{{ movie.comments }}</span>
+                        {% endif %}
+                        <em>
+                            {% if movie.actors is defined %}
+                                <div>
+                                    {{ movie.actors|slice(0, 3)|join(', ') }}
+                                </div>
+                            {% endif %}
+                        </em>
+                    </p>
+                </div>
+                <div class="clear">&nbsp;</div>
+            </div>
+            <div style="float: right; border-left: 1px solid #b1aa85;">
+                <form id="Request" method="post" name="bookings">
+                    <table border="0" cellspacing="0" cellpadding="0" style="margin-left: 15px;">
+                        <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <span class="h2">Screening Details</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">Movie</td>
+                            <td nowrap="">&nbsp;&nbsp;&nbsp;</td>
+                            <td>{{- movie.name -}}</td>
+                        </tr>
+                        <tr>
+                            <td align="right">Date</td>
+                            <td>&nbsp;</td>
+                            <td>{{ movie.date|date('l j M') }}</td>
+                        </tr>
+                        <tr>
+                            <td align="right">Time</td>
+                            <td>&nbsp;</td>
+                            <td>{{- movie.time|date('g:ia') -}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <span class="h2"><br>Tickets Required</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">Adults</td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select name="t_adults" id="t_adults">
+                                    {{ options|raw }}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">Children</td>
+                            <td>&nbsp;</td>
+                            <td><select name="t_children" id="t_children">
+                                    {{ options|raw }}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">Seniors</td>
+                            <td>&nbsp;</td>
+                            <td><select name="t_seniors" id="t_seniors">
+                                    {{ options|raw }}
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Students</td>
+                            <td>&nbsp;</td>
+                            <td><select name="t_students" id="t_students">
+                                    {{ options|raw }}
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <span class="h2"><br>Personal Details</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">Your Name</td>
+                            <td>&nbsp;</td>
+                            <td><input name="c_name" type="text" id="c_name" value="" size="15" maxlength="50"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Email</td>
+                            <td>&nbsp;</td>
+                            <td><input name="c_email" type="text" id="c_email" value="" size="15" maxlength="50"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Phone</td>
+                            <td>&nbsp;</td>
+                            <td><input name="c_phone" type="text" id="c_phone" value="" size="15" maxlength="50"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td style="padding-bottom: 15px;">
+                                <br>
+                                <input type="hidden" name="m" value="">
+                                <input type="hidden" name="d" value="">
+                                <input type="hidden" name="t" value="{{- movie.time|date('H:i') -}}">
+                                <input type="hidden" name="s" value="{{ this_page.params.screen_id }}">
+                                <input type="hidden" name="action" value="place_booking">
+                                <input type="hidden" name="subject" value="Ticket Request">
+                                <button
+                                        class="g-recaptcha"
+                                        data-sitekey="6LflWE4UAAAAAE6ZlIgtU1uDVvgoUZgCpuzDgv_K"
+                                        data-callback="YourOnSubmitFn">
+                                    Ticket Request
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="lower">
+    </div>
+
+    {{ include('common/footer.twig') }}
+    <script>
+        function YourOnSubmitFn(token) {
+
+            sendForm($("#Request"));
+            grecaptcha.reset();
+            return false;
+        }
+
+        function sendForm(form) {
+            var data = form.serializeArray();
+
+            $.ajax({
+                url: '/data/signup',
+                type: 'post',
+                data: {message: data},
+                success: function (response) {
+                    try {
+                        response = JSON.parse(response);
+                        if (response.status == 'success') {
+                            $('.contact-form-success').show();
+                            form[0].reset();
+                        } else {
+                            $('.contact-form-success').hide();
+                            $('.contact-form-error').show();
+                        }
+                    } catch (err) {
+
+                    }
+
+                }
+            });
+
+        }
+
+    </script>
+{% endblock %}

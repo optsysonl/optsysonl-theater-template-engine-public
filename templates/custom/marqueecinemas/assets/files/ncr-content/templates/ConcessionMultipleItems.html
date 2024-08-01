@@ -1,0 +1,30 @@
+﻿<div class="combo-group" style="display: none; float: left; width: 100%" 
+     data-required-number-of-modifiers="<%= requiredNumberOfModifiers ? requiredNumberOfModifiers : 0 %>"
+     data-max-number-of-modifiers="<%= maxNumberOfModifiers ? maxNumberOfModifiers : 0 %>">
+    <%if(parentName){%>
+    <b> <%=parentName%> </b>
+    <%}%>
+    <h4 class="selectOptionsTitle"><%=selectOptionsMessage%></h4>
+    <%_.each(products, function(p, i){
+    var selectedClass = (p.includedQuantity && p.includedQuantity > 0) || (requiredNumberOfModifiers == 1 && maxNumberOfModifiers == 1 && i == 0);
+    %>
+    <div class="concessionsItem">
+        <div class="relative concession-item <%=selectedClass ? 'concession-item-selected' : ''%>" data-id="<%=p.productId%>">
+            <div style="height: 105px;vertical-align: middle;text-align: center;position: relative;display: table-cell;width: 146px;">
+                <% if(p.image){%>
+                <img  style="max-height: 105px" src="<%=p.image %>" />
+                <%} else{%>
+                <img style="width: 55px;"  src="/assets/files/ncr-content/img/moviePlcHolder.png"/>
+                <%}%>
+            </div>
+            <div class="chbox"></div>
+        </div>
+        <div class="row">
+            <a class="concessionName"><%=p.name%></a>
+            <% if(p.price > 0) {%>
+            <b><%= Globalize.format(p.price, 'c', culture) %></b>
+            <%}%>
+        </div>
+    </div>
+    <%});%>
+</div>

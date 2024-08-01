@@ -1,0 +1,62 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<div class="left">
+    {{ data.pages.5836.content|raw }}
+</div>
+<div class="right">
+    <p>Fill in the form below to get in contact with us.</p>
+    <p class="message contact-form-error" hidden></p>
+    <p class="message contact-form-success" hidden></p>
+    <form id="formContact" method="post">
+        <label for="name">Name:</label>
+        <input name="name" type="text" id="name" value=""><br />
+        <label for="email">Email:</label>
+        <input name="email" type="text" id="email" value=""><br />
+        <label for="request">Enquiry:</label>
+        <textarea name="request" id="request" value=""></textarea><br />
+        <input type="hidden" name="action" value="send_enquiry">
+        <input type="hidden" name="subject" value="Enquiry from your website">
+        <button
+                class="g-recaptcha"
+                data-sitekey="6LflWE4UAAAAAE6ZlIgtU1uDVvgoUZgCpuzDgv_K"
+                data-callback="YourOnSubmitFn">
+            Submit
+        </button>
+    </form>
+</div>
+<div class="clear"></div>
+
+<script>
+    function YourOnSubmitFn(token) {
+
+        sendContactMessage($("#formContact"));
+        grecaptcha.reset();
+        return false;
+    }
+
+    function sendContactMessage(form) {
+        var data = form.serializeArray();
+
+        $.ajax({
+            url: '/data/signup',
+            type: 'post',
+            data: {message: data},
+            success: function (response) {
+                try {
+                    response = JSON.parse(response);
+                    if (response.status == 'success') {
+                        $('.contact-form-success').show(); // TODO add message
+                        form[0].reset();
+                    } else {
+                        $('.contact-form-success').hide();
+                        $('.contact-form-error').show(); // TODO add message
+                    }
+                } catch (err) {
+
+                }
+
+            }
+        });
+
+    }
+
+</script>

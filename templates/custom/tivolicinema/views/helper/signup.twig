@@ -1,0 +1,65 @@
+<div class="box">
+    <h3>Join our Newsletter</h3>
+    <form class="newsletter" action="http://www.exhibitorads.com/csentry/content/_addsub.asp" method="GET">
+        <input type="hidden" name="appid" value="nlbowtie1">
+        <input type="hidden" name="cust_id" value="{{ cust_id }}">
+        <input type="hidden" name="house_id" value="{{ house_id }}">
+        <div class="c-newsletter__row">
+            <div class="c-newsletter__item">
+                <label for="firstname">First Name</label>
+                <input id="firstname" name="first" type="text" required>
+            </div>
+            <div class="c-newsletter__item">
+                <label for="lastname">Last Name</label>
+                <input id="lastname" name="last" type="text" required>
+            </div>
+        </div>
+        <div class="c-newsletter__row">
+            <div class="c-newsletter__item">
+                <label for="nl-email" >Email</label>
+                <input id="nl-email" name="email" type="text" required>
+            </div>
+        </div>
+        <div class="c-newsletter__row">
+            <div>Date of Birth</div>
+            <div class="c-newsletter__item">
+                <label for="day" >Day</label>
+                <select id="day" name="day" class="birthday" required>
+                    {% for i in 1..31 %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="c-newsletter__item">
+                <label for="month" >Month</label>
+                <select id="month" name="month" class="birthday" required>
+                    <option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option>
+                </select>
+            </div>
+            <div class="c-newsletter__item">
+                <label for="year" >Year</label>
+                <select id="year" name="year" class="birthday" required>
+                    {% for i in "now"|date("Y").."now"|date("Y")-100 %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <input id="birthday" type="hidden" name="birthday">
+
+        <input id="submit" type="submit" value="Sign Up">
+
+    </form>
+</div>
+
+<script>
+    $(function () {
+        $(".birthday").on('change', function () {
+            let month = $("#month").val();
+            let day = $("#day").val();
+            let year = $("#year").val();
+            $("#birthday").val(month + "/" + day + "/" + year);
+        })
+    });
+
+</script>

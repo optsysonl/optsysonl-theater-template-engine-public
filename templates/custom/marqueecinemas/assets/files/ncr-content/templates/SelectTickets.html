@@ -1,0 +1,130 @@
+﻿<%
+try
+{var movieName = '';
+    var movieImage = movie.get('image').small;
+        if(!movieImage)
+        {
+        movieImage = 'http://placehold.it/54x78';
+        };
+        var movieName = movie.get('name');
+var theaterName= theater.get('name');
+ }
+ catch(e){
+ console.log(e, movie, theater);
+};    %>
+<div id="step1">
+    <div class="row">
+        <%if(performanceMsg !="" || window.ConfigurationProvider.serviceChargeAmount()){%>
+        <div class="charge-info">
+            <%= performanceMsg %>
+            <% if(window.ConfigurationProvider.serviceChargeAmount()){%>
+            <%= tickets.getTicketServiceChargeMessage(theater.get('culture')) %>
+            <% }%>
+        </div>
+        <%}%>
+    </div>
+    <div class="row">
+        <div class="clear" style="height: 15px;"></div>
+    </div>
+    <div class="row" style="word-wrap: break-word">
+        <div class="spanListTikets">
+            <div class="listTikets">
+                <% var showInviteFriends = false;
+                _.each(tickets.models, function (ticket) {
+                                var displayPrice = ticket.getPriceDisplay(theater.get('culture'));
+                var isHold = ticket.get('isOnHoldTicketType');
+
+                var id = ticket.get('id');%>
+
+                <div class="row separator"></div>
+                <div class="row">
+                    <% if (!isHold){ %>
+                    <div class="ticket-item">
+                        <div class="span4"><%= ticket.getNameDisplay()%>
+                            <%if(ticket.get('description') && ticket.get('description') != ''){%><br />
+                            <span class="span3 displayDescription">
+                                (<%=ticket.get('description')%>)
+                            </span>
+                            <%}%>
+                        </div>
+                        <div class="span3 dispayPrice"><%= displayPrice %></div>
+                        <div class="span3 addRemove">
+                            <div class="span1">
+                                <div class="remove">
+                                    <img id="remove" alt="#" data-id="<%= id %>" src="/assets/files/ncr-content/img/minus.png" style="display: <%= ticket.get('quantity') > 0 ? '' : 'none' %>" />
+                                </div>
+                            </div>
+                            <div class="span1">
+                                <div class="count">
+                                    <label id="<%= id %>"><%=ticket.get('quantity') > 0 ? ticket.get('quantity') : '' %></label>
+                                </div>
+                            </div>
+                            <div class="span1">
+                                <div class="add">
+                                    <img id="add" data-id="<%= id %>" src="/assets/files/ncr-content/img/plus.png" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <% } else if(enableHold) {
+                    showInviteFriends = true;
+                    } %>
+                </div>
+
+                <%})%>
+                <%
+                var serviceChargeAmount = window.ConfigurationProvider.serviceChargeAmount();
+                var displayServiceCharge = serviceChargeAmount ? '' : 'none';
+                %>
+                <div class="totals">
+
+                    <div class="row">
+                        <div class="span2"></div>
+                        <div id="ServiceChargeContainer" style="display: <%= displayServiceCharge %>" class="span3"><%= localize.serviceCharge %></div>
+                        <div style="display: <%= displayServiceCharge %>" class="span4" id="serviceCharge"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="span2"></div>
+                        <div class="span3"><b><%= localize.ticketsTotal %></b></div>
+                        <div class="span4" id="ticketTotal"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <%
+                    if(showInviteFriends){
+                    var showDate = new Date(window.ObjectModels.OrderModel.get('performance').get('showTime'));
+                    var holdTime = (window.ConfigurationProvider.holdTimeInMinutesBeforeShowTime(theater) + window.appConfig.TimeoutInMinutes * 2) * 60000;
+                    showInviteFriends = showDate.getTime() - holdTime >= new Date().getTime();
+                    }
+                    if ((showInviteFriends && window.ConfigurationProvider.useHoldTickets(theater))) {%>
+                    <div class="selectFacebookFriends">
+                        <div class="span6">
+                            <%= localize.holdSeats%>
+                        </div>
+                        <div class="span3">
+                            <button id="selectFriends" class="btn btn-large selectFriendsButton" style="width: 160px; line-height: 17px;"><i></i><%= localize.selectFriends %></button>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <% }; %>
+                </div>
+            </div>
+
+        </div>
+        <div class="span5">
+            <div id="orderSummary">
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="step2">
+    <!--Don't remove.-->
+</div>
+<div id="notification-content" style="display: none;">
+    <img src="/assets/files/ncr-content/img/info-icon.png" style="width: 22px; height: 22px;" />
+    <span style="vertical-align: middle; padding: 10px;"><%= theater.get('warningShort') %></span>
+</div>
+<div id="policy"></div>

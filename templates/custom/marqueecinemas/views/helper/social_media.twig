@@ -1,0 +1,38 @@
+<div id="social">
+    {%- if icons.facebook.link is defined and icons.facebook.link != '' -%}
+        <a href='{{ icons.facebook.link }}' target='_blank'>
+            <img src='/assets/img/icoFacebook.png' class='svg social-icon' alt="FB icon">
+        </a>
+    {%- endif %}
+    {% if icons.twitter.link is defined and icons.twitter.link != '' -%}
+        <a href='{{ icons.twitter.link }}' target='_blank'>
+            <img src='/assets/img/icoTwitter.png' class='svg social-icon' alt="TW icon">
+        </a>
+    {%- endif %}
+    {% if icons.instagram.link is defined and icons.instagram.link != '' -%}
+        <a href='{{ icons.instagram.link }}' target='_blank'>
+            <img src='/assets/img/icoInstagram.png' class='svg social-icon' alt="Instagram icon">
+        </a>
+    {%- endif %}
+    {% if icons.pintrest.link is defined and icons.pintrest.link != '' -%}
+        <a href='{{ icons.pintrest.link }}' target='_blank'>
+            <img src='/assets/img/icoPintrest.png' class='svg social-icon' alt="Pinterest icon">
+        </a>
+    {%- endif %}
+    {% if icons.google_plus.link is defined and icons.google_plus.link != '' -%}
+        <a href='{{ icons.google_plus.link }}' target='_blank'>
+            <img src='{{ icons.google_plus.img }}' class='svg social-icon' alt="Google Plus icon">
+        </a>
+    {%- endif %}
+    {% if icons.site_google_plus.link is defined and icons.site_google_plus.link != '' -%}
+        <a href='{{ icons.site_google_plus.link }}' target='_blank'>
+            <img src='{{ icons.site_google_plus.img }}' class='svg social-icon' alt="Google Plus icon">
+        </a>
+    {%- endif %}
+    {% if icons.cust_id.link is defined and icons.cust_id.link != '' -%}
+        <a href='//csxutils.fbmovies.cinema-source.com/subscribe/?cust_id={{- icons.cust_id.link -}}&amp;iframe=true&amp;width=600&amp;height=400'
+           data-fancybox-type='iframe' class='signup' id='newsletter-svg' target='_blank'>
+            <img src='/assets/img/icoNewsletter.png' class='svg social-icon' alt="Newsletter icon">
+        </a>
+    {%- endif %}
+</div>

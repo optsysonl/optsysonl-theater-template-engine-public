@@ -1,0 +1,10 @@
+<div id='click_showtimes'>Click Showtimes to Purchase Tickets</div>
+{% for showtime in data.house_showtimes %}
+<div class='movie'>
+    <a href='{{- showtime.url -}}'>
+    	<span class='name'>{{ showtime.name }} <span class='mpaa'>{{ showtime.mpaa }}</span></span>
+    </a>
+    <span class='info'>{{ showtime.actors }}&nbsp;&nbsp;&nbsp;{{ showtime.runtime }}</span>
+   	<span class='times'>{{ include('helper/showtimes.twig', {times: showtime.times}, with_context = false)  }}</span>
+</div>
+{% endfor %}

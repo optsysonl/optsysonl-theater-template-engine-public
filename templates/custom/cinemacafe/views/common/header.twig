@@ -1,0 +1,95 @@
+<header>
+	<div class="clearfix">
+		<figure id="header_logo">
+			<a href="/">
+				<img src="/assets/img/logo-left.png" alt="Logo for {{ site.config.title }}" id="logo" />
+				<img src="/assets/img/logo-right.png" alt="Heading for {{ site.config.title }}" />
+			</a>
+		</figure>
+
+		<div id="social-area">
+			<p style="text-align: right;">
+				{{ include('helper/social_media.twig', {icons: this_page.header.social_icons}, with_context = false)  }}
+			</p>
+		</div>
+
+		<div id="menu-icon">
+			<p>
+				<a href="javascript:void(0);">
+					<img src="/assets/img/hamburger.png" alt="Menu" />
+				</a>
+			</p>
+		</div>
+
+	</div>
+
+
+	<nav id="top_nav">
+		<ul>
+			<li><a href="/" id="nav_home">Home</a></li>
+			<li class="subNavContainer">
+				<a href="/locations" id="nav_locations">Locations</a>
+				<ul>
+					{{ include('parts/houses_nav.twig') }}
+				</ul>
+			</li>
+			<li>
+				<a href="/movies" id="nav_movies">Movies</a>
+				<!--ul>{# include('parts/movies_nav.twig') #}</ul-->
+			</li>
+			<li>
+				<a href="/menu" id="nav_menu">Menu</a>
+				{#
+				<ul>
+          			<li><a href="/page/2670/Food-Beverage-Menus" target="_self">Food & Beverage Menus1</a></li>
+				</ul>
+				#}
+			</li>
+			<li><a href="/page/11310/Gift-Cards" id="nav_store">Online Store</a></li>
+			<li>
+				<a href="/page/2725/Parties" id="nav_parties">Parties</a>
+				<ul>
+					<li><a href="/page/2672/Schools-and-Daycares" target="_self">Field Trips</a></li>
+					<li><a href="/page/2675/Request-a-Party" target="_self">Request a Party</a></li>
+					<li><a href="/page/2674/Private-Screenings" target="_self">Private Screenings</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="/page/2726/Events" id="nav_events">Events</a>
+				<ul>
+					<li><a href="/page/2676/Calendar" target="_self">Calendar</a></li>
+					<li><a href="/cinemaweek">Cinema Week</a></li>
+					<li><a href="/page/12597/Little-Date-Nights">Little Date Nights</a></li>
+					<li><a href="/page/2678/Sensory-Friendly-Shows">Sensory Friendly Shows</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="/page/2714/Employment-Info" id="nav_employment">Employment</a>
+				<ul>
+					<li><a href="/page/2713/Employment-Application" target="_self">Employment Application</a></li>
+					<li><a href="/page/2714/Employment-Info" target="_self">Employment Info</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="/page/2727/About-Us" id="nav_about">About Us</a>
+				<ul>
+					<li><a href="/page/9576/Frequently-Asked-Questions" target="_self">Frequently Asked Questions</a></li>
+					<li><a href="/press-room">Press Room</a></li>
+					<li><a href="/page/12590/In-The-Community" target="_self">In The Community</a></li>
+					<li><a href="/page/15004/ImmersiveX">ImmersiveX</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="/page/2688/Contact" id="nav_contact">Contact</a>
+				<ul>
+					<li><a href="/page/2686/Give-Feedback" target="_self">Give Feedback</a></li>
+					<li><a href="/page/2685/Ask-a-Question" target="_self">Ask a Question</a></li>
+					<li><a href="/page/2675/Request-a-Party" target="_self">Request a Party</a></li>
+					<li><a href="/page/2687/Request-a-Donation" target="_self">Request a Donation</a></li>
+					<li><a href="/page/2688/Contact-Us" target="_self">Contact Us</a></li>
+					<li><a href="/page/2770/Email-Newsletter" target="_self">Email Newsletter</a></li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</header>

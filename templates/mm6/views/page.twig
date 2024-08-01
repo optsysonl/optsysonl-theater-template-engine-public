@@ -1,0 +1,90 @@
+{% extends "common/base.twig" %}
+{% set page = data.pages[this_page.page_id] %}
+
+{% block meta_title %}
+    {%- if page.seo.title is not empty -%}
+        {{ page.seo.title }}
+    {%- else -%}
+        {{ parent() }} | {{ page.site_headline }}
+    {%- endif -%}
+{% endblock %}
+{% block meta_description %}
+    {%- if page.seo.description is not empty -%}
+        {{ page.seo.description }}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif %}
+{% endblock %}
+{% block meta_keywords %}
+    {%- if page.seo.keywords is not empty -%}
+        {{ page.seo.keywords }}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif %}
+{% endblock %}
+
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix">
+            <div class="blocks">
+                <h1>
+                    <div class="width-wrapper">{{ page.site_headline }}</div>
+                </h1>
+                <div class="width-wrapper">
+                    <div id="content-slider" class="clearfix">
+                        {% set slides_page_name = 'Page-' ~ this_page.page_id %}
+                        {% if slides.slides[slides_page_name]['images'] is defined %}
+                            {{ include('helper/slider.twig', {slides: slides.slides[slides_page_name]['images']}, with_context = false) }}
+                        {% endif %}
+                    </div>
+                    <div id="fxp-content">
+                        {% if page.type == 'contact' %}
+
+                        {% elseif page.type == 'mpaa' %}
+                            {{ include('parts/mpaa.twig') }}
+                        {% elseif page.type == 'newsletter' %}
+                            {{ page.content|raw }}
+                            {% if site.config.template_options.nl_signup_url is defined and site.config.template_options.nl_signup_url is not empty %}
+                                <iframe src="{{- site.config.template_options.nl_signup_url -}}" id="newsletter"></iframe>
+                            {%- elseif icons.cust_id.link is defined and icons.cust_id.link != '' -%}
+                                <iframe src="https://csxutils.fbmovies.cinema-source.com/subscribe/?cust_id={{- site.config['cust_id'] -}}"
+                                        id="newsletter"></iframe>
+                            {% endif %}
+                        {% else %}
+                            {{ page.content|raw }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //start location page slider
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                css: 'linear',
+                arrows: true
+            });
+        });
+    </script>
+{% endblock %}

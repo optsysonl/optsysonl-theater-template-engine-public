@@ -1,0 +1,113 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<p class="confirmation"></p>
+<form id="frmDonation" method="post">
+    <input name="_recipients" id="_recipients" type="hidden" value="aevans@marqueecinemas.com" />
+    <input name="_subject" id="_subject" type="hidden" value="Website Donation Form" />
+    <div class="half">
+        <h4>Company Information</h4><br />
+        <label for="organization">Organization*</label><span id="err_organization" class="errmsg"></span>
+        <input type="text" id="organization" name="Organization" class="required" />
+        <label for="501">501C <span style="font-size: 10px">(IRS Recognized Non-Profit Charitable Organization)</span>*</label><br>
+        <input id="501" type="radio" name="501C" class="required" value="Yes" />Yes
+        <input id="501" type="radio" name="501C" class="required" value="No" checked />No<br>
+        <label for="address">Address*</label><span id="err_address" class="errmsg"></span>
+        <input type="text" id="address" name="Address" class="required" />
+        <label for="contact">Contact*</label><span id="err_contact" class="errmsg"></span>
+        <input type="text" id="contact" name="Contact" class="required" />
+        <label for="phone">Phone*</label><span id="err_phone" class="errmsg"></span>
+        <input type="text" id="phone" name="Phone" class="required" />
+        <label for="email_address">Email Address*</label><span id="err_email_address" class="errmsg"></span>
+        <input type="text" id="email_address" name="Email Address" class="required" />
+        <label for="fax">Fax</label>
+        <input type="text" id="fax" name="Fax" />
+    </div>
+    <div class="half">
+        <h4>Donation Request Information</h4><br />
+        <label for="event_date">When does the event take place?*</label><span id="err_event_date" class="errmsg"></span>
+        <input type="text" id="event_date" name="When does the event take place?" class="required" />
+        <label for="cause">For what cause will the donation be used?*</label><span id="err_cause" class="errmsg"></span>
+        <textarea id="cause" name="For what cause will the donation be used?" class="required" style="height:120px"></textarea>
+        <label for="beneificiary">Who will benefit from the donation?*</label><span id="err_beneificiary" class="errmsg"></span>
+        <textarea id="beneificiary" name="Who will benefit from the donation?" class="required" style="height:100px"></textarea>
+        <span id="err_captcha_confirm" class="errmsg"></span>
+        <button
+                class="g-recaptcha"
+                data-sitekey="6LcCWW0UAAAAAASK6e-FkViYfD5woQKIMh9LIKWv"
+                data-callback="YourOnSubmitFn">
+            Submit
+        </button>
+
+    </div>
+</form>
+
+<div class="clearfix"></div>
+<div><br />
+    Please Note:  Application must be completed in full; if any information is omitted, your application cannot be processed.  Allow a minimum of two weeks to receive a response.  One donation per calendar year per organization</div>
+
+<script>
+    function YourOnSubmitFn(token) {
+        //assume we are OK
+        var isMissing = false;
+        $('#preloader').addClass('active');
+        $('.errmsg').text('');
+
+        //loop through required fields
+        $('.required').each(function () {
+
+            //remove the missing class
+            $(this).removeClass("missing");
+
+            //if blank, add the missing class back
+            if ($(this).val() == "") {
+                $(this).addClass("missing");
+                $('#err_' + this.id).text(' *Required');
+                isMissing = true
+            }
+
+        });
+
+        //make sure the email address is valid!
+        if ($('#email_address').length != 0) {
+            if (!validateEmail($('#email_address').val())) {
+                $('#email_address').addClass("missing");
+                $('#err_email_address').text(' *Not a valid email');
+                isMissing = true;
+            }
+        }
+
+        if (!isMissing) {
+            sendMessage($("#frmDonation"));
+        } else {
+            grecaptcha.reset();
+            return false;
+        }
+        grecaptcha.reset();
+        return false;
+    }
+
+    function sendMessage(form) {
+
+        var data = form.serializeArray();
+
+        $.ajax({
+            url: '/data/info',
+            type: 'post',
+            data: {message: data},
+            success: function (response) {
+                $('#preloader').removeClass('active');
+                try {
+                    response = JSON.parse(response);
+                    if (response.status == 'success') {
+                        $('.confirmation').html(response.data);
+                        form[0].reset();
+                    }
+                } catch (err) {
+
+                }
+
+            }
+        });
+
+    }
+
+</script>

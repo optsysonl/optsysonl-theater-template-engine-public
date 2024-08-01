@@ -1,0 +1,73 @@
+{% set house_id = data.houses|first.house_id %}
+{% set movieData = collectMoviesData(house_id, data.showdates, data.movies.movies) %}
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Movies {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+        <main id="main-content" class="{{ site.config.template_options.sidebar }} clearfix">
+            <div class="showtimes-block blocks">
+                <div id="comingsoon" class="movies-coming-soon">
+                    <h2>Coming Soon</h2>
+                    <div id="showtimes" class="clearfix">
+                        {{ include('parts/movies-coming-soon.twig', {movies: data.movies.movies}, false) }}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <!-- Footer JS -->
+    <script type="text/javascript">
+        var availableDates = {{ movieData.showdates|split(" ")|json_encode|raw }};
+        var currentDate = availableDates[0];
+
+        $(function () {
+            movie_filter();
+
+            //start showdate carousel
+            $('#showdates').slick(carouselSettingsSecond(false, false));
+
+            movies_trailer_lightbox('.movies-trailer');
+
+            $('#datepicker').datepicker({
+                defaultDate: currentDate,
+                dateFormat: 'yy-mm-dd',
+                showButtonPanel: true,
+                closeText: 'Close',
+                beforeShowDay: function (date) {
+                    var ymd = date.getFullYear() + '-' +
+                        ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                        ('0' + date.getDate()).slice(-2);
+                    if ($.inArray(ymd, availableDates) != -1) {
+                        return [true, '', 'Available'];
+                    } else {
+                        return [false, '', 'unAvailable'];
+                    }
+                },
+                onSelect: function (date, inst) {
+                    $('.showdate[data-date="' + date + '"]').click();
+                }
+            });
+            $("#datepicker").datepicker("setDate", currentDate);
+            page_times();
+        });
+    </script>
+{% endblock %}

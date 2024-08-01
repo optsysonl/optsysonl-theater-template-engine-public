@@ -1,0 +1,9 @@
+{% set houses_nav = data.houses|sortByState %}
+{% for state in houses_nav %}
+    <li>
+        <span class='subNav'>{{- state.state -}}</span>
+    </li>
+    {% for house in state.houses %}
+        <li><a href='{{- house.url -}}'>{{- house.name|replace({"Marquee Cinemas - ": ""}) }} - {{ house.city }}</a></li>
+    {% endfor %}
+{% endfor %}

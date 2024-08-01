@@ -1,0 +1,46 @@
+{% extends "common/base.twig" %}
+{% set page = data.pages[this_page.page_id] %}
+{% block meta_title %}{{ parent() }} | {{ page.site_headline }} {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    {% if this_page.page_id == 2191 %}
+        {{ include('pages/gifts_and_promotions.twig') }}
+    {% elseif this_page.page_id == 10104 %}
+        {{ include('pages/the_theatre.twig') }}
+    {% elseif this_page.page_id == 9662 %}
+        {{ include('pages/events.twig') }}
+    {% elseif this_page.page_id == 9675 %}
+        {{ include('pages/private-screening.twig') }}
+    {% else %}
+        {{ page.content|raw }}
+    {% endif %}
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //start location page slider
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                css: 'linear',
+                arrows: true
+            });
+        });
+    </script>
+{% endblock %}

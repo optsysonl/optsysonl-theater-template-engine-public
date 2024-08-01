@@ -1,0 +1,5 @@
+{% set states = getStateList() %}
+<option value="">- Select a State -</option>
+{% for value, state in states %}
+    <option value="{{ value }}">{{ state }}</option>
+{% endfor %}

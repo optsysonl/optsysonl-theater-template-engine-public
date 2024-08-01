@@ -1,0 +1,15 @@
+﻿<% if (totalPages > 0) {%>
+        <li><a href="#" data-button-id="First"><%= localize.paginationFirst%></a></li>        
+        <li><a href="#" data-button-id="Previous"><<</a></li>        
+        <% for (i = start; i < end; i++) {
+            if ((i + 1) == page) {%>
+                <li class="active"><a href="#" data-button-id="<%=i + 1 %>"><%=i + 1 %></a></li>
+            <% } else {%>
+                <li><a href="#" data-button-id="<%=i + 1 %>"><%=i + 1 %></a></li>                    
+            <% }%>
+        <% }%>
+        <li><a href="#"  data-button-id="Next">>></a></li>
+        <li><a href="#"  data-button-id="Last"><%= localize.paginationLast%></a></li>
+    <% }%>
+
+            

@@ -1,0 +1,31 @@
+{% extends "common/base.twig" %}
+{% set page = data.pages[this_page.page_id] %}
+{% block meta_title %}{{ parent() }} | {{ page.site_headline }} {% endblock %}
+{% block meta_description %}{{ page.content|cropString(100) }}{% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+
+    <div id="intro" class="short">
+        <div class="inner">
+            <h1>{{ page.site_headline }}</h1>
+        </div>
+    </div>
+
+    <div id="lower">
+        <div class="col3 double first">
+            {% if page.type == 'contact' %}
+                {{ include('helper/contact.twig') }}
+            {% else %}
+                {{ page.content|raw }}
+            {% endif %}
+        </div>
+        <div class="col3">
+            {{ include('helper/signup.twig', {cust_id:site.config['cust_id'], house_id:data.houses|first.house_id}, with_context = false) }}
+        </div>
+    </div>
+
+    {{ include('common/footer.twig') }}
+{% endblock %}
+
+

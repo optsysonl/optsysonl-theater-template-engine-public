@@ -1,0 +1,31 @@
+<ul class="steps checkout-menu" id="checkout-menu">
+    <%var counter = 0;
+     counter++;%>
+    <li data-tab-name="tickets" class="step-box active" data-tab-index="<%=counter%>"><a><%= localize.step%> <%=counter%></a>
+        <span><%= localize.stepSelectTickets%></span>
+        <b class="step-arrow"></b>
+    </li>
+    <%
+    if(tabOptions.isReservedSeating){counter++;%>
+    <li data-tab-name="seats" class="step-box" data-tab-index="<%=counter%>"><a><%= localize.step%> <%=counter%></a>
+        <span><%= localize.stepSelectSeats%></span>
+        <b class="step-arrow"></b>
+    </li>
+    <%}
+    if(tabOptions.useConssesions){ counter++;%>
+    <li data-tab-name="concessions" style="width: 105px;" class="step-box" data-tab-index="<%=counter%>"><a><%= localize.step%> <%=counter%></a>
+        <span><%= localize.stepAddConcessions%></span>
+        <b class="step-arrow"></b>
+    </li>
+    <%}%>
+    <%counter++%>
+    <li data-tab-name="payment" class="step-box" data-tab-index="<%=counter%>"><a><%= localize.step%> <%=counter%></a>
+        <span><%= localize.stepEnterPayment%></span>
+        <b class="step-arrow"></b>
+    </li>
+      <%counter++%>
+    <li data-tab-name="review" class="step-box" data-tab-index="<%=counter%>"><a><%= localize.step%> <%=counter%></a>
+        <span><%= localize.stepReviewOrder%></span>
+        <b class="step-arrow"></b>
+    </li>
+</ul>

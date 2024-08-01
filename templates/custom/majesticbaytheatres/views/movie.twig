@@ -1,0 +1,191 @@
+{% set movie_showdates = [] %}
+{% set house_id = data.houses|first.house_id %}
+{% set movieData = collectMoviesData(house_id, data.showdates, data.movies.movies) %}
+{% set movie = movieData.movies[this_page.movie_id] %}
+
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Movie | {{ movie.movie.name }}{% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix movie-page-single">
+            <div class="blocks">
+
+                <div class="width-wrapper">
+                    <section id="movie-poster-and-trailer">
+                        <div class="row">
+                            <div class="left-column">
+                                <img src="{{- movie.movie.poster -}}" class="poster"
+                                     alt="Poster of {{ movie.movie.name }}">
+                            </div>
+                            <div class="right-column">
+                                <div class="inner" style="background-image: url({{- movie.movie.trailer.image }});">
+                                    {% if movie.movie.trailer.url != '' %}
+                                        <span id='play-trailer'>
+                                            <img src="/assets/img/play-button.svg" class="svg"/>
+                                        </span>
+                                    {% endif %}
+                                    {% if movie.movie.trailer.url != '' %}
+                                        <video id="movie-video" poster="{{- movie.movie.trailer.image }}" controls>
+                                            <source src="{{- movie.movie.trailer.url -}}" type="video/mp4;">
+                                        </video>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="movie-details">
+                        <div class="row">
+                            <div class="left-column">
+                                <div class="inner">
+                                    <div class='detail'>
+                                        <h2>Details</h2>
+                                        {% if movie.movie.genres is defined %}
+                                            <p>{{ movie.movie.genres|join(', ') }}</p>
+                                        {% endif %}
+                                        {% if movie.movie.runtime %}
+                                            <p>{{ movie.movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</p>
+                                        {% endif %}
+                                        <p>
+                                            {% if movie.movie.release > 'now'|date('Y-m-d') %}Opens {% else %}Opened {% endif %} {{ movie.movie.release|date('l, F jS') }}
+                                        </p>
+                                        {% if movie.movie.mpaa and movie.movie.mpaa != 'NR' %}
+                                            <p>Rated: {{ movie.movie.mpaa }}</p>
+                                        {% endif %}
+                                    </div>
+                                    {% if movie.movie.actors is defined %}
+                                        <div class='detail'>
+                                            <h2>Cast</h2>
+                                            <p>{{ movie.movie.actors|slice(0, 5)|join(', ') }}</p>
+                                        </div>
+                                    {% endif %}
+                                    {% if movie.movie.director != '' %}
+                                        <div class='detail'>
+                                            <h2>Director</h2>
+                                            <p>{{ movie.movie.director }}</p>
+                                        </div>
+                                    {% endif %}
+                                    {% if movie.movie.mpaa and movie.movie.mpaa != 'NR' %}
+                                        <div class='detail'>
+                                            <h2>Advisory</h2>
+                                            <p>
+                                                Rated {{ movie.movie.mpaa }} {% if movie.movie.advisory != '' %}{{ movie.movie.advisory }}{% endif %}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="right-column">
+                                <h1>{{ movie.movie.name }}</h1>
+                                <div class='detail'>
+                                    {% if movie.movie.synopsis != '' %}
+                                        {{ movie.movie.synopsis|raw }}
+                                    {% endif %}
+                                </div>
+                                <div class="showtimes-block showtimes-details">
+                                    <h2>Available showtimes</h2>
+                                    <div id="showtimes" class="clearfix">
+                                        {% for showdate, a_movie in movie if showdate != 'movie' and showdate != 'showdates' %}
+                                            {% set showdate_title_wd = showdate|date('D') %}
+                                            {% set showdate_title_md = showdate|date('n/j') %}
+                                            {% if showdate == 'now'|date('Y-m-d') %}
+                                                {% set showdate_title_wd = 'Today' %}
+                                            {% endif %}
+
+                                            {% set new_dates = {showdate: a_movie} %}
+                                            <p class="showtimes-title">{{- showdate_title_wd }} {{ showdate_title_md }}: </p>
+                                        <div class="showtimes">
+                                            {{ include('helper/showtimes.twig', {showdates: new_dates}, false) }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var availableDates = {{ movieData.showdates|first|raw }};
+
+        function available(date) {
+            var ymd = date.getFullYear() + '-' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + date.getDate()).slice(-2);
+            if ($.inArray(ymd, availableDates) != -1) {
+                return [true, '', 'Available'];
+            } else {
+                return [false, '', 'unAvailable'];
+            }
+        }
+
+        page_times();
+        $(function () {
+
+
+
+            if ($('#movie-video').length) {
+                var $movieHeader = $('#movie-header');
+
+                $movieHeader.addClass('play-video');
+
+                // video play (desktop/mobile/tablet)
+                $movieHeader.click(function () {
+                    var video = document.getElementById('movie-video');
+
+                    if ($('html').hasClass('d-desktop')) {
+                        $(this).hide();
+                        $(this).find('+ #movie-video').show();
+                    } else {
+                        if (video.requestFullscreen) {
+                            video.requestFullscreen();
+                        } else if (video.mozRequestFullScreen) {
+                            video.mozRequestFullScreen();
+                        } else if (video.webkitRequestFullscreen) {
+                            video.webkitRequestFullscreen();
+                        }
+                    }
+
+                    video.play();
+                });
+
+                // video stop (desktop)
+                if ($('html').hasClass('d-desktop')) {
+                    $('#movie-video').click(function () {
+                        var video = document.getElementById('movie-video');
+                        $(this).hide();
+                        $(this).parent().find('#movie-header').show();
+                        video.pause();
+                    });
+                }
+            }
+
+            $('#movie-stills').slick({
+                arrows: false,
+                centerMode: true,
+                variableWidth: true
+            });
+        });
+    </script>
+{% endblock %}

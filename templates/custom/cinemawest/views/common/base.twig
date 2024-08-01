@@ -1,0 +1,205 @@
+{% if debug.header is defined %}{{ debug.header|join('\n')|raw }}{% endif %}
+{% if site.cookie['active-house'] is defined and data.houses[site.cookie['active-house']] is defined %}
+    {% set active_house_id = site.cookie['active-house'] %}
+{% else %}
+    {% set active_house_id = data.houses|first.house_id %}
+{% endif %}
+{% set show_house_block = (data.houses|length > 1) ? true : false %}
+{% set availableDates = getShowtimesAvailableDates(active_house_id, data.showdates, data.movies.movies) %}
+<!DOCTYPE html>
+<html
+        xmlns="https://www.w3.org/1999/xhtml"
+        xmlns:fb="https://www.facebook.com/2008/fbml"
+        xmlns:og="http://ogp.me/ns http://ogp.me/ns/video"
+        lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; iso-8859-1"/>
+        <title>{% block meta_title %}{{ site.config.title }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0">
+        <meta name="description" content="{% block meta_description %}{{ site.config.description }}{% endblock %}">
+        <meta name="keywords" content="{% block meta_keywords %}{{ site.config.keywords }}{% endblock %}">
+        <meta name="apple-itunes-app" content="app-id=1054286784">
+        <meta name="google-play-app" content="app-id=com.wmp.cinemawest">
+        <!-- DNS Prefetch -->
+        <meta http-equiv="x-dns-prefetch-control" content="on">
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+        <link rel="dns-prefetch" href="//ajax.googleapis.com"/>
+        <link rel="dns-prefetch" href="//fonts.googleapis.com"/>
+        <link rel="dns-prefetch" href="//filmsxpress.com"/>
+        <link rel="dns-prefetch" href="//www.filmsxpress.com"/>
+        <link rel="dns-prefetch" href="//movienewsletters.net"/>
+        <link rel="dns-prefetch" href="//www.movienewsletters.net"/>
+
+        {% if site.meta['icon'] is defined %}
+            <link rel="shortcut icon" href="{{ site.meta['icon'] }}"/>
+        {% endif %}
+
+        {% if site.config.analytics is not empty %}
+            <script>
+                (function (i, s, o, g, r, a, m) {
+                    i['GoogleAnalyticsObject'] = r;
+                    i[r] = i[r] || function () {(i[r].q = i[r].q || []).push(arguments)}, i[r].l = 1 * new Date();
+                    a = s.createElement(o),m = s.getElementsByTagName(o)[0];
+                    a.async = 1;
+                    a.src = g;
+                    m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+                ga('create', '{{- site.config.analytics -}}', 'auto');
+                ga('require', 'displayfeatures');
+                ga('require', 'linkid', 'linkid.js');
+                ga('set', 'dimension1', ('https:' == document.location.protocol ? 1 : 0));
+                ga('send', 'pageview', true ? location.pathname : '');
+            </script>
+        {% endif %}
+        <script>
+            var availableDates = {{ availableDates|json_encode|raw }}
+        </script>
+        {% block css_header %}
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/smart-app-banner/2.0.0/smart-app-banner.min.css" rel="stylesheet" />
+            <link rel="stylesheet" type="text/css" href="/assets/css/main.min.css" />
+        {% endblock %}
+        {% block social_meta_tags %}{% endblock %}
+
+        {% block meta_misc_html %}{{ site.config.misc_html|raw }}{% endblock %}
+    </head>
+    <body class="{% if page_class is defined %}{{ page_class }}{% endif %} site_resp not_dfp" role="main">
+        <div id="conteneur">
+            <div id="masthead">
+                {{ include('common/header.twig') }}
+                {% block content %}{% endblock %}
+                {{ include('common/footer.twig') }}
+            </div>
+        </div>
+        {% block css_footer %}
+            <!-- Flickity -->
+            <link rel='stylesheet' href='/assets/files/flickity/flickity.min.css'>
+        {% endblock %}
+        {% block footer_scripts %}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/smart-app-banner/2.0.0/smart-app-banner.min.js"></script>
+            <script type="text/javascript">
+            new SmartBanner({
+                daysHidden: 15,
+                daysReminder: 90,
+                appStoreLanguage: 'us',
+                title: 'Cinema West',
+                author: 'Webedia Movies Pro, LLC',
+                button: 'View',
+                store: {
+                    ios: 'On the App Store',
+                    android: 'In Google Play',
+                    windows: 'In Windows store'
+                },
+                price: {
+                    ios: 'GET',
+                    android: 'GET',
+                    windows: 'GET'
+                },
+                icon: 'https://filmsxpress.com/images/appbanner/793/appicon.png'
+            });
+            </script>
+
+            <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+            <!-- Flickity -->
+            <script type='text/javascript' src='/assets/files/flickity/flickity.pkgd.min.js'></script>
+
+            <!-- Main JS -->
+            <script type="text/javascript" src="/assets/js/global.js"></script>
+            <script type="text/javascript" src="/assets/js/global-en.js"></script>
+
+            <!-- typeahead JS -->
+            <script type="text/javascript" src="/assets/js/typeahead.bundle.min.js"></script>
+
+            <!--[if lt IE 9]>
+            <script type="text/javascript">
+                var e = ("abbr,article,aside,audio,canvas,datalist,details," +
+                        "figure,footer,header,hgroup,mark,menu,meter,nav,output," +
+                        "progress,section,time,video").split(',');
+                for (var i = 0; i < e.length; i++) {
+                    document.createElement(e[i]);
+                }
+            </script>
+            <![endif]-->
+
+            {% if site.config.site_country == "GBR" %}
+                <script> $(window).ready(function () {$.cookie("\x6a\x65\x73\x75\x69\x73\x70\x61\x73\x73\x65\x72", "\x70\x61\x72\x69\x63\x69", {path: '/'});  }); </script>
+                {{ include('helper/cookies-warning.twig') }}
+            {% endif %}
+
+            <script type="text/javascript" src="/assets/js/house-popup.js"></script>
+
+            {% if show_house_block is defined and show_house_block %}
+                {% if site.cookie['active-house'] is defined and data.houses[site.cookie['active-house']] is defined %}
+                    <script>var show_popup = false;var active_house = {{ site.cookie['active-house'] }};</script>
+                {% else %}
+                    <script>var show_popup = true;</script>
+                {% endif %}
+            {% else %}
+                <script>var show_popup = false;var active_house = {{ data.houses|first.house_id }};</script>
+            {% endif %}
+
+            <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css">
+            <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    initTrailerPopup();
+                });
+                $(window).on('fancyboxBindOnCloned', function(){
+                    initTrailerPopup();
+                });
+                function initTrailerPopup(){
+                    $(".play_trailer").fancybox({
+                        autoscale : false,
+                        width : 800,
+                        height : 450,
+                        transitionIn : 'none',
+                        transitionOut : 'none',
+                        scrolling  : 'no',
+                        padding : 0,
+                        title : $(this).title,
+                        href : this.href,
+                        beforeShow: function(){
+                            $(".fancybox-skin").css("backgroundColor","#000000");
+                        }
+                    });
+                }
+
+                $('#mod_subscribe .button').on('click keydown', function (e) {
+                    e.preventDefault();
+
+                    if (e.type === 'keydown' && e.keyCode !== 13) {
+                        return;
+                    }
+
+                    let $form = $(this).parent('form');
+                    let href = $form.attr('action') + '?' + $form.serialize();
+
+                    lightbox(href);
+                });
+                function lightbox(href) {
+                    $.fancybox.open({
+                        type: "iframe",
+                        src: href,
+                        width: 600,
+                        height: 700,
+                        padding: 0,
+                        margin: 10,
+                        fitToView: true,
+                        autoSize: true,
+                        closeClick: true,
+                        openEffect: 'fade',
+                        closeEffect: 'fade'
+                    });
+                }
+            </script>
+
+            <!-- Newsletter -->
+            <!--script type="text/javascript" src="/assets/js/newsletter.js"></script-->
+            {% if site.config.template_options.footer_scripts != '' %}
+                {{ site.config.template_options.footer_scripts|raw }}
+            {% endif %}
+        {% endblock %}
+    </body>
+</html>
+{% if debug.footer is defined %}{{ debug.footer|join('\n')|raw }}{% endif %}

@@ -1,0 +1,74 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }}{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+
+    <link href="/assets/files/ncr-content/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/files/ncr-content/js/libs/bootstrap-lightbox/bootstrap-lightbox.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/files/ncr-content/js/libs/datepicker/css/datepicker.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/files/ncr-content/js/libs/selectboxit/css/jquery.selectboxit.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/files/ncr-content/css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/files/ncr-content/css/ncr-styles.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/files/ncr-content/shared/css/brand/brand.css" rel="stylesheet" />
+    <link href="/assets/files/ncr-content/css/general.css" rel="stylesheet" />
+{% endblock %}
+
+{% block js_scripts %}
+    {#{{ parent() }}#}
+
+    <script type="text/javascript" src="/assets/files/ncr-content/js/config.js"></script>
+
+    <script type="text/javascript">
+        //IE fix for console.log
+        if (!window.console) window.console = {};
+        if (!window.console.log) window.console.log = function () { };
+
+        if (/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
+            var metaTag = document.createElement('meta');
+            metaTag.name = "apple-itunes-app";
+            metaTag.content = "app-id=" + window.appConfig.AppStoreID;
+            document.getElementsByTagName('head')[0].appendChild(metaTag);
+        }
+    </script>
+    <script data-main="/assets/files/ncr-content/js/main" src="/assets/files/ncr-content/shared/js/libs/require/require.js"></script>
+{% endblock %}
+{% block mobile_redirect %}{% endblock %}
+{% block content %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+        <div id="fb-root">
+            <!-- Don't delete fb-root DIV !!! /> -->
+        </div>
+
+        <div class="clear"></div>
+        <div class="root-container">
+            <div class="container main-container">
+                <div class="searchBar black" id="zipDistanceFilterTop"></div>
+                <div class="clear"></div>
+                <div id="topNavigation" class="navigation"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="container-content hide">
+                <div id="top-notification" style="display: none; color: #fff; margin: -20px -20px 10px -20px; max-width: 800px;">
+                    <div class="notification-top-bar note-information" style="-webkit-border-radius: 8px 8px 0 0; height: 30px; padding-top: 10px; cursor: pointer;"></div>
+                </div>
+                <div class="container" id="main-container">
+                    <h4 style="text-align: center;">Loading data...</h4>
+                </div>
+            </div>
+            <div id="spinner" class="spinner" style="display: none">
+                <img id="img-spinner" src="/assets/files/ncr-content/img/ajax-loader.gif" alt="Loading" />
+            </div>
+            <div class="container">
+                <div class="footer">Powered by <a href="http://www.ncr.com/products/cinema/pos-software/mobile-ticketing">NCR Cinema Cloud</a> © Copyright 2013.</div>
+            </div>
+        </div>
+        <div id="overlay" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 9999; background-color: #000000; opacity: 0.001"></div>
+        {{ include('common/footer.twig') }}
+    </div>
+{% endblock %}
+{% block js_scripts_footer %}
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% for this_movie in movies %}
+    <div class='cmovie'>
+    <span class='title'>
+        <a href='{{ this_movie.url }}' class='nolink'>{{ this_movie.name }} ({{ this_movie.mpaa }})</a>
+    </span>
+        <div class='hover_wrapper'>
+            <a href='{{ this_movie.url }}' class='nolink'><img src='{{- this_movie.poster -}}' alt='Poster of {{ this_movie.name }}'/></a>
+
+        </div>
+        <div class='text'>
+            <strong>DETAILS</strong><br/>
+            {% if this_movie.genres is defined and this_movie.genres != '' %}
+                {{ this_movie.genres|slice(0, 2)|join(', ') }}<br/>
+            {% endif %}
+            {% if this_movie.runtime != '' %}
+                {{ this_movie.runtime }}<br/>
+            {% endif %}
+            {% if this_movie.release > 'now'|date('Y-m-d') %}Release Date: {% else %}Opened {% endif %}
+            {{ this_movie.release|date('n/j/Y') }}<br/>
+
+            {% if this_movie.actors is defined %}
+                <br/><strong>CAST</strong>
+                <br/>{{ this_movie.actors|slice(0, 3)|join(', ') }}<br/>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

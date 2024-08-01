@@ -1,0 +1,17 @@
+<ul class="sessions">
+    {%- for showdate, houses in showtimes -%}
+        <li>
+            <strong>{{ showdate|date('l j M') }}</strong>
+            {% set comments = houses.houses|first %}
+            {%- for comment, times in comments|sort -%}
+                {%- for time, time_item in times|first -%}
+                    {%- if not time_item.details.expired -%}
+                        <a href="/ticket/{{ time_item.details.screens_id }}">  {{- time|date('g:ia') -}}</a>
+                    {%- else -%}
+                        <span title="st.label">{{- time|date('g:ia') -}}</span>
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endfor -%}
+        </li>
+    {%- endfor -%}
+</ul>

@@ -1,0 +1,36 @@
+{% spaceless %}
+<header id="site-header" class="clearfix">
+	<div id="header-content" class="clearfix">
+		<a href="/" id="logo-home-link"><img src="{{- this_page.header.logo -}}" id="header-logo" alt="Logo for {{ site.config.title }}"></a>
+
+		<input type="checkbox" id="nav-trigger" />
+		<label for="nav-trigger"><img src="/assets/img/hamburger.svg" id="hamburger" class="svg" alt="Hamburger Menu"><span class="hidden">Menu</span></label>
+
+		<nav id="top-nav" class="clearfix">
+			<div id="top-nav-container">
+				<ul>
+					<li><a href="/" id="nav-home">Home</a></li>
+					{% if data.houses|length > 1 %}
+						<li class="sub-nav-container">
+							<a href="/locations" id="nav-locations">Locations</a>
+							<ul class="sub-nav">
+								{{ include('parts/houses_nav.twig') }}
+							</ul>
+						</li>
+					{% endif %}
+					<li class="sub-nav-container">
+						<a href="/movies" id="nav-movies">Movies</a>
+						<ul class="sub-nav">
+							{{ include('parts/movies_nav.twig') }}
+						</ul>
+					</li>
+					{{ include('parts/pages_top_nav.twig') }}
+				</ul>
+				<div id="site-social-icons">
+					{{ include('helper/social_media.twig', {icons: this_page.header.social_icons}, with_context = false)  }}
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+{% endspaceless %}

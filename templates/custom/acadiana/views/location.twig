@@ -1,0 +1,155 @@
+{% extends "common/base.twig" %}
+{% set house = data.houses[this_page.house_id] %}
+{% block meta_title %}{{ parent() }} | Theater | {{ house.name }} {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+	{{ parent() }}
+	
+    <!-- Slick Slider -->
+	<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    
+{% endblock %}
+{% block content %}
+    {{ include('common/header.twig') }}
+	<div id="wrapper">
+		<main id="main-content" class="clearfix">
+        
+        <!--Pull location page content-->
+			<header id="location-header" class="clearfix">
+				<h1>{{ house.name }}</h1>
+				<p>{{ house.address }} <br />
+                   {{ house.city -}}, {{ house.state_short }} {{ house.zip }}</p>
+			</header>
+			<div class="width-wrapper">
+				<div class="placeholder-728">
+					<div id='gpt-rd-leaderboard'>
+						<script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('gpt-rd-leaderboard'); });
+						</script>
+					</div>
+				</div>
+                {% if house.message_page_id is defined and house.message_page_id != '' %}
+                <div id="fxp-message">
+					{{ data.pages[house.message_page_id].content|raw }}
+				</div>
+                {% endif %}
+
+
+
+				<div id="content-slider" class="clearfix">
+                    {% set location_slide_category = 'Location-' ~ house.house_id %}
+                    {% if data.slides.slides[location_slide_category]['images'] is defined %}
+                        {{ include('helper/slider.twig', {slides: data.slides.slides[location_slide_category]['images']}, with_context = false) }}
+                    {% endif %}
+				</div>
+				<section id="theatre-info">
+					<h2>Theatre Information</h2>
+					<div class='info-col'>
+						<img src='{{- house.photo -}}' id='theatre-image' alt='Image of {{ house.name }}'>
+					</div>
+					<div class="info-col">
+                        {{ include('helper/social_media.twig', {icons: house.social_icons, config:site.config}, with_context = false)  }}
+						{{ house.address }} <br />
+                        {{ house.city -}}, {{ house.state_short }} {{ house.zip }} <br />
+                        
+						{% if house['phone'] != '0' and house['phone'] != '' %}
+                        	Main Phone: {{ house['phone'] }}<br />
+                        {% endif %}
+                        
+						Movieline: {{ house.movieline }}<br />
+						
+                        {% if house.map.url %}
+                        	<a href="{{- house.map.url -}}" target="_blank">
+								<button id="get-directions">Click here for directions!</button>
+							</a>
+                        {% endif %}
+                        {% if house.amenities is not empty %}
+                        	<h2>Amenities</h2> {{ include('helper/amenities.twig', {amenities: house.amenities}, with_context = false)  }}<br />
+                        {% endif %}
+					</div>
+                    {% if house.house_id == 50885 %}
+						<div style="text-align: center; margin: 15px;">
+							<a href="/page/14889/Drive-In-Rules" style="margin: 10px 0; padding: 10px 20px; border-radius: 4px; text-align: center; color: #0C1924
+	; vertical-align: middle; display: inline-block; background-color: #238DDE; font-weight: bold;" target="_blank">DRIVE-IN RULES</a>
+						</div>
+                    {% endif %}
+					<div class="info-col">
+                    	{% if house.prices is not empty %}
+                        	<h2>Prices</h2> {{ include('helper/prices.twig', {prices: house.prices}, with_context = false)  }}
+                        {% endif %}
+                        {% if house.policies is not empty %}
+                        	<h2>Policies</h2><span id='policies'>{{ house.policies|raw }}</span>
+                        {% endif %}
+					</div>
+					
+					<div class="placeholder-300">
+						<div id='gpt-rd-box'>
+							<script type='text/javascript'>
+								googletag.cmd.push(function() { googletag.display('gpt-rd-box'); });
+							</script>
+						</div>
+					</div>
+				</section>
+				
+				<article id="showtimes-container" class="clearfix">
+                    {{- include('parts/showdates_house.twig', {showdates: data.showdates, house_id:this_page.house_id, movies: data.movies }, false) -}}
+
+                    {% if data.slides.slides.location_bottom is defined %}
+						<div id="content-bottom-slider">
+                            {{ include('helper/slider.twig', {slides: data.slides.slides.location_bottom.images}, with_context = false) }}
+						</div>
+                    {% endif %}
+				</article>
+			</div>
+        
+        </main>
+    	{{ include('common/footer.twig') }}
+    </div>
+{% endblock %}
+{% block js_scripts_footer %}
+	{{ parent() }}
+<script>
+    $(document).ready(function() {
+
+        //start location page slider
+        $('#content-slider').slick({
+            autoplay:    	true,
+            fade:        	true,
+            css:     		'linear',
+            arrows:      	true,
+        });
+        $('#content-bottom-slider').slick({
+            autoplay:    	true,
+            fade:        	true,
+            css:     		'linear',
+            arrows:      	true,
+        });
+        //start showdate carousel
+        $('#showdates').slick(carouselSettings(false, false));
+
+        //change date on button click
+        $('.showdate').on('click', function(){
+            $('.showdate').removeClass('showdate-selected');
+            $(this).addClass('showdate-selected');
+
+            var sel_date = $(this).data("date");
+            var class_name = "location_date";
+            openDate(sel_date, class_name);
+
+            //prevent default
+            return false;
+        });
+
+        //load initial showtimes
+        $('.showdate:first').trigger('click');
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% set house_id = data.houses|first.house_id %}
+{% set movies = data.movies.movies|Today(data.showdates) %}
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+
+    <div id="intro" class="short ontoday">
+        <div class="inner">
+            <h1>What's On Today</h1>
+            <p>Click a poster for more information about that movie. Call us on <strong>04 902 8070</strong> to book your tickets. </p>
+            <div class="posters">
+                {%- for movie_id, movie in movies -%}
+                <span>
+							<a href="{{ movie.movie.url }}"><img src='{{- movie.movie.poster -}}' alt='Poster of {{- movie.movie.name -}}' width="80" height="118"></a>
+                    {{ include('helper/showtimes_short.twig', {movie_id:movie_id, showtimes: movie.showtimes}, false) }}
+							{#{foreach from=$m.sessions item=st name=st}#}
+								<br>
+		          	{#{if $st.bms_cid and $st.bms_sid and $st.timestamp|date_format:"%s" > $smarty.now}#}
+		            	{#<a href="{$bms_session_booking_url}?cid={$st.bms_cid}&sid={$st.bms_sid}" target="_blank">#}
+		            		{#{$st.time}#}
+		            	{#</a>#}
+								{#{else}#}
+									{#{$st.time}#}
+								{#{/if}#}
+							{#{/foreach}#}
+						</span>
+                {% endfor %}
+                <div class="clear">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lower">
+        &nbsp;
+    </div>
+
+    {{ include('common/footer.twig') }}
+{% endblock %}
+

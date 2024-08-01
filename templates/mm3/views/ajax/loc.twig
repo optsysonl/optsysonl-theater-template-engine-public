@@ -1,0 +1,8 @@
+{%  if data.ajax_loc|length > 0 %}
+<option disabled selected value></option>
+    {% for location in data.ajax_loc %}
+    <option value='{{- location.house_id -}}'>{{ location.name }}</option>
+    {% endfor %}
+{% else %}
+<option disabled selected value>No Showtimes Available</option>
+{% endif %}

@@ -1,0 +1,137 @@
+<p>We welcome and thank you for taking time to email us your suggestions, comments or questions. We value all the information we receive and use it to enhance or improve your movie going experience. Please fill out the form below.</p>
+{{ page.content|raw }}
+
+{% if data.houses|length > 1 %}
+    <h2>Our Locations</h2>
+{% else %}
+    <h2>Address</h2>
+{% endif %}
+{% for house in data.houses %}
+    <p class='address'>
+        {{ house.name }}<br />{{ house.address }}, {{ house.city -}}, {{ house.state_short }} {{ house.zip }}
+        {% if house['phone'] != '0' and house['phone'] != '' %}
+            <br />{{ house['phone'] }}
+        {% endif %}
+        {% if house['email'] != '0' and house['email'] != '' %}
+            <br />{{ house['email'] }}
+        {% endif %}
+    </p>
+{% endfor %}
+
+
+<p class="confirmation"></p>
+
+<form id="frmContact" method="post">
+    <label for="name">Name*</label><span id="err_name" class="errmsg"></span>
+    <input type="text" id="name" name="Name" aria-labelledby="name" class="required"/>
+    <label for="email_address">Email Address*</label><span id="err_email_address" class="errmsg"></span>
+    <input type="text" id="email_address" name="email_address" aria-labelledby="email_address" class="required"/>
+    {% if data.houses|length > 1 %}
+        <label for="theatre">Which location do you visit?*</label><span id="err_theatre" class="errmsg"></span>
+        <select id="theatre" name="theatre" class="form-control required">
+            <option>- Select a Location -</option>
+            {% for house in data.houses %}
+                <option value='{{ house.house_id }}'>{{ house.name }}</option>";
+            {% endfor %}
+        </select>
+    {% endif %}
+
+    <label for="comments">Comment*</label><span id="err_comments" class="errmsg"></span>
+    <textarea id="comments" name="Comments/Questions" aria-labelledby="comments" class="required" style="height:120px"></textarea>
+
+    <input name="_subject" id="_subject" type="hidden" value="{{ site.config.title }} Contact Form"/>
+
+    <div style="clear: both; width:220px; margin: 5px 0 15px 5px;"><!-- -->
+
+        <div id="preloader">
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+
+        <button
+                class="g-recaptcha"
+                data-sitekey="6Lca8k0UAAAAAH4EzUAYCjcBM8IzUMpyZSpbWSV6"
+                data-callback="YourOnSubmitFn">
+            Submit
+        </button>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    </div>
+</form>
+<script>
+    function YourOnSubmitFn(token) {
+        //assume we are OK
+        var isMissing = false;
+        $('#preloader').addClass('active');
+        $('.confirmation').text('');
+
+        //loop through required fields
+        $('.required').each(function () {
+
+            //remove the missing class
+            $(this).removeClass("missing");
+
+            //if blank, add the missing class back
+            if ($(this).val() == "") {
+                $(this).addClass("missing");
+                $('#err_' + this.id).text(' *Required');
+                isMissing = true
+            }
+            ;
+
+        });
+
+        //make sure the email address is valid!
+        if ($('#email_address').length != 0) {
+            if (!validateEmail($('#email_address').val())) {
+                $('#email_address').addClass("missing");
+                $('#err_email_address').text(' *Not a valid email');
+                isMissing = true;
+            }
+        }
+
+        if (!isMissing) {
+            sendMessage($("#frmContact"));
+        } else {
+            grecaptcha.reset();
+            $('#preloader').removeClass('active');
+            return false;
+        }
+        grecaptcha.reset();
+        return false;
+    }
+
+
+
+
+
+    function sendMessage(form) {
+
+        var data = form.serializeArray();
+
+        $.ajax({
+            url: '/data/contacts',
+            type: 'post',
+            data: {message: data},
+            success: function (response) {
+                $('#preloader').removeClass('active');
+                try {
+                    response = JSON.parse(response);
+                    if (response.status == 'success') {
+                        form[0].reset();
+                    }
+                    $('.confirmation').html(response.data);
+                } catch (err) {
+
+                }
+            }
+        });
+
+    }
+
+</script>

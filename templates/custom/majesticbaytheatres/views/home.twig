@@ -1,0 +1,146 @@
+{% set house_id = data.houses|first.house_id %}
+{% set movieData = collectTodayMoviesData(house_id, data.showdates, data.movies.movies) %}
+
+{% extends 'common/base.twig' %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+
+        {% if data.slides.slides.home is defined %}
+            <div id="content-slider" class="blocks container container-bigger">
+                {{ include('helper/slider.twig', {slides: data.slides.slides.home.images, style:'simple'}, false) }}
+            </div>
+        {% endif %}
+
+        <main id="main-content" class="{{ site.config.template_options.sidebar }} clearfix">
+
+            <div class="prices-container container container-bigger">
+                <div class="container">
+                    <div class="row">
+                        {{ include('parts/prices.twig', {movies: movieData}, false) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="showtimes-block blocks container">
+                <h2>Now playing:</h2>
+                <div id="showtimes" class="home-page row clearfix">
+                    {{ include('parts/movies.twig', {movies: movieData}, false) }}
+                </div>
+            </div>
+            {% if data.slides.slides.comingsoon is defined %}
+                <div id="coming-soon-block container">
+                    <h2>Coming Soon</h2>
+                    <div id="coming-soon-slider" class="coming-soon-slider">
+                        {{ include('helper/slider.twig', {slides: data.slides.slides.comingsoon.images, movies: data.movies.movies, style:'advanced' }, false) }}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="promotions-block container-bigger">
+                <div class="container ">
+                    {{ include('helper/promotion-block.twig') }}
+                </div>
+            </div>
+            <div class="bottom-block container-bigger">
+                <div class="container align-items-center justify-content-center">
+                    <div class="overlay"></div>
+                    <div class="inner">
+                        <p class="text">We <i>can't wait</i> to see you.</p>
+                        <div class="row justify-content-center">
+                            <a class="button" href="/">Directions</a>
+                            <a class="button" href="/">Showtimes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <!-- Footer JS -->
+    <script type="text/javascript">
+        $(function () {
+            // slider top banners
+            var notice_container = $('.notice-container');
+            var window_height = $(window).height();
+            window_height = (notice_container.length !== 0) ? window_height - notice_container[0].clientHeight : window_height;
+
+            $('#content-slider').css({
+                'height': window_height
+            });
+
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                useCSS: 'linear',
+                arrows: true,
+                dots: true,
+                autoplaySpeed: {{ site.config['slider_speed'] }},
+                prevArrow: '',
+                nextArrow: ''
+            });
+            $('#coming-soon-slider').slick({
+                autoplay: true,
+                fade: true,
+                useCSS: 'linear',
+                arrows: true,
+                dots: true,
+                autoplaySpeed: {{ site.config['slider_speed'] }},
+                prevArrow: '',
+                nextArrow: ''
+            });
+            $showtimes_slider = $('#showtimes');
+            showtimes_options = {
+                dots: false,
+                arrows: true,
+                centerMode: false,
+                slide: '.showtimes-details',
+                infinite: true,
+                variableWidth: false,
+                responsive: [
+                    {
+                        breakpoint: 961,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 769,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 541,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            }
+            slick_only_mobile($showtimes_slider, showtimes_options);
+            page_times();
+        });
+    </script>
+{% endblock %}

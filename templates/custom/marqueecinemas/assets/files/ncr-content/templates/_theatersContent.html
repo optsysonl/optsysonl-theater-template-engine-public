@@ -1,0 +1,38 @@
+﻿<%if(theaters.length == 0){ %>
+<div class="theaters-message">
+    <p>
+        <%= localize.noTheatersFound %></p>
+</div>
+<%} %>
+<% for(i=0;i<theaters.length;i++){ %>
+<div theaterId="<%= theaters.models[i].get("id") %>" class="row no-marigin theater-item <%= (window.AppProperties.SelectedTheater == theaters.models[i].get("id") || (window.AppProperties.SelectedTheater==null && i==0)) ? 'selected' : '' %>">
+    <span class="triangle"></span>
+    <% var leftMargin = '10px';
+    if(showDistance) {
+        leftMargin = 0;
+    %>
+    <div class="marker-class"><%=String.fromCharCode(65 + i) %></div>
+    <div class="span2">
+        <div class="miles">
+            <%= theaters.models[i].get('distance').toFixed(1) %><br />
+            <span><%= distanceUnit %></span>
+        </div>
+    </div>
+    <%}%>
+    
+    <div class="span3" style="margin-left: <%= leftMargin %>">
+         
+        <div class="detail">
+            <h5><a href="#theater/<%= theaters.models[i].get("id") %>"><%= theaters.models[i].get('name') %></a></h5>
+            <%= theaters.models[i].get('addressLine1') %><br />
+            <% if(theaters.models[i].get("addressLine2")){%>
+            <%= theaters.models[i].get("addressLine2") %><br />
+            <%} %>
+            <%= theaters.models[i].get('addressCity') %>,
+            <%= theaters.models[i].get('addressState') %> 
+            <%= theaters.models[i].get('addressZip') %>
+        </div>
+    </div>
+</div>
+    <span class="separator"></span>
+<% } %>

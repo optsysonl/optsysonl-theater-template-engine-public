@@ -1,0 +1,51 @@
+{% set new_movies = movies|sortByReleaseDate %}
+{% for movie_id, movie in new_movies if movie.release > 'now'|date('Y-m-d') %}
+    <section class='coming-soon-details clearfix '>
+        <div class="inner">
+            <div class="poster">
+                <div>
+                    <a href='{{- movie.url -}}'>
+                        <img src='{{ movie.poster }}' alt='Poster of {{ movie.name }}'/>
+                    </a>
+                </div>
+            </div>
+            <div class="info">
+                <h1 class="name"><a href='{{- movie.url -}}'>{{ movie.name }}</a></h1>
+                <div class="movie-info">
+                        <span class="mpaa">
+                            {% if movie.mpaa and movie.mpaa != 'NR' %}
+                                {{ movie.mpaa }}
+                            {% endif %}
+                            </span>
+                    <span class="separator"> | </span>
+                    {% if movie.runtime %}
+                        <span class="runtime">
+                                <span class="mparuntime-title">Runtime: </span>
+                            {{ movie.runtime|date('g\\h\\r\\. i\\m\\i\\n\\.') }}
+                            </span>
+                    {% endif %}
+                </div>
+                <span class="synopsis">{{ movie.synopsis_short|cropString(360) }}</span>
+                <a aria-label='{{- movie.name -}}' href='{{- movie.url -}}' class="read-more">Read
+                    more<img src="/assets/img/button-arrow.png" alt="Right arrow"/></a>
+                <div class="bottom-trailer-container">
+                    {% if movie.trailer.url is defined %}
+                        <a href='/trailer/{{- movie.trailer.url -}}' class="movies-trailer trailer"
+                           target='_blank'
+                           id='play-trailer{{ movie.id }}' data-fancybox-type='iframe'
+                           title='{{ movie.name }}'>
+                            watch trailer
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class='showtimes'>
+                <div class="inner">
+                    <p class="showtimes-title">Premiering <br/>
+                        <span class="p-date">{{ movie.release|date('F j') }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endfor %}

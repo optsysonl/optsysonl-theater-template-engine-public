@@ -1,0 +1,24 @@
+{% for key_date,showdate in showtimes.showtimes %}
+    {% for movie_id, movie in movies %}
+        {% if showdate.movies[movie_id] is defined %}
+            <div id="showtimes_movie" class="{{ key_date }} showtimes_movie clearfix">
+                <a href='{{- movie.url -}}'>
+                    <img src='{{ movie.poster }}' class='poster' alt='Poster of {{ movie.name }}' title="click here for more details"/>
+                </a>
+                <div id="info">
+                    <span class="name">{{ movie.name }}</span>
+                    <span class='mpaa'>Rating: {{ movie.mpaa }}</span>
+                    <span class="runtime">Runtime: {{ movie.runtime|date('g \\h\\r\\. i \\m\\i\\n\\.') }} </span>
+                    {% if movie.day is defined %} {# TODO delete??? #}
+                        <span class='weekday'>{{ movie.day }}</span>
+                    {% endif %}
+                    {{ include('helper/showtimes.twig', {showtimes: showdate.movies[movie_id], ticketing:ticketing}, false) }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+<script type="text/javascript">
+//make json array of available showdates
+var availableDates = {{ showtimes.dates|json_encode|raw }};
+</script>

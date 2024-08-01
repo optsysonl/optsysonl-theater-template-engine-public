@@ -1,0 +1,17 @@
+{% extends "common/base.twig" %}
+{% block meta_title %}{{ parent() }} | Contact Us {% endblock %}
+
+{% block content %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+
+        <div id="content" class="clearfix">
+            <h1 class="titlebar new_titlebar">Contact Us</h1>
+            <p>We welcome and thank you for taking time to email us your suggestions, comments or questions. We value all the information we receive and use it to enhance or improve your movie going experience. Please select the corresponding link below:</p>
+
+            {{ include('forms/contact_form.twig') }}
+        </div>
+        {{ include('parts/promotions.twig') }}
+        {{ include('common/footer.twig') }}
+    </div>
+{% endblock %}

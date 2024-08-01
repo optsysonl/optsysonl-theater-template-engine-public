@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
+    {% for page in data.xml_pages %}
+        <url>
+            <loc>{{ page.url }}</loc>
+
+            {% if page.photo is not empty %}
+                <image:image>
+                    <image:loc>{{ page.photo }}</image:loc>
+                </image:image>
+            {% endif %}
+
+            {% if page.trailer is not empty %}
+                <video:video>
+                    <video:content_loc>{{ page.trailer.url }}</video:content_loc>
+                    <video:player_loc allow_embed='yes' autoplay='ap=1'>{{ page.trailer.url }}</video:player_loc>
+                    <video:title>{{ page.name }} Trailer</video:title>
+                    <video:description>
+                        Watch the official trailer for {{ page.name }}
+                    </video:description>
+                </video:video>
+            {% endif %}
+
+            <changefreq>daily</changefreq>
+        </url>
+    {% endfor %}
+</urlset>

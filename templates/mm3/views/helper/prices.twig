@@ -1,0 +1,13 @@
+{% for price in prices %}
+    <span class="price_category">{{ price.cat }}</span>
+    <span class='price-times'>{{ price.times }}</span>
+    {% for a_price in price.prices %}
+        {% if ';' in a_price.name %}
+            {% set field_new = a_price.name|split(';') %}
+            <span class='field'>{{ field_new[0] }}<br><span class='disclaimer'>{{ field_new[1] }}</span></span>
+        {% else %}
+            <span class='field'>{{ a_price.name|raw }}</span>
+        {% endif %}
+        <span class='price'>{{ a_price.value }}</span><br>
+    {% endfor %}
+{% endfor %}

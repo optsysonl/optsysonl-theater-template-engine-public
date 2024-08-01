@@ -1,0 +1,17 @@
+{% set weeks =  getShowdateWeeks(showdates) %}
+<form id="frmShowdate">
+    <select class='select_styled' name='date' onchange='openDate("showtimes_movie",this.value,"weekly");'>
+        {% for key in weeks %}
+            {% set week_title = key|date('D n/j') %}
+            <option class='showdate' value={{- key -}}>Week of {{ week_title }}</option>
+        {% else %}
+            No showtimes available
+        {% endfor %}
+    </select>
+    <div class="clearfix"></div>
+</form>
+
+<script type="text/javascript">
+    //make json array of available showdates
+    var availableDates = {{ weeks|json_encode|raw }};
+</script>

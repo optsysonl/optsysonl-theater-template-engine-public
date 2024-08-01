@@ -1,0 +1,40 @@
+<div class="set-house-wrapper" role="navigation">
+    <div class="set-house-container">
+        <div class="set-house-top-container">
+            <div class="set-house-title">
+                    <img src="{{- logo -}}" alt="Pop-up Logo" title="CinemaWest logo" role="presentation">
+            </div>
+            <div class="set-house-search">
+                <div class="search-title">Choose your theatre</div>
+                <div class="input-container">
+                    <label for="location-search" class="hidden" >Search for Theater</label>
+                    <input id="location-search" class="search-input" placeholder="Search by city, ZIP or theater" type="text" />
+                    <div class="search-button">GO</div>
+                </div>
+            </div>
+            <div class="close"></div>
+        </div>
+        <div class="set-house-list">
+            <div class="set-house-inner">
+                {% for house in houses %}
+                    <div class="set-house-item {{ (active_house_id == house.house_id) ? 'active-house' : '' }}" id="{{ house.house_id }}" data-search='{"name": "{{ house.name }}", "city": "{{ house.city }}", "zip": "{{ house.zip }}" }' >
+                        <div class="item-column-name">
+                            <div class="item-title">{{ house.name }}</div>
+                            <div class="item-location">
+                                {{ house.address }},<br />
+                                {{ house.city }}, {{ house.state_short }} {{ house.zip }}
+                            </div>
+                        </div>
+                        <div class="item-column-action">
+                            <a class="like" href="javascript: void(0);" aria-label="Add {{ house.name }} to favorites">
+                                <img src="/assets/img/heart-icon.svg" alt="Add {{ house.name }} to favorites" class="svg" /><span class="hidden">Add to favorites</span>
+                            </a>
+                            <a class="choose-item" data-house-id="{{ house.house_id }}" href="javascript: void(0);"
+                               aria-label="Choose {{ house.name }} as your location">Choose theatre</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

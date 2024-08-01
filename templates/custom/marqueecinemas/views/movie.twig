@@ -1,0 +1,123 @@
+{% extends "common/base.twig" %}
+{% set this_movie = data.movies.movies[this_page.movie_id] %}
+{% block meta_title %}{{ parent() }} | Movie | {{ this_movie.name }}{% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="main_wrapper">
+    {{ include('common/header.twig') }}
+
+    <div id="content">
+        {{ include('parts/movie_houses.twig', {data: data, movie_id:this_page.movie_id, site:site}, with_context = false) }}
+        <div id="movie_detail">
+            <h2>{{ this_movie.name }} <span class='mpaa'>{{ this_movie.mpaa }}</span></h2>
+		    <img src="{{- this_movie.poster -}}" class="poster" alt="Poster of {{ this_movie.name }}">
+
+		    {% if this_movie.trailer.url is defined %}
+		        <a href='/trailer/{{- this_movie.trailer.url -}}' class="play_trailer"  id='play-trailer' data-fancybox-type='iframe' title='{{ this_movie.name }}'/>
+                    <div id='trailer'>
+                        <img class="ghost" src='{{- this_movie.trailer.image }}' id='trailer-thumbnail' alt='Still of {{- this_movie.name }}'>
+                        <img class="play" src="/assets/img/icoPlay.png" alt="Play Trailler">
+                    </div>
+                </a>
+                {% set syn_class = "" %}
+                {% set det_class = "" %}
+            {% else %}
+                {% set syn_class = "padsyn" %}
+                {% set det_class = "paddetails" %}
+            {% endif %}
+
+            {% if this_movie.custom_text is defined and  this_movie.custom_text != '' %}
+                <div id='custom_text' class='infobox'>
+                    {{ this_movie.custom_text }}
+                </div>
+            {% endif %}
+
+            <div id="synopsis" class="half {{ syn_class }}">
+                {% if this_movie.synopsis != '' %}
+                    {{ this_movie.synopsis|raw }}
+                {% endif %}
+            </div>
+            <div id="movie_info" class="half {{ det_class }}">
+                <div class="half">
+                    <p>
+                        <strong>DETAILS</strong><br/>
+                        {% if this_movie.genres is defined %}
+                            {{ this_movie.genres|join(', ') }}<br />
+                        {% endif %}
+                        {% if this_movie.runtime !='' %}{{ this_movie.runtime|date('g \\h\\r\\. i \\m\\i\\n\\.') }}<br>{% endif %}
+                        {% if this_movie.release > 'now'|date('Y-m-d') %}Opens {% else %}Opened {% endif %} {{ this_movie.release|date('l, F jS') }}
+                    </p>
+                    {% if this_movie.director != '' %}
+                        <p>
+                            <strong>DIRECTOR</strong><br/>
+                            {{ this_movie.director }}
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="half">
+                    {% if this_movie.actors is defined and this_movie.actors != '' %}
+                        <p>
+                            <strong>CAST</strong><br />
+                            {{ this_movie.actors|join(', ') }}
+                        </p>
+                    {% endif %}
+                    {% if this_movie.writer is defined and this_movie.writer != '' %}
+                        <p>
+                            <strong>WRITER</strong><br />
+                            {{ this_movie.writer }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+    <div id="stills_wrapper">
+        {{ include('helper/stills.twig', {stills: this_movie.stills}, with_context = false) }}
+    </div>
+    {{ include('parts/promotions.twig') }}
+
+    {{ include('common/footer.twig') }}
+</div>
+
+{% endblock %}
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            //change date on button click
+            $('#movie-showdates').on('change', function () {
+                var class_name = "location_date";
+                //get data-attribute 'date' of clicked button
+                var sel_date = $(this).val();
+
+                //calls function from /assets/js/functions.js
+                openDate(sel_date, class_name);
+
+                //prevent default
+                return false;
+            });
+
+            //load initial showtimes
+            $('#movie-showdates option:first').trigger('change');
+        });
+    </script>
+{% endblock %}

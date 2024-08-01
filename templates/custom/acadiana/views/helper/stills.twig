@@ -1,0 +1,7 @@
+<table>
+    <tr>
+        {% for still in stills|slice(0,3) %}
+        <td style="padding:10px;"><img src="{{ still }}" width="200px" /></td>
+        {% endfor %}
+    </tr>
+</table>

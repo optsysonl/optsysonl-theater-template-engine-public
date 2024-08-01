@@ -1,0 +1,6 @@
+{% set avail_rating = ['12A', '12', '15', '18', 'PG', 'R18', 'U'] %}
+{% if mpaa in avail_rating %}
+    <img src="/assets/img/rating/{{- mpaa -}}-white.svg" />
+{% else %}
+    {{ mpaa }}
+{% endif %}

@@ -1,0 +1,64 @@
+{#<div class="newsletter-popup blocks">#}
+    {#<div class="inner">#}
+        {#<div class="close"></div>#}
+        {#{{ include('parts/newsletter_popup.twig') }}#}
+    {#</div>#}
+{#</div>#}
+{#<div class="newsletter-block blocks">#}
+    {#<div class="fixed-width">#}
+        {#{{ include('parts/newsletter_form.twig') }}#}
+    {#</div>#}
+{#</div>#}
+{#<div class="fixed-width">#}
+    {#<div class="instagram-block blocks">#}
+        {#{{ include('parts/instagram.twig') }}#}
+    {#</div>#}
+{#</div>#}
+<footer id="site-footer" class="{{ site.config.template_options.footer }}">
+    <div id="footer-content" class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-3">
+                <a href="/" class="logo"><img src="/assets/img/logo.png" alt="Logo for {{ site.config.title }}"/></a>
+            </div>
+            <div class="col-md-6 col-lg-2">
+                <div class="column-title">Majestic Bay</div>
+                <nav id="bottom-nav" class="clearfix">
+                    {{ include('parts/pages_bottom_nav.twig') }}
+                </nav>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="column-title">Visit the theatre</div>
+                <p>
+                    2044 NW Market Street<br/>
+                    Seattle, WA 98107<br/>
+                    hello@majesticbay.com<br/>
+                    <a class="footer-phone" href="tel:2067812229">(206) 781-2229</a>
+                </p>
+                {{ include('helper/social_media.twig', {icons: this_page.header.social_icons}, false) }}
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="instagram-link-container">
+                    <div class="column-title">Instagram</div>
+                    <a href="/" class="instagram-link">@majesticbaytheatres</a>
+                </div>
+                <div class="small-photo-container">
+                    <div class="item"><img src="assets/img/footer-icon-1.png"></div>
+                    <div class="item"><img src="assets/img/footer-icon-2.png"></div>
+                    <div class="item for-desctop"><img src="assets/img/footer-icon-3.png"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-6 footer-copyright">
+                <p>
+                    <span>&#169; {{ "now"|date("Y") }} Majestic Bay Theatres.</span> <span>All rights Reserved.</span>
+                </p>
+            </div>
+            <div class="col-md-6">
+                <div class="row justify-content-md-end">
+                    <img src="assets/img/logo-boxoffice.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

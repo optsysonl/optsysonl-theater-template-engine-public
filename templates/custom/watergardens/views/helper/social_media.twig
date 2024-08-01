@@ -1,0 +1,14 @@
+<div id="social-icons">
+    {%- if icons.facebook.link is defined and icons.facebook.link != '' -%}
+        <a href='{{ icons.facebook.link }}' aria-label="facebook link" target='_blank'><img
+                    src='/assets/img/Facebook.svg' class='svg social-icon'/></a>
+    {%- endif -%}
+    {% if icons.instagram.link is defined and icons.instagram.link != '' -%}
+        <a href='{{ icons.instagram.link }}' aria-label="facebook link" target='_blank'><img
+                    src='/assets/img/Instagram.svg' class='svg social-icon'/></a>
+    {%- endif -%}
+    {%- if icons.twitter.link is defined and icons.twitter.link != '' -%}
+        <a href='{{ icons.twitter.link }}' aria-label="facebook link" target='_blank'><img src='/assets/img/Twitter.svg'
+                                                                                           class='svg social-icon'/></a>
+    {%- endif -%}
+</div>

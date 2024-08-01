@@ -1,0 +1,47 @@
+{% extends "common/base.twig" %}
+{% set page = data.pages[this_page.page_id] %}
+{% block meta_title %}{{ parent() }} | {{ page.site_headline }} {% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix">
+            <h1>
+                <div class="width-wrapper">{{ page.site_headline }}</div>
+            </h1>
+            <div class="width-wrapper">
+                <div id="content-slider" class="clearfix">
+                    {% set slides_page_name = 'Page-' ~ this_page.page_id %}
+                    {% if data.slides.slides[slides_page_name]['images'] is defined %}
+                        {{ include('helper/slider.twig', {slides: data.slides.slides[slides_page_name]['images']}, with_context = false) }}
+                    {% endif %}
+                </div>
+                <div id="fxp-content">
+                    {% if page.type == 'contact' %}
+
+                    {% elseif page.type == 'mpaa' %}
+                        {{ include('parts/mpaa.twig') }}
+                    {% elseif page.type == 'newsletter' %}
+                        {{ page.content|raw }}
+                        <iframe src="http://csxutils.cinema-source.com/subscribe/?cust_id={{- site.config['cust_id'] -}}"
+                                id="newsletter"></iframe>
+                    {% else %}
+                        {{ page.content|raw }}
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+        {{ include('common/footer.twig') }}
+    </div>
+    <script>
+        $(document).ready(function () {
+            //start location page slider
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                css: 'linear',
+                arrows: true,
+            });
+        });
+    </script>
+{% endblock %}

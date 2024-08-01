@@ -1,0 +1,10 @@
+<div class="row movieboxes">
+    {% for this in movies -%}
+    <div class="col-md-3">
+        <a href="{{- this.url -}}">
+            <h4>{{ this.name }}</h4>
+            <img src="{{- this.poster -}}" alt="{{ this.name }}">
+        </a>
+    </div>
+    {%- endfor %}
+</div>

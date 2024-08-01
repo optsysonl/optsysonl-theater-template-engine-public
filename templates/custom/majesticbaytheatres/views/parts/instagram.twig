@@ -1,0 +1,28 @@
+{% set full_width = true %}
+{% set use_margin = false %}
+<div class="instagram_wrapper">
+    <div class="instagram_title">
+        <span>Follow us on Instagram <a href="https://www.instagram.com/hp_villagetheatre/"
+                                        class="instagram_title_subitem" target="_blank">@hp_villagetheatre</a></span>
+    </div>
+    <div class="images_wrap">
+        <div id="instafeed" class="grid-holder lg-grid5 md-grid5 sm-grid3"></div>
+    </div>
+</div> <!-- .instagram_wrapper -->
+
+<script type="text/javascript">
+    var feed = new Instafeed({
+        get: 'user',
+        userId: '1942477321',
+        accessToken: '1942477321.fcbf20f.951ca15a850744cc91d9f2c21580bad0',
+        target: 'instafeed',
+        sortBy: 'most-recent',
+        limit: '5',
+        template: '<a href="{\{\link\}\}" target="_blank" class="item insta-item" style="height: 0;"><img src="{\{\image\}\}" alt="Instagram image \{\{id\}\}" /><span class="hover_fill"></span></a>',
+        resolution: 'low_resolution',
+        after: function () {
+            image_instagram();
+        }
+    });
+    feed.run();
+</script>

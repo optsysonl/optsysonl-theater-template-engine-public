@@ -1,0 +1,40 @@
+{% set available_dates = [] %}
+{% set showtimes = getMovieTimesWeekly(showdates, movie_id) %}
+
+<h3 class="times-title">For the week of</h3>
+
+<form id="frmShowdate" action="" method="get">
+    <select class='select_styled' name='date' onchange="openDate('movie_date',this.value,'weekly')">
+        {% for date in showtimes.dates %}
+            {% set available_dates = available_dates|merge([date]) %}
+            {% set short_date = date|date('D n/j') %}
+            <option value='{{ date }}'>Week of {{ short_date }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+{% for key_date,showdate in showtimes.showtimes %}
+    <div class="movie_date {{ key_date }}">
+        {% for key_house,house_times in showdate.houses %}
+            <div id='{{- key_house -}}' class='theater'>
+                {% if houses|length > 1 %}
+                    <span class='name'><a href='{{ houses[key_house].url }}'>{{ houses[key_house].name }}</a></span>
+                {% endif %}
+
+                {% if site.config.timestype == 'weekly' %}
+                    {% for day,times in house_times %}
+                        {{ include('helper/showtimes.twig', {showtimes: times, day:day}, false) }}
+                    {% endfor %}
+                {% else %}
+                    {{ include('helper/showtimes.twig', {showtimes: house_times}, false) }}
+                {% endif %}
+
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+<script type="text/javascript">
+    //make json array of available showdates
+    var availableDates = {{ available_dates|json_encode|raw }};
+
+</script>

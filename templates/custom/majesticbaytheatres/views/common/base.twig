@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <!-- Google Tag Manager -->
+        <script>(function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start':
+                        new Date().getTime(), event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-MFR8R6Q');</script>
+        <!-- End Google Tag Manager -->
+        <title>{% block meta_title %}{{ site.config.title }}{% endblock %}</title>
+
+        <!-- Meta -->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+        <meta name="description" content="{% block meta_description %}{{ site.config.description }}{% endblock %}"/>
+        <meta name="keywords" content="{% block meta_keywords %}{{ site.config.keywords }}{% endblock %}"/>
+
+        <meta name="format-detection" content="telephone=no"/>
+
+        <!-- DNS Prefetch -->
+        <meta http-equiv="x-dns-prefetch-control" content="on"/>
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com"/>
+        <link rel="dns-prefetch" href="//ajax.googleapis.com"/>
+        <link rel="dns-prefetch" href="//fonts.googleapis.com"/>
+        <link rel="dns-prefetch" href="//filmsxpress.com"/>
+        <link rel="dns-prefetch" href="//www.filmsxpress.com"/>
+        <link rel="dns-prefetch" href="//movienewsletters.net"/>
+        <link rel="dns-prefetch" href="//www.movienewsletters.net"/>
+
+        <!-- Favicon -->
+        {% if site.meta['icon'] is defined %}
+    <link rel="icon" href="{{ site.meta['icon'] }}" sizes="16x16 32x32 96x96" type="image/x-icon">
+        {% endif %}
+        {% if site.meta['android_icon'] is defined %}
+    <link rel="android-icon" href="{{ site.meta['android_icon'] }}" sizes="36x36 48x48 72x72 96x96" type="image/x-icon">
+        {% endif %}
+        {% if site.meta['apple_icon'] is defined %}
+    <link rel="apple-touch-icon" href="{{ site.meta['apple_icon'] }}"
+          sizes="57x57 60x60 72x72 76x76 114x114 120x120 144x144 152x152 180x180" type="image/x-icon">
+        {% endif %}
+        {% if site.meta['apple_icon_precomposed'] is defined %}
+    <link rel="apple-touch-icon-precomposed" href="{{ site.meta['apple_icon_precomposed'] }}"
+          sizes="57x57 60x60 72x72 76x76 114x114 120x120 144x144 152x152 180x180" type="image/x-icon">
+        {% endif %}
+        {% if site.meta['shortcut_icon'] is defined %}
+    <link rel="shortcut-icon" href="{{ site.meta['shortcut_icon'] }}" sizes="70x70 144x144 150x150 310x310"
+          type="image/x-icon">
+        {% endif %}
+
+    {% block css %}
+        <!-- CSS -->
+    {#<link href="https://fonts.googleapis.com/css?family=Open+Sans|Righteous" rel="stylesheet"/>#}
+        <!-- jQuery UI -->
+    {#<link rel="stylesheet"#}
+          {#href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"/>#}
+        <!-- Fancybox -->
+    {#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"/>#}
+    {#<link rel="stylesheet" type="text/css" href="/assets/css/reset.css"/>#}
+    {#<link rel="stylesheet" type="text/css" href="/assets/css/fonts.css"/>#}
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap-grid.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css"/>
+    {#<link rel="stylesheet" type="text/css" href="/assets/css/responsive.css"/>#}
+
+        {% if site.config.custom_css is defined and site.config.custom_css %}
+        <style type="text/css">
+            {{ site.config.custom_css }}
+        </style>
+        {% endif %}
+
+    {% endblock %}
+
+    {% block js_scripts %}
+        <!-- JS -->
+        {#<script src="/assets/js/modernizr.min.js"></script>#}
+        {#<script src="/assets/js/detectizr.min.js"></script>#}
+        {#<script src="/assets/js/instafeed.min.js"></script>#}
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- jQuery UI -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <!-- Custom JS -->
+        <script src="/assets/js/functions.js"></script>
+    {% endblock %}
+
+        {% if site.config.analytics is not empty %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="true" src="https://www.googletagmanager.com/gtag/js?id={{- site.config.analytics -}}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+
+            gtag('config', '{{- site.config.analytics -}}');
+        </script>
+        {% endif %}
+
+        {% block meta_misc_html %}{{ site.config.misc_html|raw }}{% endblock %}
+    {% endblock %}
+</head>
+<body id="{{- this_page.class['body'] -}}">
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFR8R6Q"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+{{ include('common/header.twig') }}
+
+{% block content %}{% endblock %}
+
+{{ include('common/footer.twig') }}
+
+{% block js_scripts_footer %}
+    <!-- Fancybox -->
+    {#<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>#}
+
+    {% if (site.config.debug is defined) and (site.config.debug == false) %}
+    {#<!-- Piwik -->#}
+    {#<script type="text/javascript">#}
+        {#var _paq = _paq || [];#}
+        {#_paq.push(['enableLinkTracking']);#}
+        {#_paq.push(["enableCrossDomainLinking"]);#}
+        {#_paq.push(['enableHeartBeatTimer', 30]);#}
+        {#_paq.push(['trackPageView']);#}
+        {#(function () {#}
+            {#var u = "//stats.westworldmedia.com/";#}
+            {#_paq.push(['setTrackerUrl', u + 'piwik.php']);#}
+            {#_paq.push(['setSiteId', '17']);#}
+            {#var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];#}
+            {#g.type = 'text/javascript';#}
+            {#g.async = true;#}
+            {#g.defer = true;#}
+            {#g.src = u + 'piwik.js';#}
+            {#s.parentNode.insertBefore(g, s);#}
+        {#})();#}
+    {#</script>#}
+    {#<noscript><p><img src="//stats.westworldmedia.com/piwik.php?idsite=17&rec=1" style="border:0;" alt=""/></p>#}
+    {#</noscript>#}
+    <!-- End Piwik Code -->
+    {% endif %}
+{% endblock %}
+</body>
+</html>

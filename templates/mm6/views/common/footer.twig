@@ -1,0 +1,44 @@
+<footer id="site-footer" class="{{ site.config.template_options.footer }}">
+    <div id="footer-content" class="clearfix">
+        <div class="frow">
+            <div class="fcol-1 fcols">
+                <nav id="bottom-nav" class="clearfix">
+                    <ul>
+                        {{ include('parts/pages_bottom_nav.twig') }}
+                    </ul>
+                </nav>
+            </div>
+            <div class="fcol-2 fcols">
+                <a href="/" class="logo"><img src="{{- this_page.header.logo2 -}}" alt="Logo for {{ site.config.title }}"></a>
+            </div>
+            <div class="fcol-3 fcols">
+                <div id="newsletter-form">
+                    {% if site.config.template_options.nl_signup_url is defined and site.config.template_options.nl_signup_url is not empty %}
+                        <form method="post" action="{{- site.config.template_options.nl_signup_url -}}">
+                            <input aria-label="newsletter form" type="text" name="txt_email_address" value="" placeholder="email@address.com"/>
+                            <button type="submit">Sign Up</button>
+                        </form>
+                    {%- elseif icons.cust_id.link is defined and icons.cust_id.link != '' -%}
+                        <form method="post" action="https://csxutils.fbmovies.cinema-source.com/subscribe/">
+                            <input type="hidden" name="cust_id" value="{{ site.config.cust_id }}"/>
+                            <input type="hidden" name="iframe" value="true"/>
+                            <input type="hidden" name="width" value="600"/>
+                            <input type="hidden" name="height" value="400"/>
+                            <input aria-label="newsletter form" type="text" name="txt_email_address" value="" placeholder="email@address.com"/>
+                            <button type="submit">Sign Up</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div id="site-social-icons">
+                    {{ include('helper/social_media.twig', {icons: this_page.header.social_icons, config:site.config}, false) }}
+                </div>
+            </div>
+        </div>
+        <div class="copyright">&copy; {{ 'now'|date('Y') }} {{ site.config.title }}</div>
+        <div class="powered_by">
+            <a href="https://company.boxoffice.com/">
+                <img src="https://movienewsletters.net/poweredby/boxoffice/light.svg" height="55" width="auto" alt="Powered by The Boxoffice Company">
+            </a>
+        </div>
+    </div>
+</footer>

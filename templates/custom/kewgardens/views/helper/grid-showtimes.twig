@@ -1,0 +1,71 @@
+{% for this in movies %}
+    {% set movie = this.movie %}
+    {% set dates_string = this.showdates|keys|join(' ') %}
+    <div class="hr_film {{ dates_string }}" data-release="{{ movie.release }}">
+        <div class="film-item-inner">
+            <div class="stick-film-item-container">
+                <h2>
+                    <a href="{{- movie.url -}}" title="Detailed information about the movie {{ movie.name }}">
+                        {#{% if movie.release > "now"|date('Y-m-d') and not this.showdates is empty %}#}
+                            <span class="flag_avp" >Advance Showing</span>
+                        {#{% endif %}#}
+                        <span>{{ movie.name }}</span>
+                    </a>
+                </h2>
+                <div class="hr_film_infos">
+
+                    <div class="hr_aff_ct">
+                        <a href="{{- movie.url -}}" title="About the movie {{ movie.name }}">
+                            <img src="{{- movie.poster -}}" alt="Still of {{ movie.name }}" class="hr_aff"/>
+                        </a>
+                        {% if movie.trailer.url != '' %}
+                            <a href="{{- movie.trailer.url|url_decode -}}" class="play_video ic_fa bt_fa play_trailer"
+                               data-fancybox-type="iframe" title="Trailer for {{ movie.name -}}"><span class="hidden">{{ movie.name }} Trailer</span></a>
+                        {% endif %}
+                    </div>
+                    <div class="hr_txt">
+                        {% if movie.runtime != '' %}
+                            <p class="hr_p hr_dur">Runtime: <strong>{{ movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</strong>
+                                {% if movie.mpaa is defined and movie.mpaa != '' and movie.mpaa != 'NR' %}
+                                    - Rated: <strong>{{ movie.mpaa }}</strong>
+                                {% endif %}
+                                - {% if movie.release > 'now'|date('Y-m-d') %}Opens {% else %}Opened {% endif %}:
+                                <strong>{{ movie.release|date('F jS') }}</strong></p>
+                        {% endif %}
+                        <p class="hr_p hr_real">Director: <strong>{{ movie.director }}</strong></p>
+                        {% if movie.actors is defined %}
+                            <p class="hr_p hr_cast">Actors: <strong>{{ movie.actors|slice(0, 6)|join(', ') }}</strong></p>
+                        {% endif %}
+                        {% if movie.genres is defined and movie.genres != '' %}
+                            <p class="hr_p genre">Genre: <strong>{{ movie.genres|slice(0, 2)|join(', ') }}</strong></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hr_tablehor showtimes">
+            {{ include('helper/showtimes-item.twig', {showdates: this.showdates, site:site}) }}
+        </div>
+    </div><!-- end .hr_film -->
+{% endfor %}
+<div class="hr_film no_showtimes_available">
+    <div class="film-item-inner">
+        <div class="stick-film-item-container">
+        </div>
+    </div>
+    <div class="hr_tablehor showtimes">
+        <div class="tab_seances tab_hide no-seances">
+            <div class="ftab">
+                <div class="frow">
+                    <div class="fcel celtags"></div>
+                    <div class="fcel aucune">
+                        No showtimes for this day.
+                        <div class="next-available-dates">
+                            <div class="item" style="display: block;">Next available showtime is on <span class="target-date" data-target-date=""></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

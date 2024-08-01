@@ -1,0 +1,31 @@
+<nav id="showdates" class="clearfix">
+    {% for key,showdate in showtimes.dates %}
+        {% set showdate_title = showdate|date('D n/j') %}
+        {% if showdate == 'now'|date('Y-m-d') %}
+            {% set showdate_title = 'Today' %}
+        {% elseif showdate == 'tomorrow'|date('Y-m-d') %}
+            {% set showdate_title = 'Tomorrow' %}
+        {% endif %}
+        <button aria-label='{{- showdate_title -}}' class='showdate' data-date='{{- showdate -}}'>{{ showdate_title }}</button>
+    {% else %}
+        <span class="no_showdates">No showtimes available</span>
+    {% endfor %}
+</nav>
+{%- if showtimes -%}
+    <div id="calendar">
+        <input aria-label="calendar" id="datepicker" type="text" readonly="true"/>
+    </div>
+{%- endif -%}
+{{- include('helper/showtimes_filter.twig', {formats: movie_formats}, false) -}}
+
+<div id="showtimes" class="clearfix">
+    {% for key_date,showdate in showtimes.showtimes %}
+        <div id="{{ key_date }}" class="location_date">
+            {% for key_house,house_times in showdate.houses %}
+                <div class='showtimes'>
+                    {{ include('helper/showtimes.twig', {showtimes: showdate.houses[key_house]}, false) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

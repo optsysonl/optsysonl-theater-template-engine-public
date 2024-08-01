@@ -1,0 +1,37 @@
+<a class="for-mobile"><img src="/assets/img/mobile-menu-icon.svg" alt="Mobile menu icon"/></a>
+<a class="for-mobile" href="/" id="nav-home"><span class="name">Home</span></a>
+<ul>
+    <li class="has-dropdown-menu {% if(this_page.class.body == 'movies') %} current {% endif %}">
+        <a href="/movies"><span class="name">Movies & Showtimes</span></a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="/movies">Now Playing</a>
+            </li>
+            <li>
+                <a href="/coming-soon">Coming Soon</a>
+            </li>
+        </ul>
+    </li>
+    <li class="{% if(this_page.page_id is defined and this_page.page_id == 9659 ) %} current {% endif %}">
+        <a href='/about'><span class="name">The Theatre</span></a>
+    </li>
+    <li class="{% if(this_page.page_id is defined and this_page.page_id == 9661 ) %} current {% endif %}">
+        <a href='/gift-cards'><span class="name">Gift Cards</span></a>
+    </li>
+    <li class="has-dropdown-menu  {% if(this_page.page_id is defined and (this_page.page_id == 9662 or this_page.page_id == 9675 )) %} current {% endif %}">
+        <a href='javascript: void(0);'><span class="name">Events & Promotions</span></a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="/private-screening">Private Events</a>
+            </li>
+            <!--li>
+                <a href="/page/11369/Summer-Kids-Film-Fest">Summer Kids Fest</a>
+            </li-->
+        </ul>
+    </li>
+</ul>
+<ul class="second-menu for-mobile">
+    <li>
+        <a href='javascript: void(0);'><span class="name">Subscribe</span></a>
+    </li>
+</ul>

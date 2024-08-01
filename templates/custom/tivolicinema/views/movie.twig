@@ -1,0 +1,90 @@
+{% extends "common/base.twig" %}
+{% set this_movie = data.movies.movies[this_page.movie_id] %}
+
+{% block meta_description %}  $movie.synopsis|truncate:200   {% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <meta property="og:title" content="{$movie.title}" />
+    <meta property="og:description" content="{$movie.synopsis|truncate:200}" />
+    <meta property="og:image" content="{$movie_image_url}{$screens.0}_poster.jpg" />
+
+    {% if this_movie.trailer.url is not empty %}
+    <script language="JavaScript" src="/includes/generic.js"></script>
+    <link rel="stylesheet" href="/includes/mediaboxDefaultStyles.css" type="text/css" media="screen" />
+    <script src="/includes/mootools-1.2.4-core.js" type="text/javascript"></script>
+    <script src="/includes/mediaboxAdv-1.1.7.js" type="text/javascript"></script>
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+
+    <div id="intro" class="wide moviePage">
+        <div class="inner">
+            <div class="m_poster leadimg">
+                <img src="{{- this_movie.poster -}}" width="240" height="355" >
+                {% if this_movie.trailer.url is not empty %}
+                    <a href="/trailer/{{- this_movie.trailer.url -}}" title="{{ this_movie.name }}" data-fancybox-type='iframe'
+                       class="more trailer play_trailer" id="trailerButton">
+                    </a>
+                {% endif %}
+            </div>
+            <div class="lead">
+                <h1>{{ this_movie.name }}</h1>
+                {% if this_movie.custom_text is not empty %}
+                    <span class="commentsBox">{{ this_movie.custom_text }}</span><br><br>
+                {% endif %}
+                {% if this_movie.actors is defined %}
+                <p><em>Starring: {{ this_movie.actors|slice(0, 10)|join(', ') }}</em></p>
+                {% endif %}
+                <p>
+                    <em>
+                        {% if this_movie.runtime %}
+                            {{ this_movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}
+                        {% endif %}
+                        {% if this_movie.mpaa and this_movie.mpaa != 'NR' %}
+                            Rated {{ this_movie.mpaa }} {% if this_movie.advisory != '' %}{{ this_movie.advisory }}{% endif %}
+                        {% endif %}
+
+                        {% if this_movie.release > 'now'|date('Y-m-d') %}Starts: {% else %}Opened {% endif %}
+                        {{ this_movie.release|date('F jS, Y') }}
+                    </em>
+                </p>
+                <hr>
+                <p class="synopsis">{{ this_movie.synopsis|raw }}</p>
+            </div>
+            <br clear="all">
+        </div>
+    </div>
+
+    <div id="lower">
+        <div class="moviecol left">
+            &nbsp;
+        </div>
+        <div class="moviecol right">
+            <p class="callus">Call us on <strong>07 823 5064</strong> to book your tickets.</p>
+            {{ include('helper/sessions.twig', {this_movie:this_movie, showdates:data.showdates, house_id: data.houses|first.house_id }, false) }}
+        </div>
+    </div>
+
+    {{ include('common/footer.twig') }}
+    <script>
+        //start trailer when button is pressed
+        $(".play_trailer").fancybox({
+            autoscale : false,
+            width : 800,
+            height : 450,
+            transitionIn : 'none',
+            transitionOut : 'none',
+            scrolling  : 'no',
+            padding : 0,
+            title : $(this).title,
+            href : this.href,
+            beforeShow: function(){
+                $(".fancybox-skin").css("backgroundColor","#000000");
+            }
+        });
+    </script>
+{% endblock %}

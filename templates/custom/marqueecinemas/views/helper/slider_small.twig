@@ -1,0 +1,7 @@
+{% for slide in slides %}
+    {%  if slide.image != '' %}
+        <a href='#' title="{{ slide['image_text'] }}" >
+                <img src='{{- slide.image -}}' alt='{{- slide['altTag'] -}}' />
+            </a>
+    {% endif %}
+{% endfor %}

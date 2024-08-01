@@ -1,0 +1,55 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | {{ data.pages[this_page.page_id].site_headline }} {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="/assets/js/unitegallery/unitegallery.min.js"/>
+    <script type="text/javascript" src="/assets/js/unitegallery/unitegallery.min.js"></script>
+    <script type="text/javascript" src="/assets/js/unitegallery/themes/tiles/ug-theme-tiles.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery("#gallery-page").unitegallery({
+                tiles_type: "nested"
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% if this_page.page_id == 9803 %}
+        {{ include('pages/gift_cards.twig') }}
+    {% elseif this_page.page_id == 9675 %}
+        {{ include('pages/employment.twig') }}
+    {% elseif this_page.page_id == 9783 %}
+        {{ include('pages/about.twig') }}
+    {% else %}
+        {{ include('pages/fxp_page.twig') }}
+    {% endif %}
+
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //start location page slider
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                css: 'linear',
+                arrows: true
+            });
+        });
+    </script>
+{% endblock %}

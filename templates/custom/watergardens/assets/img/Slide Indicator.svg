@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="112px" height="17px" viewBox="0 0 112 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Molecules/Slider/Slide Indicator</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="4.5" cy="4.5" r="4.5"></circle>
+        <filter x="-55.6%" y="-55.6%" width="211.1%" height="211.1%" filterUnits="objectBoundingBox" id="filter-3">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <circle id="path-4" cx="4.5" cy="4.5" r="4.5"></circle>
+        <filter x="-55.6%" y="-55.6%" width="211.1%" height="211.1%" filterUnits="objectBoundingBox" id="filter-6">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <circle id="path-7" cx="4.5" cy="4.5" r="4.5"></circle>
+        <filter x="-55.6%" y="-55.6%" width="211.1%" height="211.1%" filterUnits="objectBoundingBox" id="filter-9">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <circle id="path-10" cx="4.5" cy="4.5" r="4.5"></circle>
+        <filter x="-55.6%" y="-55.6%" width="211.1%" height="211.1%" filterUnits="objectBoundingBox" id="filter-12">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <circle id="path-13" cx="4.5" cy="4.5" r="4.5"></circle>
+        <filter x="-55.6%" y="-55.6%" width="211.1%" height="211.1%" filterUnits="objectBoundingBox" id="filter-15">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <circle id="path-16" cx="4.5" cy="4.5" r="4.5"></circle>
+        <filter x="-55.6%" y="-55.6%" width="211.1%" height="211.1%" filterUnits="objectBoundingBox" id="filter-18">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Organism/Content-Slider/Desktop-Copy" transform="translate(-661.000000, -557.000000)">
+            <g id="Molecule/Slider/Slide-Indicator" transform="translate(620.000000, 561.000000)">
+                <g id="Molecules/Slider/Slide-Indicator" transform="translate(45.000000, 0.000000)">
+                    <g id="Atom/Icon/Slide-Indicator/Active">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="Mask">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-1"></use>
+                            <use stroke="#FFFFFF" stroke-width="1" xlink:href="#path-1"></use>
+                        </g>
+                        <g id="Color" stroke-width="1" fill-rule="evenodd" mask="url(#mask-2)" fill="#FFFFFF">
+                            <rect x="0" y="0" width="9" height="9"></rect>
+                        </g>
+                    </g>
+                    <g id="Atom/Icon/Slide-Indicator/Inactive" transform="translate(19.000000, 0.000000)" opacity="0.3">
+                        <g id="Atom/Icon/Slide-Indicator/Active">
+                            <mask id="mask-5" fill="white">
+                                <use xlink:href="#path-4"></use>
+                            </mask>
+                            <g id="Mask">
+                                <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-4"></use>
+                                <use stroke="#FFFFFF" stroke-width="1" xlink:href="#path-4"></use>
+                            </g>
+                            <g id="Color" stroke-width="1" fill-rule="evenodd" mask="url(#mask-5)" fill="#FFFFFF">
+                                <rect x="0" y="0" width="9" height="9"></rect>
+                            </g>
+                        </g>
+                    </g>
+                    <g id="Atom/Icon/Slide-Indicator/Inactive" transform="translate(38.000000, 0.000000)" opacity="0.3">
+                        <g id="Atom/Icon/Slide-Indicator/Active">
+                            <mask id="mask-8" fill="white">
+                                <use xlink:href="#path-7"></use>
+                            </mask>
+                            <g id="Mask">
+                                <use fill="black" fill-opacity="1" filter="url(#filter-9)" xlink:href="#path-7"></use>
+                                <use stroke="#FFFFFF" stroke-width="1" xlink:href="#path-7"></use>
+                            </g>
+                            <g id="Color" stroke-width="1" fill-rule="evenodd" mask="url(#mask-8)" fill="#FFFFFF">
+                                <rect x="0" y="0" width="9" height="9"></rect>
+                            </g>
+                        </g>
+                    </g>
+                    <g id="Atom/Icon/Slide-Indicator/Inactive" transform="translate(57.000000, 0.000000)" opacity="0.3">
+                        <g id="Atom/Icon/Slide-Indicator/Active">
+                            <mask id="mask-11" fill="white">
+                                <use xlink:href="#path-10"></use>
+                            </mask>
+                            <g id="Mask">
+                                <use fill="black" fill-opacity="1" filter="url(#filter-12)" xlink:href="#path-10"></use>
+                                <use stroke="#FFFFFF" stroke-width="1" xlink:href="#path-10"></use>
+                            </g>
+                            <g id="Color" stroke-width="1" fill-rule="evenodd" mask="url(#mask-11)" fill="#FFFFFF">
+                                <rect x="0" y="0" width="9" height="9"></rect>
+                            </g>
+                        </g>
+                    </g>
+                    <g id="Atom/Icon/Slide-Indicator/Inactive" transform="translate(76.000000, 0.000000)" opacity="0.3">
+                        <g id="Atom/Icon/Slide-Indicator/Active">
+                            <mask id="mask-14" fill="white">
+                                <use xlink:href="#path-13"></use>
+                            </mask>
+                            <g id="Mask">
+                                <use fill="black" fill-opacity="1" filter="url(#filter-15)" xlink:href="#path-13"></use>
+                                <use stroke="#FFFFFF" stroke-width="1" xlink:href="#path-13"></use>
+                            </g>
+                            <g id="Color" stroke-width="1" fill-rule="evenodd" mask="url(#mask-14)" fill="#FFFFFF">
+                                <rect x="0" y="0" width="9" height="9"></rect>
+                            </g>
+                        </g>
+                    </g>
+                    <g id="Atom/Icon/Slide-Indicator/Inactive" transform="translate(95.000000, 0.000000)" opacity="0.3">
+                        <g id="Atom/Icon/Slide-Indicator/Active">
+                            <mask id="mask-17" fill="white">
+                                <use xlink:href="#path-16"></use>
+                            </mask>
+                            <g id="Mask">
+                                <use fill="black" fill-opacity="1" filter="url(#filter-18)" xlink:href="#path-16"></use>
+                                <use stroke="#FFFFFF" stroke-width="1" xlink:href="#path-16"></use>
+                            </g>
+                            <g id="Color" stroke-width="1" fill-rule="evenodd" mask="url(#mask-17)" fill="#FFFFFF">
+                                <rect x="0" y="0" width="9" height="9"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

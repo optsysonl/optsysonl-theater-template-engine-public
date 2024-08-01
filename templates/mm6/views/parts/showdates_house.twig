@@ -1,0 +1,61 @@
+<nav id="showdates" class="clearfix">
+    {% for key,showdate in showtimes.dates %}
+        {% set showdate_title = showdate|date('D n/j') %}
+        {% if showdate == 'now'|date('Y-m-d') %}
+            {% set showdate_title = 'Today' %}
+        {% elseif showdate == 'tomorrow'|date('Y-m-d') %}
+            {% set showdate_title = 'Tomorrow' %}
+        {% endif %}
+        <button aria-label='{{- showdate_title -}}' class='showdate' data-date='{{- showdate -}}'>{{ showdate_title }}</button>
+    {% else %}
+        <span class="no_showdates">No showtimes available</span>
+    {% endfor %}
+</nav>
+{%- if showtimes -%}
+    <div id="calendar">
+        <input aria-label="calendar" id="datepicker" type="text" readonly="true" />
+    </div>
+{%- endif -%}
+{{- include('helper/showtimes_filter.twig', {formats: movies.movie_formats}, false) -}}
+<div id="showtimes" class="clearfix">
+{% for key_date,showdate in showtimes.showtimes %}
+    <div  id="{{ key_date }}" class="location_date">
+        {% for movie_id, movie in movies.movies %}
+            {% if showdate.movies[movie_id] is defined %}
+                <section class='showtimes-details clearfix'>
+                    <div class="poster">
+                        <a href='{{- movie.url -}}'>
+                            {%- if movie.stills.0 is defined -%}
+                                <img class="mobile" src='{{ movie.stills.0 }}' alt='Poster of {{ movie.name }}'/>
+                            {%- endif -%}
+                            <img class="desktop" src='{{ movie.poster }}' alt='Poster of {{ movie.name }}'/>
+                            <i class="icon-info"></i>
+                        </a>
+                    </div>{#
+    #}<div class="info">
+                        <h1 class="name">{{ movie.name }}</h1>
+                        <div>
+                            {% if movie.mpaa and movie.mpaa != 'NR' %}
+                                <span class="mpaa">{{ movie.mpaa }}</span>
+                            {% endif %}
+
+                            {% if movie.mpaa and movie.mpaa != 'NR' and movie.runtime %}
+                                <span class="dot"></span>
+                            {% endif %}
+
+                            {% if movie.runtime and movie.runtime != 0  %}
+                                <span class="runtime">{{ movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</span>
+                            {% endif %}
+                        </div>
+                        <span class="synopsis">{{ movie.synopsis|cropString(250)|raw }}</span>
+                        <a class="more-details" href="{{- movie.url -}}">More Details</a>
+                    </div>{#
+    #}<div class='showtimes'>
+                        {{ include('helper/showtimes.twig', {showtimes: showdate.movies[movie_id]}, false) }}
+                    </div>
+                </section>
+            {%- endif -%}
+        {% endfor %}
+    </div>
+{% endfor %}
+</div>

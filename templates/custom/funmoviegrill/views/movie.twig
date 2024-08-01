@@ -1,0 +1,196 @@
+{% extends 'common/base.twig' %}
+{% set page_class = "film" %}
+
+{% block meta_title %} {{- data.movies.movies[this_page.movie_id].name }} | {{ parent() }} {% endblock %}
+{% block meta_description %}{{- data.movies.movies[this_page.movie_id].synopsis_short -}}{% endblock %}
+
+{% block css_header %}
+    {#<link rel="stylesheet" href="/assets/css/jquery-ui.min.css" type="text/css">#}
+    <link rel="stylesheet" href="/assets/css/picker/classic.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/picker/classic.date.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/picker/classic.time.css" type="text/css">
+    {{ parent() }}
+{% endblock %}
+{% block social_meta_tags %}
+    <link rel="canonical" href="{{- site.baseurl -}}{{- data.movies.movies[this_page.movie_id].url -}}" />
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" value="summary">
+    <meta name="twitter:title" content="{{- data.movies.movies[this_page.movie_id].name }}">
+    <meta name="twitter:description" content="{{- data.movies.movies[this_page.movie_id].synopsis_short -}}">
+    <meta name="twitter:image" content="https:{{- data.movies.movies[this_page.movie_id].trailer.image }}">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="{{- data.movies.movies[this_page.movie_id].name }}" />
+    <meta property="og:type" content="video.movie" />
+    <meta property="og:url" content="{{- site.baseurl -}}{{- data.movies.movies[this_page.movie_id].url -}}" />
+    <meta property="og:image" content="http:{{- data.movies.movies[this_page.movie_id].trailer.image -}}" />
+    <meta property="og:image:secure_url" content="https:{{- data.movies.movies[this_page.movie_id].trailer.image -}}" />
+    {% if data.movies.movies[this_page.movie_id].stills_custom is not empty %}
+        {% for key, img_url in data.movies.movies[this_page.movie_id].stills_custom %}
+            <meta property="og:image" content="https:{{- img_url -}}" />
+        {% endfor %}
+    {% endif %}
+    {% if data.movies.movies[this_page.movie_id].stills is not empty %}
+        {% for key, img_url in data.movies.movies[this_page.movie_id].stills %}
+            <meta property="og:image" content="https:{{- img_url -}}" />
+        {% endfor %}
+    {% endif %}
+    <meta property="og:description" content="{{- data.movies.movies[this_page.movie_id].synopsis_short -}}" />
+    <meta property="og:site_name" content="{{- site.config.title -}}" />
+    {% if data.movies.movies[this_page.movie_id].trailer.url != '' %}
+        <meta property="og:video" content="http:{{- data.movies.movies[this_page.movie_id].trailer.url|url_decode -}}" />
+        <meta property="og:video:secure_url" content="https:{{- data.movies.movies[this_page.movie_id].trailer.url|url_decode -}}" />
+    {% endif %}
+    <meta property="video:release_date" content="{{- data.movies.movies[this_page.movie_id].release|date('Y-m-d') -}}" />
+
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% set movieDataMain = moviePageMoviesData(active_house_id, this_page.movie_id, data.movies.movies, data.showdates) %}
+    {% set movieData = movieDataMain['movie'][this_page.movie_id].movie %}
+    {% set showdates = movieDataMain['movie'][this_page.movie_id].showdates %}
+    {% set availableDates = movieDataMain['available_dates'] %}
+    <script>
+        availableDates = {{ availableDates|json_encode|raw }}
+    </script>
+    <div id="ff_top">
+        <div class="fiche_illus  avec_illus "></div>
+        <div class="wrap">
+            <div class="mobile-poster">
+                <a href="{{- movieData.poster -}}" rel="splash|yup" title="{{- movieData.name }} Poster">
+                    <img src="{{- movieData.poster -}}" alt="{{- movieData.name }} Poster" class="affiche photo">
+                </a>
+                {% if movieData.trailer.url != '' %}
+                    <a href="{{- movieData.trailer.url|url_decode -}}" class="play_video bt btn bt_fa ff_fa play_trailer"
+                       data-fancybox-type="iframe" title="Trailer for {{ movieData.name -}}"><span class="hidden">{{ movieData.name }} Trailer</span></a>
+                {% endif %}
+            </div>
+            <div class="info">
+                <h1 id="{{- movieData.slug -}}" class="ff_titre">{{- movieData.name -}}</h1>
+                <div class="tags_et_infos">
+                    {% if movieData.runtime %}
+                        <span class="fftxt ff_runtime">Runtime: <strong class="hi duration">{{- movieData.runtime -}}</strong></span>
+                    {% endif %}
+                    {% if movieData.mpaa and movieData.mpaa != 'NR' %}
+                        Rated {{ movieData.mpaa }} {% if movieData.advisory != '' %}{{ movieData.advisory }}{% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+        <div id="ff_main">
+            <div class="affiche_et_infos">
+                <a href="{{- movieData.poster -}}" rel="splash|yup" title="{{- movieData.name }} Poster">
+                    <img src="{{- movieData.poster -}}" style="max-width:230px;max-height:345px;" alt="{{- movieData.name }} Poster" class="affiche photo">
+                </a>
+
+                <div class="les_infos_film">
+                    {% if movieData.trailer.url != '' %}
+                        <a href="{{- movieData.trailer.url|url_decode -}}" class="play_video bt btn bt_fa ff_fa play_trailer"
+                           data-fancybox-type="iframe" title="Trailer for {{ movieData.name -}}"><span class="hidden">{{ movieData.name }} Trailer</span></a>
+                    {% endif %}
+
+                    <p class="fftxt ff_dates">
+                        <span class="ff_release">Release date:  <strong>{{- movieData.release|date('l, F jS') -}}</strong></span>
+                    </p>
+
+                    <p class="fftxt ff_genre">
+                        Genres: <strong>{{ movieData.genres|join(', ') }}</strong>
+                    </p>
+                    {% if movieData.director != '' %}
+                        <p class="fftxt ff_director">Director: <strong>{{- movieData.director -}}</strong></p>
+                    {% endif %}
+                    {% if movieData.actors is defined %}
+                        <p class="fftxt ff_cast">Actors:
+                            <strong>{{ movieData.actors|join(', ') }}</strong>
+                        </p>
+                    {% endif %}
+                    <p class="fftxt ff_synopsis">{{- movieData.synopsis|raw -}}</p>
+                    {% if movieData.custom_text != '' %}
+                        <p class="fftxt ff_custom_text">{{- movieData.custom_text|raw -}}</p>
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="about-movie-right">
+                <div class="responsive-reverted-content">
+                    <div class="about-movie-content">
+                        <!--p class="movie-content-title">About movie</p-->
+                        <div class="mobile-info">
+                            <p class="fftxt ff_dates">
+                                <span class="ff_release">Release date:  <strong>{{- movieData.release|date('l, F jS') -}}</strong></span>
+                            </p>
+                            <p class="fftxt ff_genre">
+                                Genres: <strong>{{ movieData.genres|join(', ') }}</strong>
+                            </p>
+                            {% if movieData.director != '' %}
+                                <p class="fftxt ff_director">Director: <strong>{{- movieData.director -}}</strong></p>
+                            {% endif %}
+                            {% if movieData.actors is defined %}
+                                <p class="fftxt ff_cast">Actors:
+                                    <strong>{{ movieData.actors|join(', ') }}</strong>
+                                </p>
+                            {% endif %}
+                            <p>{{- movieData.synopsis|raw -}}</p>
+                            {% if movieData.custom_text != '' %}
+                                <p class="fftxt ff_custom_text">{{- movieData.custom_text|raw -}}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="hr_tablehor movie-showtimes">
+                            {% if site.config.site_country == "GBR" %}
+                                {{ include('helper/showtimes-movie-gbr.twig', {showdates: showdates, mv_release:movieData.release}) }}
+                            {% else %}
+                                {{ include('helper/showtimes-buttons.twig', {days_count: 5}, with_context = false) }}
+                                {{ include('helper/showtimes-item.twig', {showdates: showdates, days_count: 6, site:site, movie_cat: [] }) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if (movieData.stills is not empty) or (movieData.stills_custom is not empty) %}
+                <div class="horaires_et_medias">
+                    <h3 class="ff_pics_title">Photos</h3>
+                    <div class="ff_pics">
+                        {% if movieData.stills_custom is not empty %}
+                            {% for key, img_url in movieData.stills_custom %}
+                                <a href="{{ img_url }}" rel="splash|yup" title="Custom Photo {{ key }} for {{ movieData.name -}}">
+                                    <img src="{{ img_url }}" alt="Photo {{ key }} for {{ movieData.name -}}" class="vignette-photo">
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if movieData.stills is not empty %}
+                            {% for key, img_url in movieData.stills %}
+                                <a href="{{ img_url }}" rel="splash|yup" title="Photo {{ key }} for {{ movieData.name -}}">
+                                    <img src="{{ img_url }}" alt="Photo {{ key }} for {{ movieData.name -}}" class="vignette-photo">
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {%  endif %}
+            </div>
+        </div>
+    </div>
+    {% if site.config.template_options.ad_home is defined and site.config.template_options.ad_home != '' %}
+        <div class="megaban">
+            <div class="footer_ad">
+                {{ site.config.template_options.ad_home|raw }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block footer_scripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="/assets/js/picker/picker.js"></script>
+    <script type="text/javascript" src="/assets/js/picker/picker.date.js"></script>
+    <script type="text/javascript" src="/assets/js/picker/picker.time.js"></script>
+    <script type="text/javascript" src="/assets/js/movies-script.js"></script>
+{% endblock %}

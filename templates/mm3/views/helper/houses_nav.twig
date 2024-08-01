@@ -1,0 +1,7 @@
+{% set houses_nav = data.houses|sortByState %}
+{% for state in houses_nav %}
+	{% if houses_nav|length > 1 %}<li class='state'><strong>- {{- state.state -}} -</strong></li>{% endif %}
+    {% for house in state.houses %}
+		<li><a href='{{- house.url -}}'>{{- house.name -}}</a></li>
+	{% endfor %}
+{% endfor %}

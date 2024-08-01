@@ -1,0 +1,23 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Movies {% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    
+    <div class="container moviespage" id="main">
+        {% set movies = NowPlayingComingSoon(data.movies.movies, data.showdates) %}
+        {{ include('helper/leaderboard.twig') }}
+        {% if  movies.np is not empty %}
+            <h1>Now Playing</h1>
+            {{ include('helper/grid-poster.twig', {movies: movies.np}, with_context = false) }}
+        {% endif %}
+        {% if  movies.np is not empty %}
+            <h1>Coming Soon</h1>
+            {{ include('helper/grid-poster.twig', {movies: movies.cs}, with_context = false) }}
+        {% endif %}
+
+        {{ include('helper/box_ad.twig') }}
+    </div>
+    {{ include('common/footer.twig') }}
+{% endblock %}

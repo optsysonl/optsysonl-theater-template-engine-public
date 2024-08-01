@@ -1,0 +1,14 @@
+{% for nav_item in this_page.footer.bottom_nav %}
+    {% if nav_item['sub_nav'] is defined %}
+
+        {% for sub_item in nav_item['sub_nav'] %}
+        <a href='{{- sub_item['url'] -}}' {{ sub_item['target'] }}>
+            {{- sub_item['name'] -}}
+        </a>
+        {% endfor %}
+    {% else %}
+        <a href='{{- nav_item['url'] -}}' {{ nav_item['target'] }}>
+            {{- nav_item['name'] -}}
+        </a>
+    {% endif %}
+{% endfor %}

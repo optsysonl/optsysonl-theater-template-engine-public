@@ -1,0 +1,45 @@
+﻿<!--fb-container container-fluid -->
+<div style="width: 800px; margin-left: -400px; visibility: hidden; position: absolute" data-backdrop="static" class="modal hide fade" id="facebookSelectGift" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            x</button>
+        <h3><%= localize.msgTopGift %></h3>
+    </div>
+    <div class="modal-body">
+        <div id="msgCountTickets" style="width: 200px" class="pull-left">
+        </div>
+
+        <div style="margin: 10px 0px 10px 10px" class="navbar-search pull-right">
+
+
+            <div class="pull-right">
+                <button id="searchBtn" class="btn-inverse searchButton">
+    </button>
+                
+            </div>
+
+            <div class="pull-right">
+                <input id="search" type="text" placeholder="<%= localize.searchFacebookFriends %>" />
+            </div>
+
+        </div>
+
+        <div id="user-friends" class="fb-box">
+        </div>
+    </div>
+    <div style="width: 90%; text-align: left; margin: 10px 5px 10px 20px;">
+        <p>
+            <%= localize.msgBottomGiftTitle %>
+        </p>
+        <p id="message" class="well" style="display: <%=msg != '' ? 'block':'none'%>">
+            <%= msg %>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a id="post-invitation-note"> <%= localize.postInvitationNoteMessage %></a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">
+            <%= localize.cancel %></button>
+        <button id="submit" class="btn btn-primary disabled">
+            <%= localize.postInvitation %></button>
+    </div>
+</div>

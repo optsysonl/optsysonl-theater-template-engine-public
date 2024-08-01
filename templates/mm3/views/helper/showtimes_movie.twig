@@ -1,0 +1,35 @@
+<div id="showtimes" class="clearfix showtimes_1">
+    {% for key_date,showdate in showtimes.showtimes %}
+        <div  id="{{ key_date }}" class="location_date" style="display: none">
+            {% for key_house,house_times in showdate.houses %}
+                <div class='theater {{ key_house }}'>
+                    {%- for format, comments in showdate.houses[key_house] -%}
+                        {%- for comment, times in comments -%}
+                            <span class='times'>
+                                {% if comment != '' %}
+                                    <span class="comment">{{- comment -}}</span>
+                                {%- endif -%}
+                                {%- for time, time_item in times %}
+                                    {%- if time_item.details.soldout is defined -%}
+                                        <span title="Sold Out" class="showtime_expired showtime_soldout">{{- time|date('g:ia') -}}</span>
+                                    {%- elseif not time_item.details.expired and time_item.details.link is defined -%}
+                                        <a class="time-link" href="{{ time_item.details.link }}">{{- time|date('g:ia') -}}</a>
+                                   {%- else -%}
+                                        <span class="{{ time_item.details.expired ? 'showtime_expired' : 'no_ticketing' }}">{{- time|date('g:ia') -}}</span>
+                                    {%- endif -%}
+                                {% endfor -%}
+                            </span>
+                            {#{% if comment != '' %}#}
+                                {#<span class="comment">{{- comment -}}</span>#}
+                            {#{%- endif -%}#}
+                            <hr>
+                        {%- endfor -%}
+                    {% else %}
+                        <div id='showtimes_movie'>No Showtimes Available.</div>
+                    {%- endfor -%}
+
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

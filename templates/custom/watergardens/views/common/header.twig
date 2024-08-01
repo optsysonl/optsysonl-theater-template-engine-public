@@ -1,0 +1,20 @@
+<input type="checkbox" id="nav-trigger"/>
+<header id="site-header" class="cbw clearfix">
+    <div id="header-content" class="clearfix">
+        <div class="header-top">
+            <a href="/" id="logo-home-link"><img src="/assets/img/WG_Logo2.png" id="header-logo"
+                                                 alt="Logo for {{ site.config.title }}"/></a>
+        </div>
+        <div id="nav-block">
+            <nav id="top-nav" class="clearfix">
+                <label for="nav-trigger"><span class="menu-button">Menu</span></label>
+                <div id="main-nav">
+                    {{- include('parts/pages_top_nav.twig') -}}
+                </div>
+            </nav>
+            <div id="site-social-icons">
+                {{ include('helper/social_media.twig', {icons: this_page.header.social_icons}, false) }}
+            </div>
+        </div>
+    </div>
+</header>

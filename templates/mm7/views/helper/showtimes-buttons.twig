@@ -1,0 +1,24 @@
+{% set date_now = "now"|date("D,d")|split(',') %}
+{% set count = days_count is defined ? days_count : 7  %}
+<div class="hr_tablehor ">
+    <div class="choix_jour ftab">
+        <div class="frow fhead lesjours">
+            <div class="fcel showdate-button" data-index="1" data-date="{{ "now"|date("Y-m-d") }}">
+                <div class="hr_jour"><span class="nom_jour">{{- date_now[0] -}}</span>{{- date_now[1] -}}</div>
+            </div>
+            {% for i in 1..count %}
+                {% set next_date = "now"|date_modify("+"~i~" day")|date("D,d")|split(',') %}
+                {% set tab_index = i+1 %}
+                <div class="fcel showdate-button" data-index="{{ tab_index }}" data-date="{{ "now"|date_modify("+"~i~" day")|date("Y-m-d") }}">
+                    <div class="hr_jour"><span class="nom_jour">{{- next_date[0] -}}</span>{{- next_date[1] -}}</div>
+                </div>
+            {% endfor %}
+            <div class="fcel showdate-button calendar-button" data-date="">
+                <div class="hr_jour">
+                    <label for="datepicker" class="hidden">Choose date</label>
+                    <input id="datepicker" type="text" name="date" value="" readonly="" placeholder="Choose date" >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

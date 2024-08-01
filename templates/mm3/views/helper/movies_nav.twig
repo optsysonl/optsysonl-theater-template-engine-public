@@ -1,0 +1,15 @@
+{% set movies = nowPlayingComingSoon(data.movies.movies, data.showdates) %}
+{% if movies.np is not empty %}
+	<li class='state'><strong>- Now Playing / Get Tickets -</strong></li>
+    {% for movie in movies.np %}
+		<li><a href='{{- movie.url -}}'>{{ movie.name }}</a></li>
+	{% endfor %}
+{% endif %}
+
+{% if  movies.cs is not empty %}
+	<li class='state'><strong>- Coming Soon -</strong></li>
+    {% for movie in movies.cs|slice(0, 5) %}
+		<li><a href='{{- movie.url -}}'>{{ movie.name }}</a></li>
+	{% endfor %}
+{% endif %}
+	<li><a href='/movies#coming-soon'>See All...</a></li>

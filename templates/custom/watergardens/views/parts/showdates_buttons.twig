@@ -1,0 +1,19 @@
+{% for key, showdate in showdates %}
+    {% set showdate_title_day = showdate|date('l') %}
+    {% set showdate_title_date = showdate|date('d') %}
+    {% set showdate_title_month = showdate|date('F') %}
+    {% if showdate == 'now'|date('Y-m-d') %}
+        {% set showdate_title_day = 'Today' %}
+    {% endif %}
+    <button aria-label='{{- showdate_title_day -}}' class='showdate {{ showdate }}' data-date='{{- showdate -}}'>
+        {% if showdate == 'now'|date('Y-m-d') %}
+            <span class="today">Today</span>
+        {% else %}
+            <span class="top">{{- showdate_title_day -}}</span>
+            <span class="middle">{{- showdate_title_date -}}</span>
+            <span class="bottom">{{- showdate_title_month -}}</span>
+        {% endif %}
+    </button>
+{% else %}
+    <span class="no_showdates">No showtimes available</span>
+{% endfor %}

@@ -1,0 +1,16 @@
+<footer id="footer">
+	<div id="footer_content">
+		{{ include('parts/pages_bottom_nav.twig') }}
+		
+    	<article class="footer_links">
+            {{ include('helper/social_media_links.twig', {icons: this_page.header.social_icons}, with_context = false)  }}
+    	</article>
+ 		<div id="footer_clearfix" class="clearfix"></div> 
+    	<article id="footer_logo">
+	        <section class="copyright">
+	        	<span class="year">&copy;{{ "now"|date("Y") }} {{ site.config.title }}</span>
+	        </section>
+	        <a href="https://company.boxoffice.com/"><img src="https://movienewsletters.net/poweredby/boxoffice/light.svg" class="powered_by" alt="Powered by The Boxoffice Company" /></a>
+    	</article>
+    </div>
+</footer>

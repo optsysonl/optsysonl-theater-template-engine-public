@@ -1,0 +1,3 @@
+{% for house in data.houses %}
+    <li><a href='{{- house.url -}}'>{{- house.name|replace({"Cinema Cafe - ": ""}) -}}</a></li>
+{% endfor %}

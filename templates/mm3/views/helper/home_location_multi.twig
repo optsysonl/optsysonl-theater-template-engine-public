@@ -1,0 +1,13 @@
+{% set movies = nowPlayingComingSoon(data.movies.movies, data.showdates) %}
+<div id="now_playing" class="movie_box">
+    <h2>Now Playing</h2>
+    <article class="content">
+        {{ include('helper/movie_box.twig', {movies: movies.np}, with_context = false)  }}
+    </article>
+</div>
+<div id="coming_soon" class="movie_box">
+    <h2>Coming Soon</h2>
+    <div class="content">
+        {{ include('helper/movie_box.twig', {movies: movies.cs}, with_context = false)  }}
+    </div>
+</div>

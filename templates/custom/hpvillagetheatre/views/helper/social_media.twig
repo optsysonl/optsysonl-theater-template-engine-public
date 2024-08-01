@@ -1,0 +1,42 @@
+<div id="social-icons">
+    {%- if icons.facebook.link is defined and icons.facebook.link != '' -%}
+        <a href='{{ icons.facebook.link }}' aria-label="facebook link" target='_blank'>
+            <img src='{{ icons.facebook.img }}' class='svg social-icon'/>
+        </a>
+    {%- endif -%}
+    {% if icons.instagram.link is defined and icons.instagram.link != '' -%}
+        <a href='{{ icons.instagram.link }}' aria-label="facebook link" target='_blank'>
+            <img src='{{ icons.instagram.img }}' class='svg social-icon'/>
+        </a>
+    {%- endif -%}
+    {%- if icons.twitter.link is defined and icons.twitter.link != '' -%}
+        <a href='{{ icons.twitter.link }}' aria-label="facebook link" target='_blank'>
+            <img src='{{ icons.twitter.img }}' class='svg social-icon'/>
+        </a>
+    {%- endif -%}
+    {%- if icons.pintrest.link is defined and icons.pintrest.link != '' -%}
+        <a href='{{ icons.pintrest.link }}' aria-label="pintrest link" target='_blank'>
+            <img src='{{ icons.pintrest.img }}' class='svg social-icon'/>
+        </a>
+    {%- endif -%}
+    {%- if icons.google_plus.link is defined and icons.google_plus.link != '' -%}
+        <a href='{{ icons.google_plus.link }}' aria-label="google plus link" target='_blank'>
+            <img src='{{ icons.google_plus.img }}' class='svg social-icon'/>
+        </a>
+    {%- endif -%}
+    {%- if icons.site_google_plus.link is defined and icons.site_google_plus.link != '' -%}
+        <a href='{{ icons.site_google_plus.link }}' aria-label="google plus link" target='_blank'>
+            <img src='{{ icons.site_google_plus.img }}' class='svg social-icon'/>
+        </a>
+    {%- endif -%}
+    {%- if icons.youtube.link is defined and icons.youtube.link != '' -%}
+        <a href='{{ icons.youtube.link }}' aria-label="youtube link" target='_blank'>
+            <img src='{{ icons.youtube.img }}' class='svg social-icon'/></a>
+    {%- endif -%}
+    {%- if icons.cust_id.link is defined and icons.cust_id.link != '' -%}
+        <a href="#" data-token="3384e8cf4269c16279f6f216587ce570" aria-label="subscribe"
+           onclick="mjOpenPopin(event, this)">
+            <img src='{{ icons.cust_id.img }}' class='svg social-icon'/>
+        </a>
+    {%- endif -%}
+</div>

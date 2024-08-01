@@ -1,0 +1,19 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | {{ data.page.details['SiteHeadline'] }} {% endblock %}
+
+{% block content %}
+{{ include('common/header.twig') }}
+<div id="background_wrap">
+    <div id="main-content">
+        
+        <h1>Page Not Found</h1>
+        <p class="center">The page might have moved or the URL may be incorrect. Please use the navigation to select another page.</p>
+        <p class="center"><img src="//www.filmsxpress.com/images/tpl/mm3/icoError.png" /></p>
+        
+        {{ include('parts/footer_promos.twig') }}
+        <div class="clearfix"></div>
+    </div>
+{{ include('common/footer.twig') }}
+</div>
+{% endblock %}

@@ -1,0 +1,140 @@
+﻿<div class="row home-page">
+    <%if(movies.models.length > 0){%>
+    <div class="span11">
+        <div class="row" style="height: 400px;">
+            <div class="span6">
+                <div style="width:240px;height:360px;" class="movie-placeholder movie-image sticker-overflow">
+                    <img id="movie-image" onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/movie-poster-default.png';" style="display:<%= (movies.models[0].get("image")["large"]) ? 'block' : 'none' %>" src="<%= movies.models[0].get("image")["large"] %>" />
+               </div>
+            </div>
+            <div class="span5">
+                <div class=" movie-info">
+                    <div style="height: 308px;">
+                        <h3 id="movie-name" style="overflow:hidden; word-wrap: break-word;"> <%=window.appConfig.GroupMovies && movies.models[0].get("tMDBName") ? movies.models[0].get("tMDBName") : movies.models[0].get("name") %></h3>
+                        <p><span class="rating" id="movie-rating"><%= movies.models[0].get("rating") %></span>
+                            
+                            <span class="ddd-badge" style="display: <%= movies.models[0].get('dDDFlag') ? '' : 'none' %>">
+                                <%= localize.dDDFlag %>
+                            </span>
+                            <span class="imax-badge" style="display: <%= movies.models[0].get('imaxFlag') ? '' : 'none' %>">
+                                <%= localize.imaxFlag %>
+                            </span>
+                            
+                        </p>
+                        <p class="text scroll" id="movie-description"><%= movies.models[0].get("description") %>
+                        </p>
+                    </div>
+                    <div class="clear"></div>
+
+                    <div class="buttonPlaceholder">
+                        <a style="display: <%=movies.models[0].get('trailerUrl') ? 'block' : 'none' %>" href="#trailerLightbox" data-toggle="lightbox" style="text-decoration: none;">
+
+                            <button class="btn btn-white" type="button" id="movie-trailer" data-trailerurl="<%=movies.models[0].get('trailerUrl') + '?autoplay=1'%>" data-theaterId="<%= movies.models[0].theaterId %>" data-featureCode="<%= $.trim(movies.models[0].get("code")) %>">
+                                <%= localize.playTrailer %></button>
+                        </a>
+                    </div>
+                        <button class="btn btn-white" type="button" id="movie-showtimes" data-featurecode="<%=$.trim(movies.models[0].get('code')) %>">
+                            <%= localize.showtimesTickets %></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span11">
+                <div class="scrollContainer relative">
+                    <a class="buttons prev shadow-left" href="#">
+                        <img src="/assets/files/ncr-content/img/arrow-left.png" alt="" />
+                    </a>
+                    <div class="viewport" style="width: 475px;">
+                        <ul class="overview">
+                            <%_.each( movies.models, function( movie, n ){%>
+                            <div class="sticker-overflow">
+                             <img class='carousel-item' style ="margin: 0px 4px 0px 0px;" data-trailerurl="<%=movie.get('trailerUrl')%>" data-tmdbid="<%=$.trim(movie.get('tMDBId')) %>" data-theaterId="<%= movie.theaterId %>" data-featureCode="<%= $.trim(movie.get("code")) %>"  src="<%= movie.get("image")["small"] %>" alt="<%= escape(movie.get("name")) %>">
+                              </div> 
+                          <%}); %>
+                        </ul>
+                    </div>
+                    <a class="buttons next shadow-right" href="#">
+                        <img src="/assets/files/ncr-content/img/arrow-right.png" alt="" /></a>
+                    <div class="clear"></div>
+                    <ul class="pager">
+                        <% var counter = 0; for(var i = 0;i < movies.models.length; i++){ %>
+                        <% var divisor = 4;
+                            if(window.singleSite){
+                               divisor = 7;
+                            }
+                        %>
+                        <% if(i%divisor == 0) { %>
+                        <li><a rel="<%=counter%>" class="pagenum" href="#"></a></li>
+                        <%counter++;}%>
+                        <%}%>
+                    </ul>
+                </div>
+                <p class="center" > <a href="#movies">
+                                        <button class="btn btn-white" type="button">
+                                            <%= localize.seeAllMovies %></button></a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="span5">
+        <div class="black-panel">
+            <h4>
+                <%= localize.theatersNearby %></h4>
+            <% if(theaters.models.length > 0){ %>
+            <ul class="theater-list">
+                <% _.each( theaters.models, function( theater, n ){%>
+                <li>
+                    <a href="#theater/<%= theater.get("id") %>">
+                        <span class="theater-title"><%= theater.get("name") %></span><br />
+                        <%= theater.get("addressLine1") %><br />
+                        <% if(theater.get("addressLine2")){%>
+                        <%= theater.get("addressLine2") %><br />
+                        <%}%>
+                        <%= theater.get("addressCity") %>,
+                        <%= theater.get("addressState") %>
+                        <%= theater.get("addressZip") %>
+                    </a>
+                    <span class="separator"></span>
+                </li>
+                <%}); %>
+                <li>
+                    <a href="#theaters">
+                        <span class="theater-title"><%= localize.seeAllTheaters %></span><br />
+                    </a>
+                </li>
+            </ul>
+            <%} %>
+        </div>
+       
+    </div>
+</div>
+    <div id="trailerLightbox" class="lightbox hide fade"  tabindex="-1" role="dialog" aria-hidden="true">
+	<div class='lightbox-header'>
+		<button type="button" class="close" data-dismiss="lightbox" aria-hidden="true">&times;</button>
+	</div>
+        <div class='lightbox-content'>
+            <iframe id="tubeTrailer" width="720" height="480"  %>" frameborder="0" allowfullscreen></iframe>
+	</div>
+</div>
+<%}else{ %>
+ <h4 class="error"> <%= localize.noMoviesFound %></h4>
+ <%} %>
+<script type="text/javascript">
+    $(function () {
+        var carouselOptions = { display: 4, pager: true };
+
+        $(".carousel-item:first").addClass("active");
+
+        if (window.singleSite) {
+            $('#movie-description').css('width', '423px');
+            $('#movie-name').css('width', '423px');
+            $('p.center').css('margin-left', '235px');
+            $('a.next').css('left', '685px');
+            $('.viewport').css('width', '710px');
+            $('.pager').css('margin-left', '250px');
+            $('#movie-showtimes').css({ 'margin-left': '220px', 'margin-top': '-65px' });
+            carouselOptions.display = 7;
+        }
+        $("div.scrollContainer").tinycarousel(carouselOptions);
+    });
+</script>

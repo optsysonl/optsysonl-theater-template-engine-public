@@ -1,0 +1,19 @@
+{% if icons.facebook.link is defined and icons.facebook.link != '' -%}
+	<a href='{{ icons.facebook.link }}' style='text-decoration:none;' target='_blank' title='Facebook Link'>Facebook</a>
+{% endif %}
+{% if icons.twitter.link is defined and icons.twitter.link != '' -%}
+	<a href='{{ icons.twitter.link }}' target='_blank'>Twitter</a>
+{% endif %}
+{% if icons.instagram.link is defined and icons.instagram.link != '' -%}
+	<a href='{{ icons.instagram.link }}' target='_blank'>Instagram</a>
+{% endif %}
+{% if icons.pintrest.link is defined and icons.pintrest.link != '' -%}
+	<a href='{{ icons.pintrest.link }}' target='_blank'>Pintrest</a>
+{% endif %}
+{% if icons.google_plus.link is defined and icons.google_plus.link != '' -%}
+	<a href='{{ icons.google_plus.link }}' target='_blank'>Google+</a>
+{% endif %}
+{% if icons.cust_id.link is defined and icons.cust_id.link != '' -%}
+	<a href='http://csxutils.fbmovies.cinema-source.com/subscribe/?cust_id={{- icons.cust_id.link -}}&amp;iframe=true&amp;width=600&amp;height=400' data-fancybox-type='iframe'
+			  id='newsletter-svg' target='_blank'>Newsletter</a>
+{% endif %}  

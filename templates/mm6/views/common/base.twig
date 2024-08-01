@@ -1,0 +1,141 @@
+{% if debug.header is defined %}{{ debug.header|join('\n')|raw }}{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <title>{% block meta_title %}{{ site.config.title }}{% endblock %}</title>
+
+        <!-- Meta -->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="{% block meta_description %}{{ site.meta.description }}{% endblock %}">
+        <meta name="keywords" content="{% block meta_keywords %}{{ site.meta.keywords }}{% endblock %}">
+
+        <!-- DNS Prefetch -->
+        <meta http-equiv="x-dns-prefetch-control" content="on">
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+        <link rel="dns-prefetch" href="//ajax.googleapis.com">
+        <link rel="dns-prefetch" href="//fonts.googleapis.com">
+        <link rel="dns-prefetch" href="//filmsxpress.com">
+        <link rel="dns-prefetch" href="//www.filmsxpress.com">
+        <link rel="dns-prefetch" href="//movienewsletters.net">
+        <link rel="dns-prefetch" href="//www.movienewsletters.net">
+
+        <!-- Favicon -->
+        {% if site.meta['icon'] is defined %}
+    <link rel="icon" href="{{ site.meta['icon'] }}" sizes="16x16 32x32 96x96" type="image/x-icon">
+        {% endif %}
+        {% if site.meta['android_icon'] is defined %}
+    <link rel="android-icon" href="{{ site.meta['android_icon'] }}" sizes="36x36 48x48 72x72 96x96" type="image/x-icon">
+        {% endif %}
+        {% if site.meta['apple_icon'] is defined %}
+    <link rel="apple-touch-icon" href="{{ site.meta['apple_icon'] }}"
+          sizes="57x57 60x60 72x72 76x76 114x114 120x120 144x144 152x152 180x180" type="image/x-icon">
+        {% endif %}
+        {% if site.meta['apple_icon_precomposed'] is defined %}
+    <link rel="apple-touch-icon-precomposed" href="{{ site.meta['apple_icon_precomposed'] }}"
+          sizes="57x57 60x60 72x72 76x76 114x114 120x120 144x144 152x152 180x180" type="image/x-icon">
+        {% endif %}
+        {% if site.meta['shortcut_icon'] is defined %}
+    <link rel="shortcut-icon" href="{{ site.meta['shortcut_icon'] }}" sizes="70x70 144x144 150x150 310x310" type="image/x-icon">
+        {% endif %}
+
+    {% block css %}
+        <!-- CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Righteous" rel="stylesheet">
+        <!-- jQuery UI -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <!-- Fancybox -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
+
+        {% if config.custom_css is defined and config.custom_css %}
+        <style type="text/css">
+            {{ config.custom_css }}
+        </style>
+        {% endif %}
+
+    {% endblock %}
+
+    {% block js_scripts %}
+        <!-- JS -->
+        <script src="/assets/js/modernizr.min.js"></script>
+        <script src="/assets/js/detectizr.min.js"></script>
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- jQuery UI -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <!-- Custom JS -->
+        <script src="/assets/js/functions.js"></script>
+        <!-- Mailjet -->
+        <script type="text/javascript" src="https://app.mailjet.com/statics/js/widget.modal.js"></script>
+    {% endblock %}
+
+        {% if site.config.analytics is not empty %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="true" src="https://www.googletagmanager.com/gtag/js?id={{- site.config.analytics -}}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+
+            gtag('config', '{{- site.config.analytics -}}');
+        </script>
+        {% endif %}
+
+        {% block meta_misc_html %}{{ site.config.misc_html|raw }}{% endblock %}
+    {% endblock %}
+</head>
+<body id="{{- this_page.class['body'] -}}">
+{{ include('common/header.twig') }}
+
+{% block content %}{% endblock %}
+
+{{ include('common/footer.twig') }}
+
+{% block js_scripts_footer %}
+    {% if site.config.template_options.footer_scripts != '' %}
+        {{ site.config.template_options.footer_scripts|raw }}
+    {% endif %}
+
+    <!-- Fancybox -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+    {% if site.config.template_options.piwik is defined %}
+    <!-- Piwik -->
+    <script type="text/javascript">
+        var _paq = _paq || [];
+        _paq.push(['enableLinkTracking']);
+        _paq.push(["enableCrossDomainLinking"]);
+        _paq.push(['enableHeartBeatTimer', 30]);
+        _paq.push(['trackPageView']);
+        (function () {
+            var u = "//stats.westworldmedia.com/";
+            _paq.push(['setTrackerUrl', u + 'piwik.php']);
+            _paq.push(['setSiteId', '{{ config.template_options.piwik }}']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.type = 'text/javascript';
+            g.async = true;
+            g.defer = true;
+            g.src = u + 'piwik.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <noscript><p><img src="//stats.westworldmedia.com/piwik.php?idsite={{- site.config.template_options.piwik -}}&rec=1" style="border:0;"
+                      alt=""/></p></noscript>
+    <!-- End Piwik Code -->
+    {% endif %}
+{% endblock %}
+<!-- Mailjet Popup -->
+<data data-token="3384e8cf4269c16279f6f216587ce570" class="mj-w-data" data-apikey="2Nmb" data-w-id="5qZ" data-lang="en_US"
+      data-base="https://app.mailjet.com" data-width="640" data-height="456" data-statics="statics"></data>
+</body>
+</html>
+{% if debug.footer is defined %}{{ debug.footer|join('\n')|raw }}{% endif %}

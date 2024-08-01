@@ -1,0 +1,32 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Locations {% endblock %}
+
+{% block content %}
+{{ include('common/header.twig') }}
+<div id="background_wrap">
+	<div id="main-content">
+        {% set movies = nowPlayingComingSoon(data.movies.movies, data.showdates) %}
+        {%  if  movies.np is not empty %}
+            <div id="now_playing" class="movie_box">
+                <h2>Now Playing</h2>
+                <div class="content">
+                    {{ include('helper/movie_box.twig', {movies: movies.np}, with_context = false)  }}
+                </div>
+            </div>
+        {% endif %}
+        {%  if  movies.cs is not empty %}
+            <div id="coming_soon" class="movie_box">
+                <h2>Coming Soon</h2>
+                <div class="content">
+                    {{ include('helper/movie_box.twig', {movies: movies.cs}, with_context = false)  }}
+                </div>
+            </div>
+        {% endif %}
+	        
+        {{ include('parts/footer_promos.twig') }}
+        <div class="clearfix"></div>
+    </div>
+{{ include('common/footer.twig') }}
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+<footer id="site-footer">
+	<div id="footer-content" class="clearfix">
+		<nav id="bottom-nav" class="clearfix">
+			<ul>
+            	{{ include('parts/pages_bottom_nav.twig') }}
+			</ul>
+		</nav>
+	</div>
+	<div id="powered-container">
+		<div id="copyright">&copy; Copyright {{ "now"|date("Y") }} - {{ site.config.title }}<br/></div>
+
+		<a href="https://company.boxoffice.com/">
+			<img id="PoweredRight" src="https://movienewsletters.net/poweredby/boxoffice/light.svg"
+				 alt="Powered by The Boxoffice Company">
+		</a>
+	</div>
+</footer>

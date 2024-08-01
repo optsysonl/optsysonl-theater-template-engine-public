@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <title>{% block meta_title %}{{ site.config.title }}{% endblock %}</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="google-site-verification" content="p6mmmSqsro01WSYsOEj7GkvNqYmG8RCdCz2oxJwdIjY"/>
+        <meta name="msvalidate.01" content="AC6A871CD9D58247A62A5A11CE7732A6"/>
+
+        <!-- add Favicon -->
+        {% if site.meta['icon'] is defined %}
+        <link rel="icon" href="{{ site.meta['icon'] }}" sizes="16x16 32x32 96x96" type="image/x-icon">{% endif %}
+        {% if site.meta['android_icon'] is defined %}
+        <link rel="android-icon" href="{{ site.meta['android_icon'] }}" sizes="36x36 48x48 72x72 96x96" type="image/x-icon">{% endif %}
+        {% if site.meta['apple_icon'] is defined %}
+        <link rel="apple-touch-icon" href="{{ site.meta['apple_icon'] }}"
+              sizes="57x57 60x60 72x72 76x76 114x114 120x120 144x144 152x152 180x180" type="image/x-icon">{% endif %}
+        {% if site.meta['apple_icon_precomposed'] is defined %}
+        <link rel="apple-touch-icon-precomposed" href="{{ site.meta['apple_icon_precomposed'] }}"
+              sizes="57x57 60x60 72x72 76x76 114x114 120x120 144x144 152x152 180x180" type="image/x-icon">{% endif %}
+        {% if site.meta['shortcut_icon'] is defined %}
+        <link rel="shortcut-icon" href="{{ site.meta['shortcut_icon'] }}" sizes="70x70 144x144 150x150 310x310"
+              type="image/x-icon">{% endif %}
+
+    {% block css %}
+        <!-- CSS -->
+        {% block meta_google_fonts %}{{ site.meta['google_fonts']|raw }}{% endblock %}
+        <!-- WOW Slider -->
+        <link rel="stylesheet" type="text/css" href="/assets/files/wowslider/engine1/style.css"/>
+        <link rel="stylesheet" type="text/css" href="/assets/css/reset.css">
+        <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+        <!--[if gte IE 9]>
+        <style type="text/css">.gradient {filter: none;}</style>
+        <![endif]-->
+        <!-- jQuery UI -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="/assets/css/datepicker.css">
+        <!-- Fancybox -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.6/css/jquery.fancybox.min.css">
+        <!-- Carousel -->
+        <link rel="stylesheet" type="text/css" href="/assets/css/carousel.css">
+
+    {% endblock %}
+
+    {% block js_scripts %}
+            {#<!-- jQuery old -->#}
+            {#<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>#}
+            {#<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.3.min.js"><\/script>')</script>#}
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <!-- jQuery UI -->
+            {#<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>#}
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <!-- Fancybox -->
+        {#<script src="/assets/files/fancybox/jquery.fancybox.pack.js"></script>#}
+        <!-- jwPlayer -->
+        <script type="text/javascript" src="/assets/files/jwplayer/jwplayer.js"></script>
+        {#<script type="text/javascript">jwplayer.key = "2I0Bs/bS9LXxqvIFZ/F9d/VqzrRdCWPytp4bdA==";</script>#}
+
+        <!-- Custom JS -->
+        <script src="/assets/files/jquery.carouFredSel-6.2.1.js"></script>
+
+        <script src="/assets/js/functions.js"></script>
+
+            <!-- Google Tag Manager (noscript) -->
+            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TFZ2LN6"
+                              height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <!-- End Google Tag Manager (noscript) -->
+
+            <!-- /9518146/Marquee_Skin -->
+            <div id='div-gpt-ad-1453496991992-0' style='height:1px; width:1px;'>
+                    <script type='text/javascript'>
+                        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1453496991992-0'); });
+                    </script>
+            </div>
+    {% endblock %}
+
+    {% block js_analytics %}
+        {% if site.meta['analytics'] is not empty %}
+        <!-- Google Analytics -->
+        <script>
+            // JavaScript Document
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', '{{ site.meta['analytics'] }}', '');
+            ga('send', 'pageview');
+        </script>
+        {% endif %}
+
+        <!-- Begin comScore Tag -->
+        <script>
+            var _comscore = _comscore || [];
+            _comscore.push({ c1: "2", c2: "16580712" });
+            (function() {
+                var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+                s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+                el.parentNode.insertBefore(s, el);
+            })();
+        </script>
+        <noscript>
+            <img src="http://b.scorecardresearch.com/p?c1=2&c2=16580712&cv=2.0&cj=1" alt="scorecard"  />
+        </noscript>
+        <!-- End comScore Tag -->
+
+        {% if false %}
+        <!-- Piwik -->
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="//stats.westworldmedia.com/";
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', '4']);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
+        </script>
+        <!-- End Piwik Code -->
+        {% endif %}
+    {% endblock %}
+
+    {% block adwords %}
+        <script type='text/javascript'>
+            var googletag = googletag || {};
+            googletag.cmd = googletag.cmd || [];
+            (function () {
+                var gads = document.createElement('script');
+                gads.async = true;
+                gads.type = 'text/javascript';
+                var useSSL = 'https:' == document.location.protocol;
+                gads.src = (useSSL ? 'https:' : 'http:') +
+                    '//www.googletagservices.com/tag/js/gpt.js';
+                var node = document.getElementsByTagName('script')[0];
+                node.parentNode.insertBefore(gads, node);
+            })();
+        </script>
+        <script type='text/javascript'>
+            googletag.cmd.push(function () {
+                var mappingLeaderboard = googletag.sizeMapping().addSize([970, 90], [970, 90]).addSize([728, 90], [728, 90]).addSize([1, 1], [320, 50]).build();
+                var mappingBox = googletag.sizeMapping().addSize([1024, 768], [300, 250]).addSize([500, 500], [300, 250]).addSize([1, 1], [300, 250]).build();
+
+                {% if site.config.google_adwords_code is not empty %}
+                {{ site.config.google_adwords_code|raw }}
+                {% endif %}
+                googletag.enableServices();
+            });
+        </script>
+    {% endblock %}
+        {% block misc_html %}
+            {{ site.config.misc_html|raw }}
+        {% endblock %}
+    {% endblock %}
+
+    {% block mobile_redirect %}
+        <!-- Mobile Redirect -->
+        <!--script src="/assets/js/mobile.js"></script-->
+    {% endblock %}
+</head>
+<body id="{{- this_page.class['body'] -}}">
+{% block content %}{% endblock %}
+
+{% block js_scripts_footer %}
+    <!-- Fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.6/js/jquery.fancybox.min.js"></script>
+{% endblock %}
+</body>
+</html>

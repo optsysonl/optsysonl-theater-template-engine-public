@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block meta_title %}{{ site.config.title }}{% endblock %}</title>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+    <style type="text/css">
+        h3 { text-align: center; }
+        table { margin: 0 auto; }
+        .price_category {
+            border-bottom: 1px solid black;
+            padding: 10px 0;
+            font-weight: bold;
+        }
+        .field {
+            border-bottom: 1px solid black;
+            padding: 5px 10px 5px 0;
+        }
+        .price {
+            border-left: 1px solid black;
+            border-bottom: 1px solid black;
+            padding: 5px 0 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main_wrapper">
+        {% if data.house.prices is not empty %}
+        <h3>Prices</h3>
+        {{ include('helper/prices.twig', {prices: data.house.prices}, with_context = false) }}
+        {% endif %}
+    </div>
+</body>
+</html>

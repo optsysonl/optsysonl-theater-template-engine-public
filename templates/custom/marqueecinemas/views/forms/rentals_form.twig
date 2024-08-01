@@ -1,0 +1,114 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<p class="confirmation"></p>
+<form id="frmRentals" method="post">
+    <input name="_recipients" id="_recipients" type="hidden" value="rshumate@marqueecinemas.com" />
+    <input name="_subject" id="_subject" type="hidden" value="Theatre Rental Request" />
+    <div class="half">
+        <label for="name">Name*</label><span id="err_name" class="errmsg"></span>
+        <input type="text" id="name" name="Name" class="required" />
+        <label for="phone_number">Phone Number*</label><span id="err_phone_number" class="errmsg"></span>
+        <input type="text" id="phone_number" name="Phone Number" class="required" />
+        <label for="email_address">Email Address*</label><span id="err_email_address" class="errmsg"></span>
+        <input type="text" id="email_address" name="Email Address" class="required" />
+        <label for="email_address_confirm">Confirm Email Address*</label><span id="err_email_address_confirm" class="errmsg"></span>
+        <input type="text" id="email_address_confirm" name="Email Address Confirmed" class="required" />
+        <label for="theatre">Theatre for Event*</label><span id="err_theatre" class="errmsg"></span>
+        <select id="theatre" name="Theatre for Event" class="required">
+            {{ include('helper/houses_select.twig') }}
+        </select>
+        <label for="event_date">Date of the Event*</label></label><span id="err_event_date" class="errmsg"></span>
+        <input type="text" id="event_date" name="Date of Event" class="required" />
+        <label for="event_time">Time of the Event*</label></label><span id="err_event_time" class="errmsg"></span>
+        <input type="text" id="event_time" name="Time of Event" class="required" />
+    </div>
+    <div class="half">
+        <label for="company_name">Company Name</label>
+        <input type="text" id="company_name" name="Company Name" />
+        <label for="setup_time">Amount of time needed for setup/takedown</label>
+        <input type="text" id="setup_time" name="Time for Setup and Takedown" />
+        <label for="attendance">Number of people attending</label>
+        <input type="text" id="attendance" name="Number of people attending" />
+        <label for="purpose">Purpose of rental</label>
+        <input type="text" id="purpose" name="Purpose fo rental" />
+        <label for="comments">Comments/Questions</label>
+        <textarea id="comments" name="Comments/Questions"></textarea>
+        <span id="err_captcha_confirm" class="errmsg"></span>
+        <button
+                class="g-recaptcha"
+                data-sitekey="6LcCWW0UAAAAAASK6e-FkViYfD5woQKIMh9LIKWv"
+                data-callback="YourOnSubmitFn">
+            Submit
+        </button>
+
+    </div>
+</form>
+
+<div class="clearfix"></div>
+
+<script>
+    function YourOnSubmitFn(token) {
+        //assume we are OK
+        var isMissing = false;
+        $('#preloader').addClass('active');
+        $('.errmsg').text('');
+
+        //loop through required fields
+        $('.required').each(function () {
+
+            //remove the missing class
+            $(this).removeClass("missing");
+
+            //if blank, add the missing class back
+            if ($(this).val() == "") {
+                $(this).addClass("missing");
+                $('#err_' + this.id).text(' *Required');
+                isMissing = true
+            }
+
+        });
+
+        //make sure the email address is valid!
+        if ($('#email_address').length != 0) {
+            if (!validateEmail($('#email_address').val())) {
+                $('#email_address').addClass("missing");
+                $('#err_email_address').text(' *Not a valid email');
+                isMissing = true;
+            }
+        }
+
+        if (!isMissing) {
+            sendMessage($("#frmRentals"));
+        } else {
+            grecaptcha.reset();
+            return false;
+        }
+        grecaptcha.reset();
+        return false;
+    }
+
+    function sendMessage(form) {
+
+        var data = form.serializeArray();
+
+        $.ajax({
+            url: '/data/info',
+            type: 'post',
+            data: {message: data},
+            success: function (response) {
+                $('#preloader').removeClass('active');
+                try {
+                    response = JSON.parse(response);
+                    if (response.status == 'success') {
+                        $('.confirmation').html(response.data);
+                        form[0].reset();
+                    }
+                } catch (err) {
+
+                }
+
+            }
+        });
+
+    }
+
+</script>

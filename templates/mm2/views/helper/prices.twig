@@ -1,0 +1,14 @@
+{% for price in prices %}
+
+    <div class='price-block'>
+        <span class='price_category'>{{ price.cat }}</span>
+        <span class='price_times'></span>
+        {% for a_price in price.prices %}
+            <span class='field'>{{ a_price.name }}</span>
+            <span class='price'>{{ a_price.value }}</span><br>
+        {%- endfor %}
+
+    </div>
+{% else %}
+    <p>Pricing information not available.</p>
+{%- endfor %}

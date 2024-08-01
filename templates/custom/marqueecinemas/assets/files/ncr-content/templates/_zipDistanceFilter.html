@@ -1,0 +1,35 @@
+﻿<div class="row">
+    <div class="span16">
+          <%if(showDistance) {%>
+        <div class="filterText marginL0" ><%= localize.searchWithin%></div>     
+        <div>
+            <div class="btn-group">
+                <button id="distance" class="btn btn-inverse" data="100">
+                    100 <%= localize.miles%></button>
+                <button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul id="distanceList" class="dropdown-menu" aria-labelledby="dLabel">
+                    <li label="5 <%=searchUnit%>" data="5"><a>5</a></li>
+                    <li label="10 <%=searchUnit%>" data="10"><a>10</a></li>
+                    <li label="25 <%=searchUnit%>" data="25"><a>25</a></li>
+                    <li label="50 <%=searchUnit%>" data="50"><a>50</a></li>
+                    <li label="75 <%=searchUnit%>" data="75"><a>75</a></li>
+                    <li label="100 <%=searchUnit%>" data="100"><a>100</a></li>
+                    <li label="200 <%=searchUnit%>" data="200"><a>200</a></li>
+                </ul>
+            </div>
+        </div>         
+        <div class="filterText"><%= localize.of %></div>
+        <%}
+        else{%>
+       <div class="filterText marginL0" ><%= localize.searchLocation%></div>    
+        <%}%>
+        <div>
+            <input class="search-query" type="text" id="zip-code" value="<%= zipCode %>" placeholder="<%= localize.searchBoxHolder%>" /></div>
+        <div>
+            <button id="change-zip" class="btn btn-inverse searchButton"></button>
+        </div>
+        <div style="height:20px;" class="clear"></div>
+    </div>
+</div>

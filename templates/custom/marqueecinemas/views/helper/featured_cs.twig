@@ -1,0 +1,26 @@
+{% if movie_page is defined %}
+    <div id="featured" class="featured_movie_page">
+{% else %}
+    <div id="featured">
+{% endif %}
+    <h5>Featured Coming Soon</h5>
+    {% for movie in movies.movies if movie.release|date("Y-m-d") > "now"|date("Y-m-d") %}
+        {% if movie.categories is defined %}
+            {% for category in movie.categories %}
+                {% if category.cat_id == featured_cat %}
+                    <a href='{{- movie.url -}}'>
+                        <li>
+                            <img src='{{- movie.poster -}}' />
+                            <br>
+                            <br>
+                            {{ movie.name }}
+                            <span class='date'>{{ movie.release|date('l, F jS') }}</span>
+                        </li>
+                    </a>
+                {% endif %}
+            {%- endfor %}
+        {% endif %}
+    {%- endfor %}
+</div>
+
+

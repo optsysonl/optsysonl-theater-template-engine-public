@@ -1,0 +1,28 @@
+{% for showdate, movie in showdates if showdate != 'movie' and showdate != 'showdates' %}
+    {%- for time, time_item in movie.times -%}
+        {%- if time_item.soldout is defined -%}
+            <span class="showtime soldout {{ showdate }}">
+                    <span class="time">
+                        <span class="number">{{- time|date('g:i') -}}</span>
+                        <span class="ampm">{{- time|date('A') -}}</span>
+                    </span>
+                </span>
+        {%- elseif not time_item.expired and time_item.link is defined -%}
+            <a class="showtime {{ showdate }}" href="{{ time_item.link }}" target="_blank">
+                    <span class="time">
+                        <span class="number">{{- time|date('g:i') -}}</span>
+                        <span class="ampm">{{- time|date('A') -}}</span>
+                    </span>
+            </a>
+        {%- else -%}
+            <span class="showtime {{ time_item.expired ? 'expired' : '' }} {{ showdate }}">
+                    <span class="time">
+                        <span class="number">{{- time|date('g:i') -}}</span>
+                        <span class="ampm">{{- time|date('A') -}}</span>
+                    </span>
+                </span>
+        {%- endif -%}
+    {%- endfor %}
+{% else %}
+    <div class='showtimes {{ showdate }} no-available-showtimes'>No showtimes available on this date.</div>
+{% endfor %}

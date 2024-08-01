@@ -1,0 +1,80 @@
+{% set showtimes = getHouseTimes(showdates, house_id) %}
+{% set all_movies = movies.movies %}
+{% set available_dates = [] %}
+
+<div id="showdates" class="clearfix">
+    {% set count_showdate = 0 %}
+    {% for key,showdate in showtimes.dates %}
+        {% set available_dates = available_dates|merge([showdate]) %}
+        {% if count_showdate <= 5 %}
+            {% set showdate_title1 = showdate|date('D') %}
+            {% set showdate_title2 = showdate|date('M j') %}
+            {% if showdate == 'now'|date('Y-m-d') %}
+                {% set showdate_title1 = 'Today' %}
+            {% endif %}
+            <a class='showdate' data-date="{{- showdate -}}">{{ showdate_title1 }}<br>{{ showdate_title2 }}</a>
+        {% endif %}
+        {% set count_showdate = count_showdate+1 %}
+    {% else %}
+        No showtimes available
+    {% endfor %}
+    <form id="form" action="">
+        <p>more</p>
+        <label for="datepicker" class="hidden">Date Picker</label>
+        <input id="datepicker" type="text" name="date" value="" readonly=""  >
+    </form>
+</div>
+<div id="showtimes" class="clearfix">
+    <div id="display_date"></div>
+    {#% set sortedMovies = the_house.movies|groupMovieShowtimes %}#}
+    {% for key_date,showdate in showtimes.showtimes %}
+        <div id="{{ key_date }}" class="location_date">
+            {% for key_movie,movie in all_movies if showdate.movies[key_movie] is defined %}
+                <div class = "showtimes_movie">
+                    <div class="hs_poster">
+                        <img src='{{ all_movies[key_movie].poster }}' class='poster' alt='Poster of {{ all_movies[key_movie].name }}'/>
+                        <a href='/trailer/{{- all_movies[key_movie].trailer.url -}}' class="play_trailer" data-fancybox-type="iframe" title="{{ all_movies[key_movie].name }}">Trailer &#9654;</a>
+                    </div>
+                    <div class='showtimes_info'>
+                        <h3>
+                            {{ all_movies[key_movie].name }} <span class='mpaa'>{{ all_movies[key_movie].mpaa }}</span>
+                        </h3>
+                        <div class="detail">
+                            {% if all_movies[key_movie].genres is defined %}
+                                {{ all_movies[key_movie].genres|join('/') }}
+                            {% endif %} <br/>
+
+                            {% if all_movies[key_movie].runtime !='' %}
+                                {{ all_movies[key_movie].runtime|date('g \\h\\r\\. i \\m\\i\\n\\.') }} <br/>
+                            {% endif %}
+
+                            {% if all_movies[key_movie].actors is defined and all_movies[key_movie].actors  != '' %}
+                                <br><strong>CAST</strong><br>
+                                    {{ all_movies[key_movie].actors|join(', ') }}<br>
+                            {% endif %}
+
+                            {% if all_movies[key_movie].director != '' %}
+                                <br><strong>DIRECTOR</strong><br>
+                                    {{ all_movies[key_movie].director }}<br>
+                            {% endif %}
+
+                            <br>
+                            <a href='{{- all_movies[key_movie].url -}}'>More Information &#9658;</a>
+                        </div>
+                        <aside class='showtimes'>
+                            {% if all_movies[key_movie].day is defined %}
+                                <span class='weekday'>{{ all_movies[key_movie].day }}</span>
+                            {% endif %}
+                            {{ include('helper/showtimes.twig', {showtimes: showdate.movies[key_movie]}, false) }}
+                        </aside>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+
+<script>
+    var availableDates = {{ available_dates|json_encode|raw }};
+</script>

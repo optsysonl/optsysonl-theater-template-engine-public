@@ -1,0 +1,94 @@
+<div class="modal fade" id="modal-seatKey" tabindex="-1" role="dialog" aria-labelledby="seatKeyLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-header">
+        <h3 id="seatKeyLabel"><%= localize.seatKey%></h3>
+    </div>
+    <div class="modal-body">
+        <% if(zones.length > 0){ %>
+        <div class="zones">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><a><%= localize.seatType%></a></th>
+                        <th><a><%= localize.additionalFeePerSeat%></a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% _.each(zones, function(zone){
+                    if(zone){%>
+                    <tr>
+                        <td>
+                            <div class="seat-wrapper">
+                            <div class="seat unselected  <%=zone.get('zoneClass')%>"><span></span></div></div> <a><%=zone.get("name")%></a>
+                        </td>
+                        <td>
+                            <a><%=zone.get("displaySurchargeAmount")%></a>
+                        </td>
+                    </tr>
+                    <%}});%>
+                </tbody>
+            </table>
+
+        </div>
+        <%}%>
+        <div class="seat-types">
+            <table class="table">
+                <tr>
+                    <td>
+                        <div class="seat-wrapper">
+                            <div class="seat default Reserved unselected"><span></span></div></div> <a><%= localize.regularSeat%></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="seat-wrapper">
+                            <div class="seat default Reserved"><span></span></div></div> <a><%= localize.yourSeat %></a>
+                    </td>
+                </tr>
+                <%if(window.ConfigurationProvider.useHoldTickets(theater)) {%>
+                <tr>
+                    <td>
+                        <div class="seat-wrapper">
+                            <div class="HeldSeat seat"><span></span></div> </div> <a><%= localize.heldSeat%></a>
+                    </td>
+                </tr>
+                <%} %>
+                <%if(showLoveSeat) {%>
+                <tr>
+                    <td>
+                        <div class="seat-wrapper">
+                            <div class="LoveSeat seat default unselected "><span></span></div> </div> <a><%= localize.loveSeat %></a>
+                    </td>
+                </tr>
+                <%} %>
+                <%if(showWheelChair) {%>
+                <tr>
+                    <td>
+                        <div class="seat-wrapper">
+                            <div class="Wheelchair seat default unselected"><span></span></div> </div> <a><%= localize.wheelchair %></a>
+                    </td>
+                </tr>
+                <%} %>
+                <%if(showCompanion) {%>
+                <tr>
+                    <td>
+                        <div class="seat-wrapper">
+                            <div class="WheelchairCompanion seat default unselected "><span></span></div> </div> <a><%= localize.companion %></a>
+                    </td>
+                </tr>
+                <%} %>
+                <tr>
+                    <td>
+                        <div class="seat-wrapper">
+                            <div class="unavailable seat unselected"><span></span></div> </div> <a><%= localize.unavailable%></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">
+            <%= localize.close%></button>
+    </div>
+</div>
+

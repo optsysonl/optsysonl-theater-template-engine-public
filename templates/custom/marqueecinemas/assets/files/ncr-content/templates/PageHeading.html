@@ -1,0 +1,12 @@
+﻿<li><a id="tab-theaters"><%=localize.theaters%></a> </li>
+<li><a id="tab-movies"><%= localize.movies%></a> </li>
+<%if(showPromotions){%>
+<li><a id="tab-promotions"><%= localize.promotions%></a> </li>
+<%}%>
+<%if(window.ChainInfo.acceptsLoyalty() && window.ChainInfo.allowLoyaltyManagement()){%>
+<li><a id="tab-loyalty-card"><%=localize.loyaltyCard%></a> </li>
+<%}%>
+
+
+
+

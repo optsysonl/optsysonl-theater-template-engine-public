@@ -1,0 +1,16 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Page Not Found {% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div class="container" id="main">
+        <h1>Page Not Found</h1>
+        <h4>Sorry, the page you have requested cannot be found.</h4>
+        <p>The page might have moved or the URL may be incorrect. Please use the navigation to select another page.</p>
+        <a href="/">
+            <button class="cta-404">Return to homepage</button>
+        </a>
+    </div>
+    {{ include('common/footer.twig') }}
+{% endblock %}

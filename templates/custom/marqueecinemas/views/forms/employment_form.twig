@@ -1,0 +1,363 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<p class="confirmation"></p>
+<form id="frmEmployment" method="post" enctype="multipart/form-data">
+    <input name="empl_recipients" id="empl_recipients" type="hidden" value="">
+    <input name="_subject" id="_subject" type="hidden" value="Employment Application" />
+    <div class="section">
+        <h1>Upload Resume</h1>
+        <p>You may attach your resume to this application (must be in .doc, .docx, .pdf or .txt form and les sthan 5MB)</p>
+        <input type="hidden" name="MAX_FILE_SIZE" value="5242880" />
+        <label for="resume" class="hidden">Resume</label>
+        <input id="resume" name="resume" type="file"><span id="err_resume" class="errmsg"></span>
+    </div>
+    <div class="section">
+        <h1>Personal Info</h1>
+        <div class="half">
+            <label for="first_name">First Name*</label><span id="err_first_name" class="errmsg"></span>
+            <input type="text" id="first_name" name="First Name" class="required" />
+            <label for="last_name">Last Name*</label><span id="err_last_name" class="errmsg"></span>
+            <input type="text" id="last_name" name="Last Name" class="required" />
+            <label for="address">Address*</label><span id="err_address" class="errmsg"></span>
+            <input type="text" id="address" name="Address" class="required" />
+            <label for="city">City*</label><span id="err_city" class="errmsg"></span>
+            <input type="text" id="city" name="City" class="required" />
+            <label for="state">State*</label><span id="err_state" class="errmsg"></span>
+            <select id="state" name="State" class="required">
+                {{ include('helper/state_list.twig') }}
+            </select>
+            <label for="zip">Zip*</label><span id="err_zip" class="errmsg"></span>
+            <input type="text" id="zip" name="Zip Code" class="required" />
+        </div>
+        <div class="half">
+            <label for="phone_number">Phone Number*</label><span id="err_phone_number" class="errmsg"></span>
+            <input type="text" id="phone_number" name="Phone Number" class="required" />
+            <label for="email_address">Email Address*</label><span id="err_email_address" class="errmsg"></span>
+            <input type="text" id="email_address" name="Email Address" class="required" />
+            <label for="theatre">Which Marquee Location?*</label><span id="err_theatre" class="errmsg"></span>
+            <select id="theatre" name="Theatre for Event" class="required">
+                {{ include('helper/houses_select.twig') }}
+            </select>
+            <label for="position">Position Desired*</label><span id="err_position" class="errmsg"></span>
+            <select id="position" name="Position Desired" class="required">
+                <option value="">- Select a Position -</option>
+                <option value="Management">Management</option>
+                <option value="Service Staff (Box Office, Concession, Usher)">Service Staff (Box Office, Concession, Usher)</option>
+                <option value="Projectionist">Projectionist</option>
+                <option value="Any">Any</option>
+            </select>
+            <label for="salaray">Wage Desired</label>
+            <input type="text" id="salaray" name="Wage Desired" />
+        </div>
+    </div>
+
+    <div class="section">
+        <h1>Days and Hours Available</h1>
+        <div class="half">
+            <label for="friday">Friday</label>
+            <input type="text" id="friday" name="Friday Hours" />
+            <label for="saturday">Saturday</label>
+            <input type="text" id="saturday" name="Saturday Hours" />
+            <label for="sunday">Sunday</label>
+            <input type="text" id="sunday" name="Sunday Hours" />
+            <label for="monday">Monday</label>
+            <input type="text" id="monday" name="Monday Hours" />
+            <label for="tuesday">Tuesday</label>
+            <input type="text" id="tuesday" name="Tuesday Hours" />
+        </div>
+        <div class="half">
+            <label for="wednesday">Wednesday</label>
+            <input type="text" id="wednesday" name="Wednesday Hours" />
+            <label for="thursday">Thursday</label>
+            <input type="text" id="thursday" name="Thursday Hours" />
+            <label for="weekend">Can you work weekends & holidays?</label><br>
+            <input id="weekend" type="radio" name="Weekends and Holidays[]" value="Yes" />Yes
+            <input id="weekend" type="radio" name="Weekends and Holidays[]" value="No" />No<br>
+            <label for="availability_explain">If no, please explain</label>
+            <textarea id="availability_explain" name="Weekends and Holidays Explanation"></textarea>
+        </div>
+    </div>
+    <div class="sub_section">
+        <div class="half">
+            <label for="years18">Are you at least 18 years of age?</label><br>
+            <input id="years18" type="radio" name="18 Years of Age[]" value="Yes" />Yes
+            <input id="years18" type="radio" name="18 Years of Age[]" value="No" />No<br>
+            <label for="years_proof">If hired, can you show proof of age?</label><br>
+            <input id="years_proof" type="radio" name="Proof of Age[]" value="Yes" />Yes
+            <input id="years_proof" type="radio" name="Proof of Age[]" value="No" />No<br>
+        </div>
+        <div class="half">
+            <label for="years16">If no, are you at least 16 years of age?</label><br>
+            <input id="years16" type="radio" name="16 Years of Age[]" value="Yes" />Yes
+            <input id="years16" type="radio" name="16 Years of Age[]" value="No" />No<br>
+        </div>
+    </div>
+    <div class="sub_section">
+        <div class="half">
+            <label for="crime">Have you been convicted of a crime other than a misdemeanor or minor traffic violation within the last 5 years?</label><br>
+            <input id="crime" type="radio" name="Convicted of Crime[]" value="Yes" />Yes
+            <input id="crime" type="radio" name="Convicted of Crime[]" value="No" />No<br>
+        </div>
+        <div class="half">
+            <label for="crime_explain">If yes, please explain</label>
+            <textarea id="crime_explain" name="Crime Explanation"></textarea>
+        </div>
+    </div>
+    <div class="sub_section">
+        <div class="half">
+            <label for="school">Are you currently attending school?</label><br>
+            <input id="school" type="radio" name="Currently in School[]" value="Yes" />Yes
+            <input id="school" type="radio" name="Currently in School[]" value="No" />No<br>
+        </div>
+        <div class="half">
+            <label for="school_attending">If yes, where?</label>
+            <textarea id="school_attending" name="School Attending"></textarea>
+        </div>
+    </div>
+    <div class="sub_section">
+        <div class="half">
+            <label for="before">Have you applied to Marquee Cinemas before?</label><br>
+            <input id="before" type="radio" name="Applied Before[]" value="Yes" />Yes
+            <input id="before" type="radio" name="Applied Before[]" value="No" />No<br>
+            <label for="realtives_epmloyed">List any relatives that work for Marquee Cinemas and where</label>
+            <textarea id="realtives_epmloyed" name="Relatives Employed by Marquee Cinemas"></textarea>
+        </div>
+        <div class="half">
+            <label for="application_explanation">If yes, where and when?</label>
+            <textarea id="application_explanation" name="Applied Before Detail"></textarea>
+        </div>
+    </div>
+    <div class="sub_section">
+        <div class="half">
+            <label for="relatives">Do you have reliable transportation?</label><br>
+            <input id="relatives" type="radio" name="Reliable Transportation[]" value="Yes" />Yes
+            <input id="relatives" type="radio" name="Reliable Transportation[]" value="No" />No<br>
+        </div>
+    </div>
+
+    <div class="section">
+        <h1>Previous Employment</h1>
+        <h3>Employer One</h3>
+        <div class="half">
+            <label for="employer1">Employer</label>
+            <input id="employer1" type="text" name="Employer 1 Name" />
+            <label for="supervisor1">Supervisor</label>
+            <input id="supervisor1" type="text" name="Employer 1 Supervisor" />
+            <label for="empl_addr_1">Address</label>
+            <input id="empl_addr_1" type="text" name="Employer 1 Address" />
+            <label for="empl_city_1">City</label>
+            <input id="empl_city_1" type="text" name="Employer 1 City" />
+            <label for="empl_state_1">State</label>
+            <select id="empl_state_1" name="Employer 1 State">
+                {{ include('helper/state_list.twig') }}
+            </select>
+            <label for="empl_zip_1">Zip</label>
+            <input id="empl_zip_1" type="text" name="Employer 1 Zip Code" />
+        </div>
+        <div class="half">
+            <label for="empl_phone_1">Phone Number</label>
+            <input id="empl_phone_1" type="text" name="Employer 1 Phone" />
+            <label for="empl_start_1">Start Date</label>
+            <input id="empl_start_1" type="text" name="Employer 1 Start Date" />
+            <label for="empl_end_1">End Date</label>
+            <input id="empl_end_1" type="text" name="Employer 1 End Date" />
+            <label for="empl_pos_1">Position Held</label>
+            <input id="empl_pos_1" type="text" name="Employer 1 Position Held" />
+            <label for="empl_reason_1">Reason for leaving</label>
+            <textarea id="empl_reason_1" name="Employer 1 Reason for Leaving"></textarea>
+        </div>
+        <div class="sub_section">
+            <h3>Employer Two</h3>
+            <div class="half">
+                <label for="employer2">Employer</label>
+                <input id="employer2" type="text" name="Employer 2 Name" />
+                <label for="supervisor2">Supervisor</label>
+                <input id="supervisor2" type="text" name="Employer 2 Supervisor" />
+                <label for="empl_addr_2">Address</label>
+                <input id="empl_addr_2" type="text" name="Employer 2 Address" />
+                <label for="empl_city_2">City</label>
+                <input id="empl_city_2" type="text" name="Employer 2 City" />
+                <label for="empl_state_2">State</label>
+                <select id="empl_state_2" name="Employer 2 State">
+                    {{ include('helper/state_list.twig') }}
+                </select>
+                <label for="empl_zip_2">Zip</label>
+                <input id="empl_zip_2" type="text" name="Employer 2 Zip Code" />
+            </div>
+            <div class="half">
+                <label for="empl_phone_2">Phone Number</label>
+                <input id="empl_phone_2" type="text" name="Employer 2 Phone" />
+                <label for="empl_start_2">Start Date</label>
+                <input id="empl_start_2" type="text" name="Employer 2 Start Date" />
+                <label for="empl_end_2">End Date</label>
+                <input id="empl_end_2" type="text" name="Employer 2 End Date" />
+                <label for="empl_pos_2">Position Held</label>
+                <input id="empl_pos_2" type="text" name="Employer 2 Position Held" />
+                <label for="empl_reason_2">Reason for leaving</label>
+                <textarea id="empl_reason_2" name="Employer 2 Reason for Leaving"></textarea>
+            </div>
+        </div>
+        <div class="sub_section">
+            <h3>Employer Three</h3>
+            <div class="half">
+                <label for="employer3">Employer</label>
+                <input id="employer3" type="text" name="Employer 3 Name" />
+                <label for="supervisor3">Supervisor</label>
+                <input id="supervisor3" type="text" name="Employer 3 Supervisor" />
+                <label for="empl_addr_3">Address</label>
+                <input id="empl_addr_3" type="text" name="Employer 3 Address" />
+                <label for="empl_city_3">City</label>
+                <input id="empl_city_3" type="text" name="Employer 3 City" />
+                <label for="empl_state_3">State</label>
+                <select id="empl_state_3" name="Employer 3 State">
+                    {{ include('helper/state_list.twig') }}
+                </select>
+                <label for="empl_zip_3">Zip</label>
+                <input id="empl_zip_3" type="text" name="Employer 3 Zip Code" />
+            </div>
+            <div class="half">
+                <label for="empl_phone_3">Phone Number</label>
+                <input id="empl_phone_3" type="text" name="Employer 3 Phone" />
+                <label for="empl_start_3">Start Date</label>
+                <input id="empl_start_3" type="text" name="Employer 3 Start Date" />
+                <label for="empl_end_3">End Date</label>
+                <input id="empl_end_3" type="text" name="Employer 3 End Date" />
+                <label for="empl_pos_3">Position Held</label>
+                <input id="empl_pos_3" type="text" name="Employer 3 Position Held" />
+                <label for="empl_reason_3">Reason for leaving</label>
+                <textarea id="empl_reason_3" name="Employer 3 Reason for Leaving"></textarea>
+            </div>
+        </div>
+        <div class="sub_section">
+            <div class="half">
+                <label for="cur_empl">Are you currently employed?</label><br>
+                <input id="cur_empl" type="radio" name="Currently Employed[]" value="Yes" />Yes
+                <input id="cur_empl" type="radio" name="Currently Employed[]" value="No" />No<br>
+                <label for="cont_cur_empl">May we contact your current employer?</label><br>
+                <input id="cont_cur_empl" type="radio" name="Contact Current Emplyer[]" value="Yes" />Yes
+                <input id="cont_cur_empl" type="radio" name="Contact Current Emplyer[]" value="No" />No
+            </div>
+            <div class="half">
+                <label for="gap_expl">Please explain any gaps in employment</label>
+                <textarea id="gap_expl" name="Employment Gap Explanation"></textarea>
+            </div>
+        </div>
+        <div class="sub_section">
+            <p>I hereby authorize and request any and all my former employers and any other person, firm or corporation to furnish any and all information concerning credit-worthiness and personal background and I hereby release each such employer or other person, firm or corporation from any and all liability by reasons of furnishing the requested information. I understand that in connection with this application, a consumer report and / or an investigative consumer report may be requested whereby information is obtained through personal interview with my neighbors, friends or associates or with others with whom I am acquainted or who may have knowledge with respect to my character, general reputation, personal characteristics and mode of living, and hereby authorize the procurement of any such report. I understand that, upon my request, I have the right to know if any such report was requested and, if so, the name and address of the consumer reporting agency that furnished such reports and in the case of a consumer investigative report, that I may inspect and receive a copy of such report by contacting such agency. I also understand that I have the right to receive a complete and accurate disclosure of the nature and scope of the information requested if I request such disclosure within a reasonable period of time.</p>
+            <p>I understand that if employed any misrepresentation or omission of facts requested is cause for dismissal.</p>
+            <br>
+            <label for="agree" class="hidden">Agree:</label>
+            <input type="checkbox" id="agree" name="Agree to Terms of Application" value="Yes" />I agree to these terms<br /><br />
+            <span id="err_captcha_confirm" class="errmsg"></span>
+            {#<input id="submit" name="submit" type="submit" value="Submit Resume" class="button button_left" onclick="validate_form(frmEmployment)" disabled />#}
+            <button
+                    id="submit"
+                    class="g-recaptcha "
+                    data-sitekey="6LcCWW0UAAAAAASK6e-FkViYfD5woQKIMh9LIKWv"
+                    data-callback="YourOnSubmitFn">
+                Submit
+            </button>
+
+        </div>
+    </div>
+
+
+</form>
+
+<div class="clearfix"></div>
+
+<script type="text/javascript">
+
+    //document ready
+    $(function () {
+
+        $('#theatre').change(function() {
+            $('#empl_recipients').val($(this.options[this.selectedIndex]).attr('data-email'));
+        });
+
+        setTimeout(function(){
+            $("#submit").attr("disabled", true);
+        }, 1000);
+        //remove disabled flag from submit if agree to terms
+        $("#submit").prop("disabled", true);
+        $("#agree").click(function () {
+
+            if ($(this).prop('checked')) {
+                $("#submit").removeAttr("disabled");
+            } else {
+                $("#submit").attr("disabled", true);
+            }
+        })
+    })
+
+    function YourOnSubmitFn(token) {
+        //assume we are OK
+        var isMissing = false;
+        $('#preloader').addClass('active');
+        $('.errmsg').text('');
+
+        //loop through required fields
+        $('.required').each(function () {
+
+            //remove the missing class
+            $(this).removeClass("missing");
+
+            //if blank, add the missing class back
+            if ($(this).val() == "") {
+                $(this).addClass("missing");
+                $('#err_' + this.id).text(' *Required');
+                isMissing = true
+            }
+
+        });
+
+        //make sure the email address is valid!
+        if ($('#email_address').length != 0) {
+            if (!validateEmail($('#email_address').val())) {
+                $('#email_address').addClass("missing");
+                $('#err_email_address').text(' *Not a valid email');
+                isMissing = true;
+            }
+        }
+
+        if (!isMissing) {
+            sendMessage($("#frmEmployment"));
+        } else {
+            grecaptcha.reset();
+            return false;
+        }
+        grecaptcha.reset();
+        return false;
+    }
+
+    function sendMessage(form) {
+
+        var formdata = false;
+        if (window.FormData){
+            formdata = new FormData(form[0]);
+        }
+
+        $.ajax({
+            url: '/data/infoem',
+            type: 'post',
+            data: formdata ? formdata : form.serialize(),
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function (response) {
+                $('#preloader').removeClass('active');
+                try {
+                    response = JSON.parse(response);
+                    if (response.status == 'success') {
+                        $('.confirmation').html(response.data);
+                        form[0].reset();
+                    }
+                } catch (err) {
+
+                }
+
+            }
+        });
+
+    }
+
+</script>

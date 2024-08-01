@@ -1,0 +1,74 @@
+<div id="content-footer">
+    <div id="ct_main_footer">
+        {% if site.config.template_options.nl_type != "none" %}
+        <div id="bot_aside">
+            <div class="wrap">
+                <div class="ba_nl">
+                    <h3 class="nl_titre">ALWAYS BE IN THE KNOW</h3>
+                    <p class="nl_info">
+                        Subscribe to {{ data.houses[active_house_id].name }} email newsletter to receive updates and event notifications. You don't have to worry, we'll respect your inbox.
+                    </p>
+                    {% if site.config.template_options.nl_signup_url is defined and site.config.template_options.nl_signup_url is not empty %}
+                        {% set nl_URL = site.config.template_options.nl_signup_url %}
+                    {% else %}
+                        {% set nl_URL = 'https://csxutils.fbmovies.cinema-source.com/subscribe/' %}
+                    {% endif %}
+                    <div id="mod_ccweb_newsletter" class="">
+                        <div id="mod_subscribe">
+                            <form method="post" action="{{- nl_URL -}}">
+                                <input type="hidden" name="cust_id" value="{{ site.config.cust_id }}"/>
+                                <input type="hidden" name="iframe" value="true"/>
+                                <input type="hidden" name="width" value="600"/>
+                                <input type="hidden" name="height" value="400"/>
+                                <label for="lm_email" class="hidden" >Input Email address</label>
+                                <input type="text" id="lm_email" name="txt_email_address" class="inputbox" placeholder="Email address">
+                                <label for="valid-abo" class="hidden" >Subscribe button</label>
+                                <input type="submit" id="valid-abo" class="button" name="valid-abo" value="Subscribe">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div id="footer">
+            <div id="social_buttons" class="">
+                {{ include('helper/social_icons.twig', {icons: this_page.header.social_icons, house_icons: data.houses[active_house_id].social_icons, email: data.houses[active_house_id].email}, false) }}
+            </div>
+            <div id="bottommenu">
+                <ul id="mainlevel-bas">
+                    <li><a href="/" title="Home">Home</a></li>
+                    <li><a href="/showtimes" title="Showtimes">Showtimes</a></li>
+                    <li><a href="/movies" title="Movies">Movies</a></li>
+                    {#<li><a href="/events" title="Events">Events</a></li>#}
+                    <li>
+                        <a href="/about" title="About Theater">
+                            {% if site.config.site_country == "GBR" %}
+                                Theatre Info
+                            {% else %}
+                                Theater Info
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% for page in data.pages %}
+                        {% if active_house_id in page.house_ids|split(';') and page.nav_bottom == '1' %}
+                            <li><a href="{{ page.url }}" title="{{ page.site_headline }}">{{ page.site_headline }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                </ul>
+            </div>
+            <div id="copyright">
+                <p>&copy;{{- 'now'|date('Y') }} Website by <a href="https://company.boxoffice.com/" target="_blank">The Boxoffice Company<span class="hidden">Opens in new window</span></a> for {{ site.config.title }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if site.config.template_options.logo_alt is defined and site.config.template_options.logo_alt !="" %}
+    {% set logo = this_page.header.logo2 %}
+{% else %}
+    {% set logo = this_page.header.logo %}
+{% endif %}
+
+{{ include('helper/popup-houses.twig', {houses: data.houses|sortByAlphabetical, this_page: this_page, active_house_id: active_house_id, logo:logo}, with_context = false) }}

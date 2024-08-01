@@ -1,0 +1,65 @@
+{% set movies_showdates = [] %}
+{% for movie_id, movie in movies.movies %}
+    {% set movie_showdates = [] %}
+    {% for showdate, house_movie in movie if showdate != 'movie' %}
+        {% set movie_showdates = movie_showdates|merge([showdate]) %}
+        {% if showdate not in movies_showdates %}
+            {% set movies_showdates = movies_showdates|merge([showdate]) %}
+        {% endif %}
+    {% endfor %}
+    {% if movie_showdates|length != 0 %}
+        <section class='showtimes-details col-md-6 col-lg-4 clearfix {{ movie_showdates|join(" ") }}'>
+            <div class="inner">
+                <div class="poster">
+                    <img src='{{ movie.movie.poster }}' alt='Poster of {{ movie.movie.name }}'/>
+                    <div class="poster-overlay">
+                        <div class="movie-controls">
+                            <a class="movie-control" href="{{- movie.movie.url -}}">Tickets & Info</a>
+                            <a class="movie-control trailer" href="{{- movie.movie.url -}}">Trailer</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="info">
+                    <h1 class="name"><a href='{{- movie.movie.url -}}'>{{ movie.movie.name }}</a></h1>
+                    <div class="movie-info">
+                        <span class="mpaa">
+                            <span>{{ movie.movie.format }} </span>
+                            {% if movie.movie.mpaa and movie.movie.mpaa != 'NR' %}
+                                | {{ movie.movie.mpaa }}
+                            {% endif %}
+                            </span>
+                        <span class="separator"> | </span>
+                        {% if movie.movie.runtime %}
+                            <span class="runtime">
+                                <span class="mparuntime-title">Runtime: </span>
+                                {{ movie.movie.runtime|date('g\\h\\r\\. i\\m\\i\\n\\.') }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <span class="synopsis">{{ movie.movie.synopsis_short|cropString(360) }}</span>
+                    <a aria-label='{{- movie.movie.name -}}' href='{{- movie.movie.url -}}' class="read-more">Read
+                        more<img src="/assets/img/button-arrow.png" alt="Right arrow"/></a>
+                    <div class="bottom-trailer-container">
+                        {% if movie.movie.trailer.url is defined %}
+                            <a href='/trailer/{{- movie.movie.trailer.url -}}' class="movies-trailer trailer"
+                               target='_blank'
+                               id='play-trailer{{ movie.movie.id }}' data-fancybox-type='iframe'
+                               title='{{ movie.movie.name }}'>
+                                watch trailer
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class='showtimes'>
+                    <div class="inner">
+                        <p class="showtimes-title">AVAILABLE SHOWTIMES</p>
+                        {{ include('helper/showtimes.twig', {showdates: movie}, false) }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endfor %}
+<script type="text/javascript">
+    var availableDates = {{ movies_showdates|json_encode|raw }};
+</script>

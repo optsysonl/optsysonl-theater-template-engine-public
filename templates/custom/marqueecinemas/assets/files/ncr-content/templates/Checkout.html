@@ -1,0 +1,56 @@
+﻿<%var localize = window.ObjectCollections.Localization.result;%>
+<div class="checkout">
+    <div class="row">
+        <div class="left-content">
+             <%
+                        var orderModel = window.ObjectModels.OrderModel;
+                        var performance = orderModel.get('performance');
+                        %>
+            <h3 class="movie-name"><%= movie.get('name') %></h3>
+            <span class="Checkout-details"><%= showTimeMsg %> &nbsp;| &nbsp;&nbsp;&nbsp;<%= theater.get('name') %> &nbsp;| &nbsp;&nbsp;&nbsp;<%= performance.get('auditorium') %></span>
+        </div>
+        <div class="right-content">
+                   <% if (window.ConfigurationProvider.allowSharing()) {%>
+                        <div id="facebook-share"></div>
+                    <% } %>
+
+            
+        </div>
+    </div>
+    <div class="row" id="tabs-container">
+
+    </div>
+
+</div>
+<div class="clear" style="height: 20px;"></div>
+
+<div id="seats" class="checkout-content">
+</div>
+<div id="concessions" class="checkout-content">
+</div>
+
+<div id="tickets" class="checkout-content">
+</div>
+<div id="payment" class="checkout-content">
+</div>
+<div id="review" class="checkout-content">
+</div>
+
+<div class="modal hide fade" id="SelectSeatsModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            x</button>
+        <h3><%= window.ObjectCollections.Localization.result.selectSeatsModal %></h3>
+    </div>
+    <div id="modalBody" class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><%= window.ObjectCollections.Localization.result.close %></button>
+        
+    </div>
+
+</div>
+
+
+<div id="modal-facebook-container">
+</div>

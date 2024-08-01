@@ -1,0 +1,33 @@
+﻿<div class="movie-list">
+    <div class="row">
+        <div class="span7">
+            <h3><%= localize.movies%></h3>
+        </div>
+        <div class="span9">
+            <div class="text-right">
+                <div class="btn-group">
+                    <button class="btn btn-large active" id="alpha" data="byName" ><%= localize.sortAlphabetical%></button>
+                    <button class="btn btn-large" id="dist" data="byDistance"><%= localize.sortDistance%></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-separator"></div>
+    <div class="row">
+        <div class="pagination pagination-mini pagination-right">
+            <ul id="paginationTop">
+            </ul>
+        </div>
+    </div>
+
+    <div id="moviesContainer">
+    </div>
+    <div class="clear" style="height: 20px;"></div>
+    <div class="row">
+        <div class="pagination  pagination-mini pagination-right">
+            <ul id="paginationBootom">
+            </ul>
+        </div>
+    </div>
+</div>
+

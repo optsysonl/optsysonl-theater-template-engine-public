@@ -1,0 +1,70 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Locations {% endblock %}
+{% block css %}
+	<!-- Slick Slider -->
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+
+	<!-- Slick Slider -->
+	<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+{{ include('common/header.twig') }}
+<div id="background_wrap">
+	<div id="main-content">
+		<div class="info_box"> 
+			<h1 class="pageTitle">Locations</h1>
+            
+            {% for house in data.houses %}
+            <a href='{{- house['url'] -}}' class='nounderline'>
+				<div class='box275'>
+					<h3>{{ house.state_full }}</h3>
+					<span class='theatre'>{{ house.name }}</span><br>
+					{% if house.photo != "" %} 		
+						<img src='{{ house.photo }}' alt='{{ house.name }} Photo'/><br>
+					{% endif %}		
+					<span class='loc-info'>{{ house.address }}<br />
+                        {{ house.city -}}, {{ house.state_full }} {{ house.zip }}<br />
+						<strong>Main Phone:</strong> {{ house.phone }}<br>
+						<strong>Show Line:</strong> {{ house.movieline }}<br>
+                        {% if house.email is not empty and house.email != '0' %}
+						    <a href='mailto:{{ house.email }}' class='email'>{{ house.email }}</a>
+                        {% endif %}
+					</span>
+				</div>
+			</a>
+			{% endfor %}           
+		</div>
+        {{ include('parts/footer_promos.twig') }}
+        <div class="clearfix"></div>
+	</div>
+    {{ include('common/footer.twig') }}
+</div>
+{% endblock %}
+{% block js_scripts_footer %}
+    {{ parent() }}
+	<script type="text/javascript">
+
+        //Document ready
+        $(function () {
+            $('.featured').slick({
+                slidesToShow: 1,
+                arrows: true,
+                autoplay: true,
+                infinite: true,
+                dots: true,
+                accessibility: false,
+                autoplaySpeed: {{ site.config['slider_speed'] }},
+            });
+        });
+	</script>
+{% endblock %}

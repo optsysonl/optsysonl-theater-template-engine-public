@@ -1,0 +1,11 @@
+{% extends "common/base.twig" %}
+{% block meta_title %}MPAA | {{ parent() }}{% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div class="container" id="main">
+        <h1>MPAA</h1>
+            {{ include('parts/mpaa.twig') }}
+    </div>
+    {{ include('common/footer.twig') }}
+{% endblock %}

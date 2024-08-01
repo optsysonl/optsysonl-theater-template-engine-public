@@ -1,0 +1,36 @@
+{% set showtimes = getHouseTimes(showdates, house_id) %}
+{% set all_movies = movies.movies %}
+
+<nav id="showdates" class="clearfix">
+    {% for key,showdate in showtimes.dates %}
+        {% set showdate_title = showdate|date('D n/j') %}
+        {% if showdate == 'now'|date('Y-m-d') %}
+            {% set showdate_title = 'Today' %}
+        {% endif %}
+        <button class='showdate' data-date="{{- showdate -}}">{{ showdate_title }}</button>
+    {% else %}
+        No showtimes available
+    {% endfor %}
+</nav>
+<div id="showtimes" class="clearfix">
+    {% for key_date,showdate in showtimes.showtimes %}
+        <div  id="{{ key_date }}" class="location_date">
+            {% for key_movie,movie in showdate.movies %}
+                <section class='showtimes-details clearfix'>
+                    <h1><u>{{ all_movies[key_movie].name }}</u> {% if all_movies[key_movie].runtime !='' %}- {{ all_movies[key_movie].runtime|date('g\\h\\. i\\m\\i\\n\\.') }}{% endif %} <span class='mpaa'>{{ all_movies[key_movie].mpaa }}</span></h1>
+                    <a href='{{- all_movies[key_movie].url -}}'>
+                        <img src='{{ all_movies[key_movie].poster }}' class='poster' alt='Poster of {{ all_movies[key_movie].name }}'/>
+                    </a>
+                    <aside class='showtimes'>
+                        {% if all_movies[key_movie].day is defined %}
+                            <span class='weekday'>{{ all_movies[key_movie].day }}</span>
+                        {% endif %}
+                        {{ include('helper/showtimes.twig', {showtimes: showdate.movies[key_movie]}, false) }}
+                    </aside>
+                </section>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+

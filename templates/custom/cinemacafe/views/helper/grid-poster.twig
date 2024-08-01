@@ -1,0 +1,9 @@
+{% for this in movies %}
+    <div class='movie_box $class'>
+        <a href='/movie/{{- this.id -}}/{{- this.slug -}}-trailer-and-info'>
+            <h2>{{ this.name }}</h2>
+            <img src='{{- this.poster -}}'/>
+        </a>
+    </div>
+{% endfor %}
+

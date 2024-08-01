@@ -1,0 +1,26 @@
+﻿<div class="span11">
+    <% if(model.selectedProducts) { %>
+
+        <% _.each( model.selectedProducts.models, function(item){  %>
+   <div class="concessionsItem">
+       <% var selectedClass = item.get("selected") ? 'selected' : ''; %>
+       <div class=' relative concession-item product <%=selectedClass%>' data-id="<%= item.get('id') %>" data-price="<%= item.get('price') %>">
+           <% if(item.get('image')){%>
+           <img style="max-height: 105px" src="<%=item.get('image')%>" />
+           <%} else{%>
+            <img style="width: 55px;" src="/assets/files/ncr-content/img/moviePlcHolder.png">
+           <%}%>
+       </div>
+       <div class="row">
+           <a><%= item.get("name") %></a>
+       </div>
+       <%
+       var culture = window.ObjectModels.OrderModel.get('theater').get('culture');
+       %>
+       <div class="row">
+           <b><%= Globalize.format(item.get('price'), 'c', culture) %></b>
+       </div>
+      </div>
+    <% }); %>
+        <% } %>
+</div>

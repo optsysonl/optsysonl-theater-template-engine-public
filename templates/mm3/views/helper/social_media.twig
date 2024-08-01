@@ -1,0 +1,23 @@
+<div class='icons'>
+{% if icons.facebook.link is defined and icons.facebook.link != '' -%}
+	<a href='{{ icons.facebook.link }}' style='text-decoration:none;' target='_blank'  title='Facebook Link'><font style='display:none'>Facebook Link</font><img src='{{ icons.facebook.img }}' class='svg social-icon'></a>
+{%- endif %}
+{% if icons.twitter.link is defined and icons.twitter.link != '' -%}
+	<a href='{{ icons.twitter.link }}' target='_blank'><img src='{{ icons.twitter.img }}' class='svg social-icon'></a>
+{%- endif %}
+{% if icons.instagram.link is defined and icons.instagram.link != '' -%}
+	<a href='{{ icons.instagram.link }}' target='_blank'><img src='{{ icons.instagram.img }}' class='svg social-icon'></a>
+{%- endif %}
+{% if icons.pintrest.link is defined and icons.pintrest.link != '' -%}
+	<a href='{{ icons.pintrest.link }}' target='_blank'><img src='{{ icons.pintrest.img }}' class='svg social-icon'></a>
+{%- endif %}
+{% if icons.google_plus.link is defined and icons.google_plus.link != '' -%}
+	<a href='{{ icons.google_plus.link }}' target='_blank'><img src='{{ icons.google_plus.img }}' class='svg social-icon'></a>
+{%- endif %}
+{% if icons.site_google_plus.link is defined and icons.site_google_plus.link != '' -%}
+	<a href='{{ icons.site_google_plus.link }}' target='_blank'><img src='{{ icons.site_google_plus.img }}' class='svg social-icon'></a>
+{%- endif %}
+{% if icons.cust_id.link is defined and icons.cust_id.link != '' -%}
+	<a href='https://csxutils.fbmovies.cinema-source.com/subscribe/?cust_id={{- icons.cust_id.link -}}&amp;iframe=true&amp;width=600&amp;height=400' data-fancybox-type='iframe' id='newsletter-svg' target='_blank'><img src='{{ icons.cust_id.img }}' class='svg social-icon'></a>
+{%- endif %}  
+</div>

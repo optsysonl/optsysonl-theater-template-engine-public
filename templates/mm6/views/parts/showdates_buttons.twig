@@ -1,0 +1,18 @@
+<nav id="showdates" class="clearfix">
+    {% for showdate in showdates %}
+        {% set showdate_title = showdate|date('D, M d') %}
+        {% if showdate == 'now'|date('Y-m-d') %}
+            {% set showdate_title = 'Today' %}
+        {% elseif showdate == 'tomorrow'|date('Y-m-d') %}
+            {% set showdate_title = 'Tomorrow' %}
+        {% endif %}
+        <button aria-label='{{- showdate_title -}}' class='showdate' data-date='{{- showdate -}}'>{{ showdate_title }}</button>
+    {% else %}
+        <span class="no_showdates">No showtimes available</span>
+    {% endfor %}
+</nav>
+{%- if showdates -%}
+    <div id="calendar">
+        <input aria-label="calendar" id="datepicker" type="text" readonly="true"/>
+    </div>
+{%- endif -%}

@@ -1,0 +1,40 @@
+<div class="newsletter-popup blocks">
+    <div class="inner">
+        <div class="close"></div>
+        {{ include('parts/newsletter_popup.twig') }}
+    </div>
+</div>
+<div class="newsletter-block blocks">
+    <div class="fixed-width">
+        {{ include('parts/newsletter_form.twig') }}
+    </div>
+</div>
+<div class="fixed-width">
+    <div class="instagram-block blocks">
+        {{ include('parts/instagram.twig') }}
+    </div>
+</div>
+<footer id="site-footer" class="{{ site.config.template_options.footer }}">
+    <div id="footer-content" class="clearfix">
+        <div class="frow">
+            <div class="fcol-1 fcols">
+                <p>
+                    32 Highland Park Village<br />
+                    Dallas, TX 75205
+                </p>
+            </div>
+            <div class="fcol-2 fcols">
+                <a href="/" class="logo"><img src="/assets/img/footer-logo.png" alt="Logo for {{ site.config.title }}"/></a>
+                <nav id="bottom-nav" class="clearfix">
+                        {{ include('parts/pages_bottom_nav.twig') }}
+                </nav>
+            </div>
+            <div class="fcol-3 fcols">
+                <p>
+                    Office line - 214.443.6035<br />
+                    Movie line - 214.443.0222
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>

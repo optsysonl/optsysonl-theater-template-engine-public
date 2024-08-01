@@ -1,0 +1,6 @@
+{% set houses_nav = data.houses|sortByState %}
+{% for state in houses_nav %}
+    {% for house in state.houses %}
+        <li><a href='{{- house.url -}}'>{{- house.name -}}</a></li>
+    {% endfor %}
+{% endfor %}

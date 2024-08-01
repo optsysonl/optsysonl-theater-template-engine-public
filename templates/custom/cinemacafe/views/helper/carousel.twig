@@ -1,0 +1,13 @@
+{% for movie in carousel %}
+    <div class='cimg'>
+        <a href='/movie/{{- movie.id -}}/{{- movie.url -}}'>
+            <img src='{{- movie.poster -}}' alt='Poster of {{- movie.name -}}'/>
+            <!--<div class='image_title'>{{- movie.name -}}</div>-->
+        </a>
+    </div>
+{% endfor %}
+
+
+
+
+

@@ -1,0 +1,73 @@
+{% set home_movies = [] %}
+        {% for movie in movies.movies %}
+            {% if movie.categories is defined %}
+                {% for category in movie.categories %}
+                    {% if category.cat_id == '224' %}
+                        {% set home_movies = home_movies|merge([movie]) %}
+                    {% endif %}
+                {%- endfor %}
+            {% endif %}
+        {%- endfor %}
+
+<div class="inner">
+    <a href="{{- home_movies.0.url -}}">
+        <img src="{{- home_movies.0.poster -}}" width="240" height="355" class="leadimg" alt="Poster of {{- home_movies.0.name -}}">
+    </a>
+    <div class="lead">
+        <h1><a href="{{- home_movies.0.url -}}">{{- home_movies.0.name -}}</a></h1>
+        {% if home_movies.0.actors is defined %}
+            <p>{{ home_movies.0.actors|slice(0, 3)|join(', ') }}</p>
+        {% endif %}
+
+        <p>{{ include('helper/sessions.twig', {format:'express', hide_sessions:'true', this_movie:home_movies.0, showdates:showdates }, false) }}</p>
+        <hr>
+        <p>{{ home_movies.0.synopsis_short|cropString(100) }} <a href="{{- home_movies.0.url -}}">Read&nbsp;more</a></p>
+    </div>
+    <ul>
+
+        {% if home_movies.1 is defined %}
+            <li class="first">
+                <a href="{{- home_movies.1.url -}}"><img src="{{- home_movies.1.poster -}}" width="62" height="90"
+                                                         alt="Poster of {{- home_movies.1.name -}}"></a>
+                <div>
+                    <h2><a href="{{- home_movies.1.url -}}">{{- home_movies.1.name -}}</a></h2>
+                    {# if home_movies.1.actors is defined %}
+                        <p>{{ home_movies.1.actors|slice(0, 1)|join(', ') }}</p>
+                    {% endif #}
+                    <em>{{ include('helper/sessions.twig', {format:'express', hide_sessions:'true', this_movie:home_movies.1, showdates:showdates }, false) }}</em>
+                </div>
+            </li>
+        {% endif %}
+        {% if home_movies.2 is defined %}
+            <li>
+                <a href="{{- home_movies.2.url -}}"><img src="{{- home_movies.2.poster -}}" width="62" height="90"
+                                                         alt="Poster of {{- home_movies.2.name -}}"></a>
+                <div>
+                    <h2><a href="{{- home_movies.2.url -}}">{{- home_movies.2.name -}}</a></h2>
+                    {# if home_movies.2.actors is defined %}
+                        <p>{{ home_movies.2.actors|slice(0, 1)|join(', ') }}</p>
+                    {% endif #}
+                    <em>{{ include('helper/sessions.twig', {format:'express', hide_sessions:'true', this_movie:home_movies.2, showdates:showdates }, false) }}</em>
+                </div>
+            </li>
+        {% endif %}
+        <li>
+            <a href="/now-showing" class="more">More movies</a>
+        </li>
+
+        {#
+        {% if home_movies.3 is defined %}
+            <li>
+                <a href="{{- home_movies.3.url -}}"><img src="{{- home_movies.3.poster -}}" width="62" height="90" alt="Poster of {{- home_movies.3.name -}}"></a>
+                <div>
+                    <h2><a href="{{- home_movies.3.url -}}">{{- home_movies.3.name -}}</a></h2>
+                    {% if home_movies.3.actors is defined %}
+                        <p>{{ home_movies.3.actors|slice(0, 1)|join(', ') }}</p>
+                    {% endif %}
+                    <em>{{ include('helper/sessions.twig', {format:'express', hide_sessions:'true', this_movie:home_movies.3, showdates:showdates }, false) }}</em>
+                </div>
+            </li>
+        {% endif %}
+        #}
+    </ul>
+</div>

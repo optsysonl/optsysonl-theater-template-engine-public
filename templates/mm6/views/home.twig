@@ -1,0 +1,203 @@
+{% set house = data.houses|first %}
+{% set showtimes = getHouseTimes(data.showdates, data.houses|first.house_id, data.movies.movies) %}
+{% extends 'common/base.twig' %}
+
+{% block meta_title %}
+    {%- if site.meta.title is not empty -%}
+        {{ site.meta.title }}
+    {%- else -%}
+        {{ parent() }} | Home
+    {%- endif -%}
+{% endblock %}
+{% block meta_description %}
+    {%- if site.meta.description is not empty -%}
+        {{ parent() }}
+    {%- else -%}
+        Check out what's playing now at your local {{ site.config.title }}! Watch a trailer for new and upcoming features, and then come make a new movie memory with us today!
+    {%- endif -%}
+{% endblock %}
+{% block meta_keywords %}
+    {%- if site.meta.keywords is not empty -%}
+        {{ site.meta.keywords }}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif %}
+{% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% set blockPromotions %}
+        {% if data.slides.slides.promotions_home is defined %}
+            <div class="promotions-block blocks">
+                <h2>{{ data.slides.slides.promotions_home.name }}</h2>
+                <div class="banners">
+                    {{ include('helper/banners.twig', {slides: data.slides.slides.promotions_home.images}, false) }}
+                </div>
+            </div>
+        {% endif %}
+    {% endset %}
+
+    <div id="wrapper">
+        <main id="main-content" class="{{ site.config.template_options.sidebar }} clearfix">
+
+            {% if data.slides.slides.home is defined %}
+                <div id="content-slider" class="blocks">
+                    {{ include('helper/slider.twig', {slides: data.slides.slides.home.images}, false) }}
+                </div>
+            {% endif %}
+
+            {% if site.config.template_options.sidebar == 'top' %}
+                {{- blockPromotions -}}
+            {% endif %}
+
+            <div class="showtimes-block blocks">
+                <h1>{{ site.meta.h1 }}</h1>
+                <h2>Showtimes</h2>
+                <div id="showtimes-container" class="clearfix">
+                    {{- include('parts/showdates_house.twig', {showtimes: showtimes, house_id:house.house_id, movies: data.movies }, false) -}}
+                </div>
+            </div>
+
+            {% if site.config.template_options.sidebar != 'top' %}
+                {{- blockPromotions -}}
+            {% endif %}
+
+            <div class="location_info-block blocks clearfix">
+                <h2>Where to find us</h2>
+                <div class="content">
+                    <div class="info">
+                        {% if house.photo %}
+                            <div class="image">
+                                <img src='{{- house.photo -}}' alt='Image of {{ house.name }}'>
+                            </div>
+                        {% endif %}
+                        <div class="text">
+                            <p>{{ house.address }}</p>
+                            <p>{{ house.city -}}, {{ house.state_short }} {{ house.zip }}</p><br/>
+
+                            {% if house['phone'] != '0' and house['phone'] != '' %}
+                                <p>Main Phone: {{ house['phone'] }}</p>
+                            {% endif %}
+
+                            <p>Movieline: {{ house.movieline }}</p>
+                        </div>
+                    </div>
+                    <div id="map">
+                        {% set map_url =  house.address ~ " " ~ house.city ~ ", " ~ house.state_short ~ " " ~ house.zip %}
+                        <a target="_blank" href="https://google.com/maps/place/{{- map_url|replace({' ':'+'}) -}}">
+                            <img style="border:0"
+                                 src="https://maps.googleapis.com/maps/api/staticmap?center={{- map_url|replace({' ':'+'}) -}}&zoom=16&scale=2&size=960x320&maptype=roadmap
+&key=AIzaSyCHxrppAcmNfULIaTaFpAiLEFhxaEqQM5M&markers={% if site.meta['icon'] is defined %}icon:{{ site.meta['icon']|shorten }}%7C{% endif %}{{- map_url|replace({' ':'+'}) -}}"
+                            </img>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <!-- Footer JS -->
+    <script type="text/javascript">
+        var availableDates = {{ showtimes.dates|json_encode|raw }};
+
+        function available(date) {
+            var ymd = date.getFullYear() + '-' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + date.getDate()).slice(-2);
+            if ($.inArray(ymd, availableDates) != -1) {
+                return [true, '', 'Available'];
+            } else {
+                return [false, '', 'unAvailable'];
+            }
+        }
+
+        $(function () {
+
+            // slider top banners
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                useCSS: 'linear',
+                arrows: true,
+                dots: true,
+                autoplaySpeed: {{ site.config['slider_speed'] }},
+                prevArrow: '<div class="slick-prev-custom"><img src="/assets/img/icon-arrow-left.svg" onload="convertImgSvg($(this));" class="svg" alt="Left arrow" /></div>',
+                nextArrow: '<div class="slick-next-custom"><img src="/assets/img/icon-arrow-right.svg" onload="convertImgSvg($(this));" class="svg" alt="Right arrow" /></div>'
+            });
+
+            // slider promotion banners
+            $slick_slider = $('.promotions-block .banners');
+            settings_slider = {
+                slidesToShow: 1,
+                dots: false,
+                arrows: false,
+                centerMode: false,
+                infinite: true,
+                variableWidth: false,
+                mobileFirst: true
+            };
+            slick_only_mobile($slick_slider, settings_slider);
+
+            //start showdate carousel
+            $('#showdates').slick(carouselSettings(false, false));
+
+            $('#datepicker').datepicker({
+                // minDate: new Date(),
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay: available,
+                showButtonPanel: true,
+                closeText: 'Close',
+                onSelect: function (date, inst) {
+                    $('.showdate[data-date="' + date + '"]').click();
+                }
+            });
+
+            $('#filter .filters').slick({
+                arrows: false,
+                infinite: false,
+                variableWidth: true,
+                accessibility: false,
+            });
+
+            $('#filter .filters .filter').on('click', function () {
+                $(this).toggleClass('active');
+                showtimesFilter();
+            });
+
+            //change date on button click
+            $('.showdate').on('click', function () {
+                $('.showdate').removeClass('showdate-selected');
+                $(this).addClass('showdate-selected');
+
+                var sel_date = $(this).data("date");
+                var class_name = "location_date";
+                openDate(sel_date, class_name);
+                showtimesFilter();
+
+                //prevent default
+                return false;
+            });
+
+            //load initial showtimes
+            $('.showdate:first').trigger('click');
+            $('#showtimes-tab').addClass('tab-selected');
+        });
+
+    </script>
+{% endblock %}

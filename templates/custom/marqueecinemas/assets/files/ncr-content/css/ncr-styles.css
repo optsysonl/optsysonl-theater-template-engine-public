@@ -1,0 +1,553 @@
+﻿
+.title-container
+{
+    float: left;
+    width: 100%;
+    margin: 50px 0px 20px 0px;
+    
+}
+.title-container-left
+{
+    float: left;
+}
+
+.title-container-right
+{
+    float: right;
+    margin: 10px 0 0 0;
+}
+
+.btn-sort-by
+{
+    width: 170px;
+}
+.dropdown-sort-by
+{
+    width: 170px;
+    z-index: 1000;
+}
+
+.filter-menu
+{
+    display: block;
+    z-index: 1;
+    float: left;
+    position: relative;
+    margin: 0 0 10px 0;
+    width: 200px;
+}
+
+.container-centered
+{
+    margin: 50px 105px;
+}
+.container .container-godzilla
+{
+    float: left;
+    margin-left: -20px;
+    padding: 0;
+    width: 1130px;
+    padding: 0 20px;
+}
+
+.rounded
+{
+    border: 2px solid #E6E6E6;
+    padding:5px;
+    border-radius: 8px;    
+}
+
+.right
+{
+    float:right;    
+}
+
+.odd 
+{
+    background-color: #bbb;
+}
+
+.change-date 
+{
+    display: inline;
+}
+
+/*
+.seat:hover {
+    background-color: #A2CF6D;
+     line-height: 30px; 
+      text-align: center
+}
+*/
+.seat-nohref {
+    border: 1px solid black;
+    float:left;
+     line-height: 30px;
+    text-align: center;
+      font-weight: bold;
+}
+
+.canvas 
+{
+    float: right;
+    width: 100%;/*1170px;*/
+    height: 57px;
+    background: url("../img/canvas.png") no-repeat center;
+    margin-bottom: 20px;
+}
+
+div#page-menu div.navbar-inner
+{
+    border:0px;
+    background-image: linear-gradient(to bottom, #F0F0F1, #F0F0F1);
+        
+}
+.navbar-inverse ul.nav-pills li a.active {
+    background-color: transparent;
+    color: #fff;
+}
+body .cinema-miles span {
+    font-size: 9px;
+    line-height: 11px;
+}
+.cinema-miles {
+    text-align: center;
+    padding: 11px 5px;
+    border-radius: 5px;
+}
+.cinema-miles > div {
+     font-size: 22px;
+     font-weight: bold;
+}
+.theaterFeatures span.label 
+{
+    margin: 8px;
+    
+}
+
+/** Get Tickets region **/
+.title-container-right div
+{
+    float:right;    
+}
+.get-ticket-row
+{
+    width:100%;
+    height:50px;
+    background-color: #DBDBDB; 
+    border-bottom: 1px solid #C7C7C7;
+    border-top: 1px solid white;
+    padding:10px;
+    cursor:pointer;
+}
+.get-ticket-row:hover
+{
+    background-color: #C7C7C7; 
+}
+.get-ticket-row div
+{
+    float:left;
+    margin-right:15px;  
+}
+.get-ticket-row div.last
+{
+    float:right;   
+}
+.scrollContainer 
+{
+    overflow: hidden;
+}
+.legend-row
+{
+    float:left;
+    width:100%    
+}
+.legend-field-left
+{
+    padding:2px ;
+    float:left;
+    width:50px;
+    height:30px
+}
+
+.legend-field-right
+{
+    padding:5px ;
+    text-align:left;
+    float:left;
+    width:300px;
+    height:30px
+}
+.legend-seat
+{
+    width:35px;
+    height:35px;
+    border:1px;
+    border-style :solid
+}
+
+.handicap {
+    background: url("../img/handicap.png") no-repeat center;
+    width:35px;
+    height:35px;
+    border:1px;
+    border-style :solid
+}
+
+.my-selection {
+    background-color:Black;
+}
+
+
+.fb-container 
+{
+    position:absolute;
+    float: left;
+    width: 595px;
+    top:110px;
+    left:422.5px;
+    background-color:White ;
+}
+
+.fb-box
+{
+   overflow-y: scroll;
+   width:100%;
+   height:300px;
+   border: 1px solid #E6E6E6;
+}
+
+.selected-fb-friend
+{
+   border: 2px solid #E6E6E6;
+   width:94%;
+   padding:10px;
+   margin:10px 5px 10px 5px;
+   float: left;
+}
+
+.fb-row 
+{
+    width: 100%;
+    float:left;
+}
+
+.fb-field {
+    float:left;
+    text-align:center;
+    
+}
+
+
+
+.fb-friend {
+    border: 2px solid #E6E6E6;
+    width: 48%;
+    float:left;
+    text-align:center;
+}
+
+.fb-field img 
+{
+    margin:-3px;
+    border-radius: 10px;    
+    
+}
+
+.fb-field checkbox 
+{
+    margin:5px;
+    border-radius: 4px;    
+    border: 2px solid #E6E6E6;
+}
+
+/*.fb-field:hover {
+background-color:#3B5998;
+
+}
+
+.fb-field-selected {
+background-color:#3B5998;
+
+}
+*/
+
+.fb-field checkbox {
+margin:0px 3px 5px 3px;
+vertical-align:middle;
+float: left;
+width:15px;
+padding-top:15px;
+}
+
+.fb-field-img {
+height:40px;
+width:40px;
+vertical-align:middle;
+margin:5px 0px 5px 0px;
+float: left;
+}
+
+.fb-field-a 
+{
+vertical-align:middle;
+float: left;
+width:120px;
+font-weight:lighter;
+font-size:11px;
+word-wrap:break-word;
+text-align: left;
+direction: ltr;
+}
+.fb-field.long-name {
+  width: 146px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align:left;
+}
+
+.step
+{
+    min-height:200px;
+    border:1px solid #E6E6E6;
+    margin:30px
+}
+
+.theater-content
+    {
+        display: none;
+    }
+    .theaterContainer
+    {
+        cursor: pointer;
+    }
+    #slider-code
+    {
+        height: 125px;
+        overflow: hidden;
+    }
+
+    .scrollContainer .next
+    {
+        margin: 30px 0 0 10px;
+    }
+  
+    .scrollContainer .overview
+    {
+        list-style: none;
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        left: 0;
+        top: 0;
+    }
+    .scrollContainer .overview li
+    {
+        float: left;
+        margin: 0 20px 0 0;
+        padding: 1px;
+        height: 121px;
+        border: 1px solid #dcdcdc;
+        width: 236px;
+    }
+
+    .last-selected
+    {
+        background-color: #D8D8D8;       
+    }
+    div#show-map,  div#map
+    {
+        width:400px;
+        height: 300px;    
+    }
+
+
+
+
+.pagination
+{
+    margin-right: 10px;
+}
+
+
+div#zipDistanceFilter .watermark
+{
+    background-color:#F7F27D;    
+}
+
+
+/* Copy from bootstrap*/
+.pagination-mini ul > li:first-child > a,
+.pagination-small ul > li:first-child > a,
+.pagination-mini ul > li:first-child > span,
+.pagination-small ul > li:first-child > span {
+  -webkit-border-bottom-left-radius: 3px;
+          border-bottom-left-radius: 3px;
+  -webkit-border-top-left-radius: 3px;
+          border-top-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -moz-border-radius-topleft: 3px;
+}
+
+.pagination-mini ul > li:last-child > a,
+.pagination-small ul > li:last-child > a,
+.pagination-mini ul > li:last-child > span,
+.pagination-small ul > li:last-child > span {
+  -webkit-border-top-right-radius: 3px;
+          border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+}
+
+.pagination-small ul > li > a,
+.pagination-small ul > li > span {
+  padding: 2px 10px;
+  font-size: 11.9px;
+}
+
+.pagination-mini ul > li > a,
+.pagination-mini ul > li > span {
+  padding: 1px 6px;
+  font-size: 10.5px;
+}
+
+.zoom { 
+   -webkit-transition: all .3s ease-out; 
+   -moz-transition: all .3s ease-out; 
+   -o-transition: all .3s ease-out; 
+   transition: all .3s ease-out;
+}
+
+#Table1 tr td:last-child, #Table2  tr td:last-child {
+    text-align: right;
+    padding-right: 10px;
+}
+
+#Table1 tr td, #Table2  tr td 
+{
+    border: none;
+}
+
+.concession-item-selected {
+    border: 1px solid green;
+    background-color: greenyellow;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+/*IE is out of date*/
+.browserSupportContainer {
+    background-color: black; 
+    width: 100%; 
+    height: 100%; 
+}
+.browserWarning {
+    padding: 15%;
+    text-align:center
+}
+.topInfo {
+    color: white;
+    font-size: 24px;
+}
+.bottomInfo {
+    color: gray;
+    font-size: 18px;
+}
+#promotions-modal
+{
+    position: absolute;
+    width: 760px;
+    height: 765px;
+    top: 13%;
+    margin-left: -380px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+       
+}
+
+/*navigation arrows for promotions*/
+.arrows {
+    width: 35px;
+    padding-top: 38%;
+}
+.prev-arrow {
+    float: left; 
+}
+.next-arrow {
+    float: right;
+}
+.close-icon {
+    float: right;
+    width: 20px;
+    padding-top: 35px;
+}
+.promotion-item {
+    padding: 5% 0% 5%;
+    max-width: 600px;
+    max-height: 700px;
+ }
+.promotion-container {
+    width: 600px;
+    height: 700px;
+    position: absolute;
+    margin-left: 11%;
+    line-height: 700px;
+        
+}
+.balanceLoader {
+    visibility: hidden;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    float: left;
+    top: -20px;
+    left: 30px;
+}
+
+#giftCardBalance {
+    font-weight: 700;
+}
+
+.future-sticker {
+    position: absolute;
+    -webkit-transform: rotate(-32deg);
+    -moz-transform: rotate(-32deg);
+    transform: rotate(-32deg);
+    filter: progid:DXImageTransform.Microsoft.Matrix(M11='0.7071067811865476', M12='-0.7071067811865475', M21='0.7071067811865475', M22='0.7071067811865476', sizingMethod='auto expand');
+    color: #fff;
+    text-transform: uppercase;
+    -webkit-backface-visibility: hidden;
+    font-family: Arial;
+    border: solid #B8B8B8;
+    border-width: 1px;
+}
+
+.sticker-carousel-list, .sticker-movie-list {
+    top: 9px;
+    left: -29px;
+    padding-left: 25px;
+    padding-right: 25px;
+    font-size: 9px;
+    padding-bottom: 0px;
+    padding-top: 1px;
+}
+.sticker-carousel-active {
+    top: 29px;
+    padding-left: 40px;
+    padding-right: 40px;
+    font-size: 20px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    margin-left: -46px;
+}
+.sticker-overflow {
+    position: relative;
+    overflow: hidden;
+    float:left
+}

@@ -1,0 +1,17 @@
+﻿<div class="pull-left" style="text-align: left">
+    <address>
+        <strong><%= theaterInfo.theaterName %></strong><br>
+        <%=theaterInfo.theaterAddress1%>
+                                                       <br />
+                                                       <%if(theaterInfo.theaterAddress2  != ''){%>
+        <%=theaterInfo.theaterAddress2%>                                               <br/>
+        <%}%>
+        <%=theaterInfo.theaterCity%>, <%=theaterInfo.theaterState%> <%=theaterInfo.theaterZip%><br>
+        <abbr title="Phone">P:</abbr>
+        <%=theaterInfo.theaterPhoneNumber%>
+    </address>
+</div>
+<div class="clear-line" style="width: 100%"></div>
+<div>
+    <a class="pull-left" href="<%=url%>" target="_blank">Directions</a>
+</div>

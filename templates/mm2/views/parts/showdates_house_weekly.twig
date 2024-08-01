@@ -1,0 +1,25 @@
+{% set showtimes = getHouseTimesWeekly(showdates, house_id) %}
+{% set all_movies = movies.movies %}
+    {% for key_date,showdate in showtimes.showtimes %}
+        {% for key_movie,movie in showdate.movies %}
+            <div id="showtimes_movie" class="{{ key_date }} showtimes_movie clearfix">
+                <a href='{{- all_movies[key_movie].url -}}'>
+                    <img src='{{ all_movies[key_movie].poster }}' class='poster' alt='Poster of {{ all_movies[key_movie].name }}'
+                         title="click here for more details"/>
+                </a>
+                <div id="info">
+                    <span class="name">{{ all_movies[key_movie].name }}</span>
+                    <span class='mpaa'>Rating: {{ all_movies[key_movie].mpaa }}</span>
+                    <span class="runtime">Runtime: {{ all_movies[key_movie].runtime|date('g \\h\\r\\. i \\m\\i\\n\\.') }} </span>
+                    {% set allowpass = '' %} {#TODO difine allowpass#}
+                    <span class='no-passes'>{{ allowpass }}</span>
+                    {% if all_movies[key_movie].day is defined %}  {#TODO delete???#}
+                        <span class='weekday'>{{ all_movies[key_movie].day }}</span>
+                    {% endif %}
+                    {% for day,times in movie %}
+                    {{ include('helper/showtimes.twig', {showtimes: times, day : day, ticketing:ticketing}, false) }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}

@@ -1,0 +1,11 @@
+{% for this in movies %}
+    <a href='{{- this.url -}}'>
+        <div id='movie_page_box' class="">
+            <h2>{{ this.name }}</h2>
+            {% if cs == true %}
+                <h3>{{ this.release|date('F jS, Y') }}</h3>
+            {% endif %}
+            <img src='{{- this.poster -}}'/>
+        </div>
+    </a>
+{% endfor %}

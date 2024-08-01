@@ -1,0 +1,48 @@
+{% extends "common/base.twig" %}
+{% set house = data.houses[this_page.house_id] %}
+{% block meta_title %}{{ parent() }} | Theater | {{ house.name }} {% endblock %}
+{% set page_class = "locations" %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div id="background_wrap">
+        <div id="main-content">
+            {{ include('helper/home_location_single.twig') }}
+        </div>
+        {{ include('common/footer.twig') }}
+    </div>
+{% endblock %}
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+        //Document ready
+        $(function () {
+            $('.featured').slick({
+                slidesToShow: 1,
+                arrows: true,
+                autoplay: true,
+                infinite: true,
+                dots: true,
+                accessibility: false,
+                autoplaySpeed: {{ site.config['slider_speed'] }},
+            });
+        });
+    </script>
+{% endblock %}

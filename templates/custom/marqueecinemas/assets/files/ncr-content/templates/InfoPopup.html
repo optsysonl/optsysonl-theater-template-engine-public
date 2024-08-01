@@ -1,0 +1,21 @@
+﻿<div class="modal hide fade" id="info-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="infoLabel"
+    aria-hidden="true">
+    <div class="modal-header">
+        <h3 id="infoLabel"><%= title %></h3>
+    </div>
+    <div class="modal-body">
+        <%= content%>
+    </div>
+    <div class="modal-footer">
+        <% if(this.options.cancelButton){ %>
+        <button id="btn-cancel" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true"><%= this.options.cancelButton.text %></button>
+        <%} if(this.options.confirmButton){ %>
+        <button id="btn-confirm" class="btn btn-inverse" data-dismiss="<%= this.options.confirmButton.preventDismiss ? '' : 'modal' %>" aria-hidden="true"><%= this.options.confirmButton.text %></button>
+        <%}%>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#info-modal').modal();
+    });
+</script>

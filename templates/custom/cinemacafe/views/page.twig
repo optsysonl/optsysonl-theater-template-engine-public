@@ -1,0 +1,34 @@
+{% extends "common/base.twig" %}
+{% set page = data.pages[this_page.page_id] %}
+{% block meta_title %}{{ parent() }} | {{ page.site_headline }} {% endblock %}
+
+{% block content %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+        <div id="content_wrapper" class="clearfix">
+            <div id="content">
+                <section>
+                    <h1>{{ page.site_headline }}</h1>
+                </section>
+                <article>
+                    {% if page.type == 'contact' %}
+
+                    {% elseif page.type == 'mpaa' %}
+                        {{ include('parts/mpaa.twig') }}
+                    {% elseif page.type == 'newsletter' %}
+                        {{ page.content|raw }}
+                        <iframe src="http://csxutils.cinema-source.com/subscribe/?cust_id={{- config['cust_id'] -}}"
+                                id="newsletter"></iframe>
+                    {% else %}
+                        {{ page.content|raw }}
+                    {% endif %}
+                </article>
+            </div>
+            <aside>
+                {{ include('parts/aside.twig') }}
+                {{ include('parts/aside_lower.twig') }}
+            </aside>
+        </div>
+    </div>
+    {{ include('common/footer.twig') }}
+{% endblock %}

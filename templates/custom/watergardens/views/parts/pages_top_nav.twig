@@ -1,0 +1,6 @@
+<ul>
+    {% for nav_item in this_page.header.top_nav %}
+        <li class="{% if(this_page.page_id == nav_item) %}active{% endif %}"><a
+                    href='{{ nav_item.url }}'>{{ nav_item.name }}</a></li>
+    {% endfor %}
+</ul>

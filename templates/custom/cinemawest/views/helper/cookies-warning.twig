@@ -1,0 +1,40 @@
+<div id="cnil_cookies" class="">
+    <div id="bandeau_cookies">
+        We use cookies to help us create a more personalised experience when you visit our site. To learn more about cookies please see our <a href="/cookies" target="_blank">Privacy Policy</a>.
+        <a id="close_cnil" href="#" title="Accept cookies and no longer display this message for 13 months">Accept Cookies</a>
+    </div>
+
+
+    <script type="text/javascript">
+
+        function cnil_load() {
+            $('#bandeau_cookies').show();
+            $('#bandeau_cookies').css("position", "fixed");
+            $('#bandeau_cookies').css("bottom", "0px");
+            $('#bandeau_cookies').css("right", "0px");
+        }
+
+        function cnil_disable() {
+            $('#bandeau_cookies').hide();
+        }
+
+        function cnil_initPopup() {
+            // on affiche le bandeau
+            cnil_load();
+            // fonction pour le fermer
+            $('#close_cnil').click(function () {
+                cnil_disable();
+                $.cookie('cookie_cnil_v2', 'viewed', {expires: 400, path: '/'}); // une fois tous les 13 mois
+                return false;
+            });
+        }
+
+        $(document).ready(function () {
+            // est-ce que le bandeau a déjà été affiché ?
+            if (!$.cookie('cookie_cnil_v2')) {
+                cnil_initPopup();
+            }
+        });
+
+    </script>
+</div>

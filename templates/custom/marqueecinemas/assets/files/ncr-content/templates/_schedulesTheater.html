@@ -1,0 +1,226 @@
+﻿<div class="row" >
+    <div class="span6">
+        <% if(showDateFilter){
+            var pickerDate = date ? date : new Date();
+        %>
+            <div id="schedule-date-filter">
+            </div>
+        <%}%>
+    </div>
+    <% if(showLegend){ %>
+     <div class="span10" >
+         <div class="showtime-legend" style="display: <%= (!showTimeLegendOptions.passesAllowed || showTimeLegendOptions.dDDFlag || showTimeLegendOptions.imaxFlag || showTimeLegendOptions.reservedSeating) ? 'block' : 'none' %>">
+             <% if(!showTimeLegendOptions.passesAllowed){%>
+             <span class="no-passes"><%= localize.noPasses %></span>
+             <%} %>
+
+             <% if(showTimeLegendOptions.dDDFlag){ %>
+             <span class="threeD"><%= localize.dDDFlag %></span>
+             <%} %>
+
+             <% if(showTimeLegendOptions.imaxFlag){ %>
+             <span class="imax"><%= localize.imaxFlag %></span>
+             <%} %>
+
+             <% if(showTimeLegendOptions.reservedSeating){ %>
+             <span class="seat-sel"><%= localize.seatSelection %></span>
+             <%} %>
+         </div>
+    <%} %>
+</div>
+      </div>
+<%if (schedules.length >0) {
+    if(window.appConfig.GroupMovies){
+    schedules = schedules.groupMultiTypeMovies();
+    schedules.sort(function (a,b) {
+      var aComparator = a.length > 1 && a[0].get('tMDBName') ? "tMDBName" : "name";
+      var bComparator = b.length > 1 && b[0].get('tMDBName') ? "tMDBName" : "name";
+      if (a[0].get(aComparator) < b[0].get(bComparator))
+          return -1;
+      if (a[0].get(aComparator) > b[0].get(bComparator))
+          return 1;
+     return 0;
+    });
+
+  _.each(schedules,function(group){ %>
+    <div class="row schedule-item">
+    <div class="row-separator2"></div>
+    <%var posterMovie = _.find(group,function(movie){ 
+        return movie.get('image')['medium'] != undefined;
+    });
+    if(posterMovie) var poster = posterMovie.get('image')['medium']; %>
+         <div class="span2">
+             <a style="color:black;width:92px;height:135px;" href="#movie/<%= $.trim(group[0].get('code')) %>/<%= theaterId %>" class="movie-placeholder movie-image">
+                         <img id="Img1" onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/movie-poster-default.png';" style="display:<%= posterMovie ? 'block' : 'none' %>" src="<%= poster %>" />
+                     </a>
+        </div>
+        <div style="margin-left: 110px; margin-bottom:25px">
+          <%var name = group.length > 1 ? 'tMDBName' : 'name';
+            var movieGroupName = group[0].get(name);
+            if (group[0].get(name) && (group[0].get(name).indexOf(" ") == -1 || group[0].get(name).indexOf(" ") > 17) && group[0].get(name).length > 17){
+                movieGroupName = group[0].get(name).substring(0,17) + '</br>';
+                movieGroupName += group[0].get(name).substring(17,35);
+            };%>
+            
+            <a style="color:black" href="#movie/<%= $.trim(group[0].get('code')) %>/<%= theaterId %>">
+                <h4><%= movieGroupName %></h4>
+            </a>
+
+            <span class="rating"><%= $.trim(group[0].get('rating')) %></span> <%=DtHelper.lengthToTime(group[0].get('length')) %>
+            <p class="desc"><%= group[0].get('description') %></p>
+        </div>
+    <%_.each(group,function(movie, i, group){ %>
+    <% var movieName = movie.get('name');
+     if (movie.get('name') && (movie.get('name').indexOf(" ") == -1 || movie.get('name').indexOf(" ") > 17) && movie.get('name').length > 17){
+            movieName = movie.get('name').substring(0,17) + '</br>';
+            movieName += movie.get('name').substring(17,35);
+            };%>
+         <div style="margin-left:12%;">
+         <div class="span6">
+             <div style="margin-left:20px; margin-right: 20px">
+                 <%if(group.length > 1) {%>
+                 <a style="color:black" href="#movie/<%= $.trim(movie.get('code')) %>/<%= theaterId %>">
+                     <h4><%= movieName %></h4>
+                 </a>
+                 <%}%>
+             </div>
+    
+              <div class="performances">
+                  <% var now = new Date().toISOString();
+                  _.each( movie.get('performances').models, function( performance, j ){
+                  var status = performance.get('status') == 'L' || performance.get('status') == 'S' ? 'disabled' : '';
+              
+                  var time = new Date(performance.get('showTime'));
+                  time.setMinutes(time.getMinutes() + theater.get("performanceExpirationInMinutes"));                
+
+                  if(performance.get('businessDate') === window.DtHelper.getBussinessDate(date) && time.toISOString() > now){
+                    var getTickets = status ?  '' : 'href=#tickets/' + performance.get('number') + '/' + $.trim(movie.get('code')) + '/' + theaterId;
+                  %>
+                <a class="<%= status %>"  <%= getTickets %> >
+                    <i class="decor-left"></i>
+                      <%=  Globalize.format(DtHelper.convertDate(performance.get('showTime')), 't', theater.get("culture")) %>
+                    <b class="flags">
+                            <%= !performance.get('passesAllowed')?'<img src="/assets/files/ncr-content/img/noPasses.png" />' : '' %>
+                            <%= performance.get('dDDFlag') ?'<img src="/assets/files/ncr-content/img/3d.png" />' : '' %>
+                            <%= performance.get('imaxFlag') ?'<img src="/assets/files/ncr-content/img/imax.png" />' : '' %>
+                            <%= performance.get('isReservedSeating')? '<img src="/assets/files/ncr-content/img/seatSelection.png" />' : '' %>
+                        </b>
+                    <i class="decor-right"></i>
+                </a>
+                 <%} %>
+                  <%}); %>
+                  <% var now = new Date().toISOString();
+                    var performancesForDay = _.filter(movie.get('performances').models, function(performance) {
+                        var performanceTime = new Date(performance.get('showTime'));
+                        performanceTime.setMinutes(performanceTime.getMinutes() + theater.get("performanceExpirationInMinutes"));  
+                        return performance.get('businessDate') === window.DtHelper.getBussinessDate(date) && performanceTime.toISOString() > now
+                    });
+                  %>
+
+                    <% if(performancesForDay.length === 0) { %>
+                        <div style='float:left;'><h5><%= localize.noShowtimesForThisDate %></h5></div>
+                    <% } %>
+            </div>
+            </div>
+        <div class="clear"></div>
+    </div>
+    <%}); %>
+    </div>
+<%}); %>
+    <%} else {
+    _.each( schedules.models, function( schedule, i ){
+    var scheduleName = schedule.get('name');
+     if (schedule.get('name') && (schedule.get('name').indexOf(" ") == -1 || schedule.get('name').indexOf(" ") > 17) && schedule.get('name').length > 17){
+            scheduleName = schedule.get('name').substring(0,17) + '</br>';
+            scheduleName += schedule.get('name').substring(17,35);
+            };
+            %>
+    <div class="row schedule-item">
+    <div class="row-separator2"></div>
+        <div class="span2">
+             <a style="color:black;width:92px;height:135px;" href="#movie/<%= $.trim(schedule.get('code')) %>/<%= theaterId %>" class="movie-placeholder movie-image">
+                         <img id="movie-image" onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/movie-poster-default.png';" style="display:<%= schedule.get('image')['medium'] ? 'block' : 'none' %>" src="<%= schedule.get('image')['medium'] %>" />
+                     </a>
+        </div>
+        <div class="span6">
+            <div style="margin-left:20px; margin-right: 20px">
+                <a style="color:black" href="#movie/<%= $.trim(schedule.get('code')) %>/<%= theaterId %>">
+                    <h4><%= scheduleName %></h4>
+                </a>
+                <a style="color:black" href="#movie/<%= $.trim(schedule.get('code')) %>/<%= theaterId %>">
+            <span class="rating"><%= $.trim(schedule.get('rating'))%></span> <%=DtHelper.lengthToTime(schedule.get('length')) %><!-- <%=  schedule.get('scheduleOptionsString') %>-->
+            <br /><br />
+          <p class="desc"><%= schedule.get('description') %></p>
+                    </a>
+                </div>
+        </div>
+        <div class="span8">
+              <div class="performances">
+                  <% var now = new Date().toISOString();
+                  _.each( schedule.get('performances').models, function( performance, j ){
+                  var status = performance.get('status') == 'L' || performance.get('status') == 'S' ? 'disabled' : '';
+              
+                  var time = new Date(performance.get('showTime'));
+                  time.setMinutes(time.getMinutes() + theater.get("performanceExpirationInMinutes"));                
+
+                  if(performance.get('businessDate') === window.DtHelper.getBussinessDate(date) && time.toISOString() > now){
+                    var getTickets = status ?  '' : 'href=#tickets/' + performance.get('number') + '/' + $.trim(schedule.get('code')) + '/' + theaterId;
+                  %>
+                <a class="<%= status %>"  <%= getTickets %> >
+                    <i class="decor-left"></i>
+                      <%=  Globalize.format(DtHelper.convertDate(performance.get('showTime')), 't', theater.get("culture")) %>
+                    <b class="flags">
+                            <%= !performance.get('passesAllowed')?'<img src="/assets/files/ncr-content/img/noPasses.png" />' : ''%>
+                            <%= performance.get('dDDFlag') ?'<img src="/assets/files/ncr-content/img/3d.png" />' : ''%>
+                            <%= performance.get('imaxFlag') ?'<img src="/assets/files/ncr-content/img/imax.png" />' : ''%>
+                            <%= performance.get('isReservedSeating')? '<img src="/assets/files/ncr-content/img/seatSelection.png" />' : ''%>
+                        </b>
+                    <i class="decor-right"></i>
+                </a>
+                 <%}%>
+                  <%}); %>
+                  <% var now = new Date().toISOString();
+                    var performancesForDay = _.filter(schedule.get('performances').models, function(performance) {
+                        var performanceTime = new Date(performance.get('showTime'));
+                        performanceTime.setMinutes(performanceTime.getMinutes() + theater.get("performanceExpirationInMinutes"));  
+                        return performance.get('businessDate') === window.DtHelper.getBussinessDate(date) && performanceTime.toISOString() > now
+                    });
+                  %>
+
+                    <% if(performancesForDay.length === 0) { %>
+                        <div style='float:left;'><h5><%= localize.noShowtimesForThisDate %></h5></div>
+                    <% } %>
+            </div>
+            </div>
+    </div>
+    <%}); 
+    }
+ }else { %>
+              <div style="text-align:center;">
+                  <br /><br />
+              <h4><%= localize.noSchedules %></h4>
+                  </div>
+              <% } %>
+
+<!--Old code is in root/backup.txt-->
+
+<script type="text/javascript">
+    $(function () {
+        $.each($('.desc'), function (i, obj) {
+            var p = $(obj);
+            var dummyDiv = new $("<p>").css({ width: p.width() + "px", display: 'none', position: "absolute" });
+            $("body").append(dummyDiv);
+            dummyDiv.text(p.text());
+            var divh = dummyDiv.height();
+  
+            
+            while ($(p).outerHeight() < dummyDiv.height()) {
+                $(dummyDiv).text(function (index, text) {
+                    return text.replace(/\W*\s(\S)*$/, '(...)');
+                });
+            }
+            p.text(dummyDiv.text());
+            dummyDiv.remove();
+        });
+    });
+</script>

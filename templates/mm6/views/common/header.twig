@@ -1,0 +1,39 @@
+<input type="checkbox" id="nav-trigger" />
+<header id="site-header" class="{{ site.config.template_options.logo_position }} clearfix">
+    <div id="header-content" class="clearfix">
+        <a href="/" id="logo-home-link"><img src="{{- this_page.header.logo -}}" id="header-logo" alt="Logo for {{ site.config.title }}"></a>
+        
+        <div id="site-social-icons">
+            {{ include('helper/social_media.twig', {icons: this_page.header.social_icons, config:site.config}, false) }}
+        </div>
+        
+        <div id="nav-block">
+            <label for="nav-trigger">
+                <div style="display: none">nav buttons</div>
+                <img src="/assets/img/icon-hamburger.svg" id="hamburger" class="svg" alt="Menu Hamburger" />
+                <img src="/assets/img/icon-close.svg" id="close" class="svg" alt="Menu Close" />
+            </label>
+            <nav id="top-nav" class="clearfix">
+                <span class="mobile-title">Menu</span>
+                <ul>
+                    <li>
+                        <a href="/" id="nav-home">
+                            <i class="icon"><img class="svg" src="/assets/img/icon-menu-showtimes.svg" alt="Menu Movies Showtimes" /></i>{#
+                            #}<span class="name">Showtimes</span>
+                        </a>
+                    </li>{#
+                    #}<li class="sub-nav-container">
+                        <a href="/movies" id="nav-movies">
+                            <i class="icon"><img class="svg" src="/assets/img/icon-menu-movies.svg" alt="Menu Movies Icon" /></i>{#
+                            #}<span class="name">Movies</span>
+                        </a>
+                        <ul class="sub-nav">
+                            {{- include('parts/movies_nav.twig') -}}
+                        </ul>
+                    </li>
+                    {{- include('parts/pages_top_nav.twig') -}}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

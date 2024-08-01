@@ -1,0 +1,281 @@
+{% extends "common/base.twig" %}
+{% set this_house = data.houses[this_page.house_id] %}
+{% block meta_title %}{{ parent() }} | Theater | {{ this_house.name }} - {{ this_house.city }}{% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+
+    {{ parent() }}
+    <style>
+        .slide a, .slide img {
+            width: 100%
+        }
+    </style>
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+{% endblock %}
+{% block content %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+
+        {% set slides_name = 'location_' ~ this_page.house_id %}
+        {% if data.slides.slides[slides_name]['images'] is defined %}
+            <div class="slider">
+                {{ include('helper/slider_slick.twig', {slides: data.slides.slides[slides_name]['images']}, with_context = false)  }}
+            </div>
+        {% endif %}
+
+        <div id="content">
+            <div id="theater_info">
+                <h5>Theatre Information</h5>
+                <span class="address">
+                    {% if this_house.map.url != '' %}
+					    <a href="{{- this_house.map.url -}}" target="_blank"><img src="/assets/img/icoMap.png" alt="Map icon" /></a>
+                    {% else %}
+                        <a href="https://www.google.com/maps/place/{{- this_house.map.address -}}" target="_blank"><img src="/assets/img/icoMap.png" alt="Map icon" /></a>
+                    {% endif %}
+                    {{ this_house.address }}<br/>
+                    {{ this_house.city }}, {{ this_house.state_short }} {{ this_house.zip }}<br/>
+                Movieline: {{ this_house.movieline }}<br/>
+				</span>
+                <div id="prices" class="infobox">
+                    <h4>General Admission</h4>
+
+                    {% if this_page.house_id is defined and (this_page.house_id == 42031 or this_page.house_id == 26188 or this_page.house_id == 26192  ) %}
+                        <br>
+                        <strong>MXC presentations $1.50 extra</strong>
+                    {% endif %}
+                    <span class="type">&nbsp;</span>
+
+                    {% if this_house.prices is not empty %}
+                        {{ include('helper/prices.twig', {prices: this_house.prices}, with_context = false) }}
+                    {% endif %}
+                </div>
+
+                {% if this_house.amenities != '' and this_house.amenities|length > 0 %}
+                <div id='amenities_orchard' class='infobox' align='center'>
+                    <p>
+                        <a href="#amenities-info" id="btn-amenities-info" style='font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold;'
+                           class='info'>AMENITIES</a>
+                    </p>
+                    <!--div class='amenities' style='margin-top:10px;'-->
+                    <div id="amenities-info" align="center" style="width:600px; height:300px; margin-left:20px;" hidden>
+                        <p align="left"><span style="font-size: 24px; font-weight: bold;">Amenities at {{ this_house.name }}</span><br><br></p>
+                        {{ include('helper/amenities.twig', {amenities: this_house.amenities}, with_context = false) }}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if this_house.photo is not empty %}
+                    <img src='{{- this_house.photo -}}' alt='Image of {{ this_house.name }}' width='338' />
+                {% endif %}
+
+                {% if this_page.house_id is defined and (this_page.house_id == 42031 or this_page.house_id == 26188 or this_page.house_id == 26192  ) %}
+                    <div id='mxc_cont' class='infobox'>
+                        <img src='https://filmsxpress.com/userimages/62/images/MXC-Logo.png' alt='MXC Logo' width='338' />
+                        <p>
+                            <a href="#mxc-info" id="btn-mxc-info" style='font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold;' class='info'>WHAT IS MXC?</a>
+                        </p>
+                    </div>
+                {% endif %}
+
+
+                <div id='price_notes_orchard' class='infobox' align='center'>
+                    <p>
+                        <strong>All auditoriums now feature <br/>
+                            closed caption and descriptive video services.</strong>
+                    </p>
+                    <p>
+                        <a href="#cc-dvs-info" id="btn-cc-dvs-info" style='font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold;'
+                           class='info'>WHAT IS CC/DVS</a>
+                    </p>
+                </div>
+
+                {% if this_page.house_id is defined and this_page.house_id != 42031 %}
+                    <div id="price_notes" class="infobox">
+                        {% if this_page.house_id == 26197 or this_page.house_id == 26195 %}
+                            <p>Military discounts available with ID.</p>
+                        {% endif %}
+                        <p>Concerts - price determined by event</p>
+                        <p>Movie Magic passes are not valid on 3D features, special events, or the first 14 days on a regular feature play.</p>
+                        <p>Complimentary passes are not valid on 3D features or special events unless noted.</p>
+                        <p>Family night pricing not valid on holidays.</p>
+                        <p>SuperStar Tuesdays not valid on holidays and special events</p>
+                    </div>
+                {% endif %}
+
+                {#  Live: CATEGORY/CHOICE ID #55 ( Demo: ID #216) #}
+                {% if (site.config.debug is defined) and (site.config.debug == false) %}
+                    {% set featured_cat = '55' %}
+                {% else %}
+                    {% set featured_cat = '216' %}
+                {% endif %}
+                {{ include('helper/featured_cs.twig', {movies: data.movies, featured_cat: featured_cat}, with_context = false) }}
+
+            </div>
+            <div id="showtimes_wrapper">
+                <h2>
+                    <a href="http://www.exhibitorads.com/csentry/print.asp?house_id={{- this_page.house_id -}}&date={{- 'now'|date('n/j/Y') -}}"
+                       class="print" target="_blank">PRINT FRIENDLY</a>
+                    <span>{{ this_house.name|replace({"Marquee Cinemas - ": ""}) }} <span class='small'>- {{ this_house.city }}</span></span>
+                </h2>
+
+                {% if this_house.message_page_id is defined and this_house.message_page_id != '' %}
+                    <div id='message' class='infobox'>
+                        {{ data.pages[this_house.message_page_id].content|raw }}
+                    </div>
+                    <br/>
+                {% endif %}
+
+                {{- include('parts/showdates_house.twig', {movies: data.movies, house_id:this_house.house_id, showdates:data.showdates }, false) -}}
+            </div>
+            <div class="clearfix"></div>
+
+            {{ include('parts/promotions.twig') }}
+        </div>
+
+        {{ include('common/footer.twig') }}
+        {{ include('helper/cc_dvs_info.twig') }}
+        {{ include('helper/mxc_info.twig') }}
+    </div>
+
+
+{% endblock %}
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script>
+        //$(function() {
+        ///$( document ).tooltip();
+        // });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            //show popup
+            $('#btn-cc-dvs-info').fancybox();
+            $('#mxc-dvs-info').fancybox();
+            $('#btn-amentities-info').fancybox();
+
+
+            //hide the FXP news message
+            $('#location_message').hide();
+
+            //slide out the special message if it exists
+            if ($('#location_message') !== null) {
+                $('#location_message').delay(500).slideDown('slow');
+            }
+
+            //start location page slider
+            $('.slider').slick({
+                accessibility: false,
+                autoplay:       true,
+                css:        'linear',
+                arrows:        false,
+                dots:          false,
+            });
+
+            //start showdate carousel
+            //$('#showdates').slick(carouselSettings(false, false));
+
+            //change date on button click
+            $('.showdate').on('click', function () {
+                $('.showdate').removeClass('showdate-selected');
+                $(this).addClass('showdate-selected');
+
+                var sel_date = $(this).data("date");
+                var class_name = "location_date";
+                var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                var _date = new Date(sel_date);
+                var result = days[_date.getUTCDay()] + ', ' + months[_date.getUTCMonth()] + ' ' + _date.getUTCDate() + ', ' + _date.getFullYear();
+                var print_date = ('0' + (_date.getMonth() + 1)).slice(-2) + '/' +
+                    ('0' + _date.getUTCDate()).slice(-2) + '/'+
+                    _date.getFullYear();
+                datePrintFriendly(print_date);
+
+                $('#display_date').text("SHOWTIMES FOR "+result);
+                $('.location_date').hide();
+                $('#'+sel_date).show();
+                //openDate(sel_date, class_name);
+
+                //prevent default
+                return false;
+            });
+
+            function datePrintFriendly($date){
+                var print_button = $('#showtimes_wrapper a.print');
+                var print_link = print_button.attr('href').split('date=');
+                if(print_link.length > 1){
+                    print_button.attr('href', print_link[0] + 'date=' + $date);
+                }
+            }
+
+            function available(date){
+
+                var ymd = date.getFullYear() + '-' +
+                    ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                    ('0' + date.getUTCDate()).slice(-2);
+                if ($.inArray(ymd, availableDates) != -1) {
+                    return [true, '', 'Available'];
+                } else {
+                    return [false, '', 'unAvailable'];
+                }
+            }
+            $('#datepicker').on('change keyup paste', function () {
+                console.log($(this).val);
+            });
+            function ApplyFilter() {
+                var searchString = $("#datepicker").val();
+                console.log(searchString);
+            }
+
+            //bind datepicker to MORE text in showdate selector
+            $('#datepicker').datepicker({
+                maxDate: '',
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay:available,
+                onSelect: function(dateText, inst) {
+                    var date = new Date(dateText);
+                    var dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday", "Friday","Saturday"];
+                    var d=new Date(date).getUTCDay();
+                    var month = $("#ui-datepicker-div .ui-datepicker-month").text();
+                    var nYear = date.getFullYear();
+                    var nDay = date.getUTCDate();
+                    $('#display_date').text("SHOWTIMES FOR " + dayNames[d] + ', ' + month + ' ' + nDay + ', ' + nYear);
+                    $('.location_date').hide();
+                    $('#'+dateText).show();
+                    $('.showdate').removeClass('showdate-selected');
+
+
+
+                    var ymd = date.getFullYear() + '-' +
+                        ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                        ('0' + date.getUTCDate()).slice(-2);
+
+                    var print_date = ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+                        ('0' + date.getUTCDate()).slice(-2) + '/'+
+                        date.getFullYear();
+                    datePrintFriendly(print_date);
+
+                    var alldates = $('a.showdate');
+
+                    $.each(alldates,function (key,obj) {
+                        if($(obj).attr('data-date') == ymd){
+                            $(obj).addClass('showdate-selected');
+                        }
+                    })
+                }
+            });
+            //load initial showtimes
+            $('.showdate:first').trigger('click');
+        });
+    </script>
+{% endblock %}

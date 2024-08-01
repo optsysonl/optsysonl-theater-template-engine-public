@@ -1,0 +1,12 @@
+{% set slide_no = 0 %}
+{% for slide in slides %}
+    {%  if slide.image != '' %}
+        <li>
+            <a href='{{- slide.url -}}'>
+                <img  src='{{- slide.image -}}' alt='{{- slide['altTag'] -}}' title="{{ slide['image_text'] }}" id="wows1_{{ slide_no }}"/>
+            </a>
+        </li>
+        {% set slide_no=slide_no+1 %}
+    {% endif %}
+{% endfor %}
+

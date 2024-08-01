@@ -1,0 +1,19 @@
+{% set newmovies = movies|mergeByParentID %}
+
+{% for this in newmovies %}
+    {% if this.release > 'now'|date('Y-m-d')  %}
+        {% set m_class = 'filmproch' %}
+    {% else %}
+        {% set m_class = 'filmsem' %}
+    {% endif %}
+
+    <div class="bloc_film HANDI SON71 CDC NUM  {{ m_class }} ">
+        <a href="{{- this.url -}}" title="Movie - {{ this.name }}" >
+            <img src="{{- this.poster -}}" alt="Poster of {{ this.name }}"  class="visuel_film"/>
+        </a>
+        <h3>{{- this.name -}}</h3>
+        <div class="les_boutons">
+            <a class="btn_slider resa" href="{{- this.url -}}" title="Showtimes for {{ this.name }}" rel="nofollow" title="Showtimes for {{ this.name }}">View Showtimes</a>
+        </div>
+    </div>
+{% endfor %}

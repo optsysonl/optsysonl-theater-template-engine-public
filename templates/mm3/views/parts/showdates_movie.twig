@@ -1,0 +1,13 @@
+{% for key,showdate in showtimes.dates %}
+    <button data-date="{{- showdate -}}" class="showdate hvr-fade">
+        {% if showdate == date('today').date|date('Y-m-d') %}
+            {% set day = 'Today' %}
+        {% else %}
+            {% set day = showdate|date('l') %}
+        {% endif %}
+        <span class="button_day">{{ day }}</span>
+        <br>
+        <span class="button_date">{{ showdate|date('M j') }}</span>
+    </button>
+{% endfor %}
+

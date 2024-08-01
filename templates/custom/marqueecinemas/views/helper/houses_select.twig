@@ -1,0 +1,4 @@
+<option value="">- Select a Location -</option>
+{% for house in data.houses %}
+    <option data-email="{{ house.email }}" value="{{ house.name|replace({"Marquee Cinemas - ": ""}) }} - {{ house.city }}, {{ house.state_short }}">{{ house.state_short }} - {{ house.name|replace({"Marquee Cinemas - ": ""}) }}({{ house.city }})</option>
+{% endfor %}

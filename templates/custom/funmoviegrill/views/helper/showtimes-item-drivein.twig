@@ -1,0 +1,60 @@
+<div class="ftab {{ key_date }}">
+    <div class="frow">
+        <div class="fcel celtags">
+            <div>
+                {{ format_key }}
+                <span class="double-format">Double Feature</span>
+            </div>
+        </div>
+        <div class="fcel-container">
+            {% for movie_id, movie_val in showdates|showtimesSortByTime %}
+                {% set new_filter_class = '' %}
+                {% set comment_arr = movie_id|split(';') %}
+                {% set new_comment_arr = [] %}
+                {% for comment in comment_arr %}
+                    {% set new_comment_arr = new_comment_arr|merge([comment|trim]) %}
+                {% endfor %}
+                {% for cat_item in movie_cat %}
+                    {% if cat_item.cat_name|replace({'filter[':'',']':''}) in new_comment_arr %}
+                        {% set new_filter_class = new_filter_class ~ ' filter_' ~ cat_item.cat_id  %}
+                    {% endif %}
+                {% endfor %}
+
+
+                <div class="grouped-times {{ new_filter_class }}">
+                    <div class="movie-name">{{ _movies[movie_id] }}</div>
+                    {% for time in movie_val %}
+                        <div class="fcel">
+                            {% if time.details.soldout is defined %}
+                                <span class="seance hr_seance soldout sc_mor">
+                                <span class="hor">
+                                    {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                </span>
+                            </span>
+                            {% elseif not time.details.expired and time.details.link is defined %}
+                                <a href="{{ time.details.link }}" class="seance hr_seance sc_mor">
+                                <span class="hor">
+                                    {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                </span>
+                                    <div class="infos_seance"></div>
+                                </a>
+                            {% else %}
+                                <span class="seance hr_seance past sc_mor">
+                                <span class="hor">
+                                    {{ include('helper/time.twig', {time: time.time, site: site}, with_context = false) }}
+                                </span>
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% if time.details.comment is not empty %}
+                            <div class="comment">
+                                {{ time.details.comment|split(';')|join(' &bull; ')|raw }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

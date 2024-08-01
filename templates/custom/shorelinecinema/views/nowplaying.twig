@@ -1,0 +1,58 @@
+{% set house_id = data.houses|first.house_id %}
+{% set movies = data.movies.movies|NowPlaying %}
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+
+    <div id="intro" class="short">
+        <div class="inner">
+            <h1>Now Showing</h1>
+            <p>Click a poster below to scroll down for more information and screening times.</p>
+            <div class="posters">
+                {%- for movie_id, movie in movies -%}
+                    <a href="{{ movie.url }}"><img src='{{- movie.poster -}}' alt='Poster of {{- movie.name -}}' width="80" height="118"></a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="lower">
+        <p class="callus">Call us on <strong>04 902 8070</strong> to book your tickets.</p>
+        <ul class="times">
+            {%- for movie_id, movie in movies -%}
+            <li>
+                <div class="poster">
+                    <a href="{{ movie.url }}"><img src='{{- movie.poster -}}' alt='Poster of {{- movie.name -}}'></a>
+                </div>
+                <div class="synopsis">
+                    <div class="sessionBox">
+                        {{ include('helper/sessions.twig', {this_movie:movie, showdates:data.showdates }, false) }}
+                    </div>
+                    <h2><a href="{{ movie.url }}">{{- movie.name -}}</a></h2>
+                    <p>
+                        {% if movie.comments is defined %}
+                            <span class="commentsBox">{{ movie.comments }}</span>
+                        {% endif %}
+                        <em>
+                            {% if movie.actors is defined %}
+                                <div>
+                                    {{ movie.actors|slice(0, 3)|join(', ') }}
+                                </div>
+                            {% endif %}
+                            <div>{{ movie.mpaa }} {% if movie.advisory != '' %}{{ movie.advisory }}{% endif %}</div>
+                        </em>
+                    </p>
+                    <p class="text">{{ movie.synopsis_short|cropString(315) }} <a href="{{ movie.url }}">Read&nbsp;more</a></p>
+                </div>
+            </li>
+            {% endfor %}
+            <div class="clear">&nbsp;</div>
+        </ul>
+    </div>
+
+    {{ include('common/footer.twig') }}
+{% endblock %}
+

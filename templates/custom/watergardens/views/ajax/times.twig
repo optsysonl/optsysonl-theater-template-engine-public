@@ -1,0 +1,41 @@
+{% set house = data.showtimes|first %}
+{% set sortedMovies = house.movies|groupMovieShowtimes %}
+{% for movie in sortedMovies %}
+    <section class='showtimes-details clearfix'>
+        <div class="poster">
+            <a href='{{- movie.url -}}'>
+                <img class="desktop" src='{{ movie.poster }}' alt='Poster of {{ movie.name }}'/>
+            </a>
+        </div>
+        <div class="bottom">
+            <div class="info">
+            <h2 class="name">{{ movie.name }}</h2>
+            <div class="movie-tags">
+                <span class="mpaa">{{ movie.mpaa }}</span>
+
+                {% if movie.runtime %}
+                    <span class="runtime">{{ movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</span>
+                {% endif %}
+
+                {% if movie.genres is defined %}
+                    <span class="genres">{{ movie.genres|join(', ') }}</span>
+                {% endif %}
+            </div>
+            <span class="synopsis">{{ movie.synopsis|cropString(140) }}</span>
+            <div class="movie-controls">
+                <a class="more-details" href="{{- movie.url -}}">More Info</a>
+                {% if movie.trailer.url is defined %}
+                    <a href='/trailer/{{- movie.trailer.url|url_decode|url_decode -}}' class="movies-trailer trailer" target='_blank'
+                       id='play-trailer{{ movie.id }}' data-fancybox-type='iframe' title='{{ movie.name }}'>
+                        View Trailer
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class='showtimes'>
+            <p class="showtime-title">Comment/Attribute</p>
+            {{ include('helper/showtimes.twig', {showtimes: movie.showtimes}, false) }}
+        </div>
+    </div>
+    </section>
+{% endfor %}

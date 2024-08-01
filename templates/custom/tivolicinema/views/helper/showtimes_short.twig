@@ -1,0 +1,9 @@
+{#{% set showtimes = getMovieTimes(showdates, movie_id) %}#}
+{%- for showtime in showtimes -%}
+    <br>
+    {%- if not showtime.details.expired -%}
+        <a href="/ticket/{{ showtime.details.screens_id }}">  {{- showtime.time|date('g:ia') -}}</a>
+    {%- else -%}
+        {{- showtime.time|date('g:ia') -}}
+    {%- endif -%}
+{%- endfor -%}

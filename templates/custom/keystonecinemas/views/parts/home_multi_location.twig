@@ -1,0 +1,53 @@
+<div class="width-wrapper">
+
+    {% if data.slides.slides.home is defined %}
+    <div id="content-slider">
+        {{ include('helper/slider.twig', {slides: data.slides.slides.home.images}, with_context = false) }}
+    </div>
+    {% endif %}
+    <div id="fxp-message" class="row clearfix">
+        {{data.pages[data.houses|first.message_page_id].content|raw}}
+    </div>
+    <section class="row clearfix">
+        <div class="placeholder-300 slider">
+            {% if data.slides.slides.left is defined %}
+            {{ include('helper/slider.twig', {slides: data.slides.slides.left.images}, with_context = false) }}
+            {% endif %}
+        </div>
+        <div class="placeholder-300">
+            <div id='gpt-rd-box'>
+                <script type='text/javascript'>
+                    googletag.cmd.push(function () {
+                        googletag.display('gpt-rd-box');
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="placeholder-300 slider">
+            {% if data.slides.slides.right is defined %}
+            {{ include('helper/slider.twig', {slides: data.slides.slides.right.images}, with_context = false) }}
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% set movies = nowPlayingComingSoon(data.movies.movies, data.showdates) %}
+{%  if  movies.np is not empty %}
+<div class="carousel-container">
+    <section class="carousel clearfix">
+        <h1>Now Playing <span>Click the poster to see if the film is playing at your favorite location.</span></h1>
+        <div id="carousel-np">
+            {{ include('helper/carousel.twig', {carousel: movies.np}, with_context = false) }}
+        </div>
+    </section>
+</div>
+{% endif %}
+{%  if  movies.cs is not empty %}
+<div class="carousel-container">
+    <section class="carousel clearfix">
+        <h1>Coming Soon <span>Showtimes,Titles and Playdates are subject to change</span></h1>
+        <div id="carousel-cs">
+            {{ include('helper/carousel.twig', {carousel: movies.cs}, with_context = false) }}
+        </div>
+    </section>
+</div>
+{% endif %}

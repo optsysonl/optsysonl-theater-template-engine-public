@@ -1,0 +1,34 @@
+{% extends "common/base.twig" %}
+{% set page = data.pages[this_page.page_id] %}
+{% block meta_title %}{{ parent() }} | {{ page.site_headline }} {% endblock %}
+
+{% block content %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+
+        <div id="content" class="clearfix">
+            {% if page.page_id != '10264' and page.page_id != '10261' and page.page_id != '1462' and page.page_id != '10880' %}
+                <h1 class="titlebar new_titlebar">{{ page.site_headline }}</h1>
+            {% endif %}
+            {% if page.type == 'contact' %}
+
+            {% elseif page.type == 'mpaa' %}
+                {{ include('parts/mpaa.twig') }}
+            {% elseif page.type == 'newsletter' %}
+                {{ page.content|raw }}
+                <iframe src="//csxutils.fbmovies.cinema-source.com/subscribe/?cust_id={{- site.config['cust_id'] -}}"
+                        id="newsletter"></iframe>
+            {% else %}
+                {{ page.content|raw }}
+            {% endif %}
+
+            {% if page.page_id == '10261' or page.page_id == '10880' %}
+                {{ include('forms/rentals_form.twig') }}
+            {% elseif page.page_id == '10266' or page.page_id == '10882' %}
+                {{ include('forms/employment_form.twig') }}
+            {% endif %}
+        </div>
+        {{ include('parts/promotions.twig') }}
+        {{ include('common/footer.twig') }}
+    </div>
+{% endblock %}

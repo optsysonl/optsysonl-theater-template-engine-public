@@ -1,0 +1,16 @@
+{%  if data.moviehouses is not empty %}
+	{% for house in data.moviehouses %}
+		{% if house.custom_text != '' %}
+        	{{ house.custom_text }}
+        {% endif %}
+        <div id='{{- house.house_id -}}' class='theater'>
+            <span class='name'><a href='/location/{{- house.house_id -}}/{{ house.url }}'>{{ house.name }}</a></span>
+            <span class='times'>{{ include('helper/showtimes.twig', {times: house.times}, with_context = false)  }}</span>
+            <span class='comment'>{{ house.videoFormat }}</span><hr>
+		</div>
+	{% endfor %}
+{% else %}
+<div class='theater'>
+	No showtimes available<br>on this date.
+</div>
+{% endif %}

@@ -1,0 +1,42 @@
+{% for price in prices %}
+    <div class="desctop-view">
+        <div class="c_row">
+            <div class="type"></div>
+            <div class="category">
+                {{ price.cat }}
+                {% if price.times != '' %}<div class="times">({{ price.times }})</div>{% endif %}
+            </div>
+        </div>
+        {% for item in price.prices %}
+            {% set item_name = item.name|split(';') %}
+            <div class="c_row">
+                <div class="type">
+                    <span>{{ item_name|first|raw }}</span>
+                    {% if item_name[1] is defined %}
+                        <span class="subtext">{{ item_name[1]|raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="price">
+                    <span>{{ item.value }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="mobile-view">
+        <div class='category'>{{ price.cat }}{% if price.times != '' %}<span class="times">({{ price.times }})</span>{% endif %}</div>
+        <div class='price'>
+            {% for price in price.prices %}
+                <div class="item">
+                    {% set a_price = price.name|split(';') %}
+                    <div class="type">
+                        <span>{{ a_price|first|raw }}</span>
+                        {% if a_price[1] is defined %}
+                            <span class="subtext">{{ a_price[1]|raw }}</span>
+                        {% endif %}
+                    </div>
+                    <div>{{ price.value }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}

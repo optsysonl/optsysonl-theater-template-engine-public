@@ -1,0 +1,26 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Locations {% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+	<div id="wrapper">
+		<main id="main-content" class="clearfix">
+			
+			{% for house in data.houses %}
+            <div class='theatre-box'>
+				 <a href='{{- house['url'] -}}' class='nolink'>
+					<h4>{{ house.name }}</h4>
+					 <img src='{{ house.photo }}' class='theatre-photo'/>
+					<p>
+                    	{{ house.address }} <br />
+                        {{ house.city -}}, {{ house.state_short }} {{ house.zip }}<br />
+                        {{ house.movieline }}</p>
+				 </a>
+			</div>
+            {% endfor %}
+			
+		</main>
+    	{{ include('common/footer.twig') }}
+    </div>
+{% endblock %}

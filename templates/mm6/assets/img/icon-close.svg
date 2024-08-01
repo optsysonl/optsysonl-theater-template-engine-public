@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Close@1.5x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="20 5.62199313 13.6219931 12 20 18.3780069 18.3780069 20 12 13.6219931 5.62199313 20 4 18.3780069 10.3780069 12 4 5.62199313 5.62199313 4 12 10.3780069 18.3780069 4"></polygon>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Close">
+            <rect id="24pt-Bounding-Box" x="0" y="0" width="24" height="24"></rect>
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Close"></g>
+            <g id="Color/Primary" mask="url(#mask-2)" fill="#9BC1BF">
+                <rect id="Base" x="0" y="0" width="24" height="24"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

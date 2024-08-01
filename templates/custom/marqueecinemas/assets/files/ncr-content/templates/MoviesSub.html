@@ -1,0 +1,107 @@
+﻿<div class="row">
+    <% var i = 0;
+    _.each(collection, function (movie) {
+    try
+    {
+    var movieName = movie.name;
+    if(window.appConfig.GroupMovies && movie.tMDBName){
+    movieName = movie.tMDBName;
+    }
+
+    if(movie.starring){
+    var movieStarring = movie.starring;
+    }else{
+    var movieStarring ="";
+    }
+
+    if (movie.starring && movie.starring.length > 70) movieStarring = movie.starring.substring(0,70) + '...';
+
+
+    if(movie.image){ var movieImage = movie.image.medium; }
+
+    var theaterName = "not find theater:" + movie.theaterId ;
+    var theaterCulture = window.navigator.userLanguage || window.navigator.language;
+    if(theaters){
+    var theatersNew = theaters.where({id:movie.theaterId});
+    if(theatersNew && theatersNew.length > 0)
+    theaterCulture = theatersNew[0].get('culture');
+    theaterName = theatersNew[0].get('name');
+    };
+    if(movie.nextPerformance){
+    var showTime = Globalize.format(DtHelper.convertDate(movie.nextPerformance.showTime), Globalize.findClosestCulture(theaterCulture).calendar.patterns.t, theaterCulture)
+    var showDate = '';
+    if(DtHelper.getBussinessDate(DtHelper.convertDate(movie.nextPerformance.showTime), true) == DtHelper.getBussinessDate(new Date(), true)){
+    showDate = localize.today;
+    }
+    else{
+    showDate = Globalize.format(DtHelper.convertDate(movie.nextPerformance.showTime), "M", theaterCulture);
+    }
+    }
+    if(movie.distance)
+    var distance = movie.distance.toFixed(1);
+
+    i++;
+    }
+    catch(e){
+    console.log('error',e.message);
+    }%>
+    <div class="span8">
+        <div class="movie-box" style='cursor: pointer' data-tmdbid="<%= $.trim(movie.tMDBId)%>" data-featurecode="<%= $.trim(movie.code)%>">
+            <div class="span3">
+                <div class="movie-placeholder movie-image sticker-overflow">
+                    <img onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/movie-poster-default.png';" style="display: <%= movieImage ? 'block' : 'none'%>" src="<%=movieImage%>">
+                </div>
+            </div>
+            <div class="span5">
+                <div class="movie-details">
+                    <h4><a><%= movieName %></a></h4>
+                    <p>
+                        <span class="rating"><%= movie.rating %></span>
+                        <span class="ddd-badge"
+                            <%= !movie.dDDFlag ? 'style="display:none;"' : '' %>>
+                            <%= localize.dDDFlag %>
+                        </span>
+                        <span class="imax-badge"
+                            <%= !movie.imaxFlag ? 'style="display:none;"' : '' %> >
+                            <%= localize.imaxFlag %>
+                        </span><br /><%= DtHelper.getRuntime(movie.length)%>
+                    </p>
+
+
+                    <p class="cast"><%= movieStarring %></p>
+
+                    <% if(movie && movie.nextPerformance && window.AppConfig.ChainType == 'multi'){ %>
+                    <p>
+                        <span class="next-title"><%= localize.nextPerformanceNearYou%></span> <br />
+                        <span class="next-link">
+                            <%= showTime%>, <%=showDate%> <% if(!window.singleSite) {%> @ <%= theaterName%> <%}%>
+                            <%if(!window.singleSite && window.AppProperties.ShowTheaterDistance) { %>
+                            <br />
+                            <%= distance%> <%= distanceUnit%>
+                            <%}%>
+                        </span>
+                    </p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% if (i%2==0){%>
+    <div class="clear" style="height:15px"></div>
+    <% }%>
+
+    <% })%>
+
+    <%if (collection.length == 0){ %>
+    <h4 class="error"> <%= localize.noMoviesFound %></h4>
+    <%} %>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".cast").each(function () {
+            $(this).castFormatter();
+        });
+    });
+</script>

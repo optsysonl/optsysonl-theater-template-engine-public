@@ -1,0 +1,12 @@
+{% set movies = NowPlayingComingSoon(data.movies.movies, data.showdates) %}
+<li class='subheader'>Now Playing</li>
+{% for movie in movies.np %}
+    <li><a href='{{- movie.url -}}'>{{ movie.name }}</a></li>
+{% endfor %}
+{% if movies.cs is not empty %}
+    <li class='subheader'>Coming Soon</li>
+    {% for movie in movies.cs %}
+        <li><a href='{{- movie.url -}}'>{{ movie.name }}</a></li>
+    {% endfor %}
+    <li><a href='/movies#coming-soon'>See All...</a></li>
+{% endif %}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="40px" viewBox="0 0 60 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Trailer_btn</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Trailer-Symbol---Desktop---Play" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-5">
+            <rect id="Rectangle-3" fill="#E7D24F" x="0" y="0" width="60" height="41" rx="2"></rect>
+            <polygon id="Triangle-2" fill="#0D0D0D" transform="translate(30.000000, 20.500000) rotate(90.000000) translate(-30.000000, -20.500000) " points="30 5.5 42.5 35.5 17.5 35.5"></polygon>
+        </g>
+    </g>
+</svg>

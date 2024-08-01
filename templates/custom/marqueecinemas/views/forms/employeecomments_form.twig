@@ -1,0 +1,100 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<p class="confirmation"></p>
+<form id="frmContact" method="post">
+    <input name="_recipients" id="_recipients" type="hidden" value="jcox@marqueecinemas.com,aevans@marqueecinemas.com,jmitchell@marqueecinemas.com,bfavorite@marqueecinemas.com,mdavis@marqueecinemas.com, mdavis@marqueecinemas.com, cramsden@marqueecinemas.com, tmccall@marqueecinemas.com" />
+    <input name="_subject" id="_subject" type="hidden" value="Employee Comment Form" />
+    <div class="half">
+        <label for="name">Name*</label><span id="err_name" class="errmsg"></span>
+        <input type="text" id="name" name="Name" class="required" />
+        <label for="email_address">Email Address*</label><span id="err_email_address" class="errmsg"></span>
+        <input type="text" id="email_address" name="Email Address" class="required" />
+        <label for="email_address_confirm">Confirm Email Address*</label><span id="err_email_address_confirm" class="errmsg"></span>
+        <input type="text" id="email_address_confirm" name="Email Address Confirmed" class="required" />
+        <label for="theatre">Theatre*</label><span id="err_theatre" class="errmsg"></span>
+        <select id="theatre" name="Theatre" class="required">
+            {{ include('helper/houses_select.twig') }}
+        </select>
+    </div>
+    <div class="half">
+        <label for="comments">Comment*</label><span id="err_comments" class="errmsg"></span>
+        <textarea id="comments" name="Comments/Questions" class="required" style="height:120px"></textarea>
+        <span id="err_captcha_confirm" class="errmsg"></span>
+        <button
+                class="g-recaptcha"
+                data-sitekey="6LcCWW0UAAAAAASK6e-FkViYfD5woQKIMh9LIKWv"
+                data-callback="YourOnSubmitFn">
+            Submit
+        </button>
+
+    </div>
+</form>
+
+<div class="clearfix"></div>
+
+<script>
+    function YourOnSubmitFn(token) {
+        //assume we are OK
+        var isMissing = false;
+        $('#preloader').addClass('active');
+        $('.errmsg').text('');
+
+        //loop through required fields
+        $('.required').each(function () {
+
+            //remove the missing class
+            $(this).removeClass("missing");
+
+            //if blank, add the missing class back
+            if ($(this).val() == "") {
+                $(this).addClass("missing");
+                $('#err_' + this.id).text(' *Required');
+                isMissing = true
+            }
+
+        });
+
+        //make sure the email address is valid!
+        if ($('#email_address').length != 0) {
+            if (!validateEmail($('#email_address').val())) {
+                $('#email_address').addClass("missing");
+                $('#err_email_address').text(' *Not a valid email');
+                isMissing = true;
+            }
+        }
+
+        if (!isMissing) {
+            sendMessage($("#frmContact"));
+        } else {
+            grecaptcha.reset();
+            return false;
+        }
+        grecaptcha.reset();
+        return false;
+    }
+
+    function sendMessage(form) {
+
+        var data = form.serializeArray();
+
+        $.ajax({
+            url: '/data/info',
+            type: 'post',
+            data: {message: data},
+            success: function (response) {
+                $('#preloader').removeClass('active');
+                try {
+                    response = JSON.parse(response);
+                    if (response.status == 'success') {
+                        $('.confirmation').html(response.data);
+                        form[0].reset();
+                    }
+                } catch (err) {
+
+                }
+
+            }
+        });
+
+    }
+
+</script>

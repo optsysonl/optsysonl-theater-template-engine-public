@@ -1,0 +1,148 @@
+{% set showtimes = getMovieTimes(showdates, this_movie.id) %}
+
+{% if format is defined and format == 'express' %}
+
+    {% if this_movie.release > 'now'|date('Y-m-d') %}
+        Starts {{ this_movie.release|date('F j') }}
+    {% else %}
+        On now
+        {% if hide_sessions != true %}
+            at
+            {{ include('helper/showtimes_express.twig', {showtimes: showtimes.showtimes}, false) }}
+        {% endif %}
+    {% endif %}
+{% else %}
+    {{ include('helper/showtimes.twig', {showtimes: showtimes.showtimes}, false) }}
+{% endif %}
+
+
+{# ===========================================================================================   #}
+
+{#
+{strip}
+
+{if $format == 'express'}
+
+{if $m.status == 'ns'}
+On now
+{if not $hide_sessions} at&nbsp;
+{foreach from=$m.sessions key="date" item="s" name="s"}
+{if $date eq $smarty.now|date_format:'%Y-%m-%d'}
+{assign var="cnt" value=0}
+{assign var="started" value=false}
+{foreach from=$s item="st"}
+{assign var="newDate" value=$date|cat:' '|cat:$st.time}
+{assign var="mmDate" value=$date|cat:' '|cat:'02:00am'}
+
+{if $newDate|date_format:"%Y-%m-%d %H:%M:%S" <= $mmDate|date_format:"%Y-%m-%d %H:%M:%S"}
+{if $smarty.foreach.s.first}
+{assign var="cnt" value=$cnt+1}
+{else}
+{if $started} {else}{assign var="started" value=true}{/if}
+<span{if $st.label} title="{$st.label}"{/if}>
+{if $st.bms_cid and $st.bms_sid}
+<a href="{$bms_session_booking_url}?cid={$st.bms_cid}&sid={$st.bms_sid}" target="_blank">
+    {$st.time}
+</a>
+{else}
+{$st.time}
+{/if}
+</span>
+{if $st.label} ({$st.label}){/if}
+{/if}
+{else}
+
+{if $smarty.foreach.s.first}
+
+{else}
+{if $cnt == 0}
+
+{/if}
+{/if}
+
+{assign var="cnt" value=$cnt+1}
+
+{if $started} {else}{assign var="started" value=true}{/if}
+<span{if $st.label} title="{$st.label}"{/if}>
+{if $st.bms_cid and $st.bms_sid}
+<a href="{$bms_session_booking_url}?cid={$st.bms_cid}&sid={$st.bms_sid}" target="_blank">
+    {$st.time}
+</a>
+{else}
+{$st.time}
+{/if}
+</span>
+{if $st.label} ({$st.label}){/if}
+
+{/if}
+{/foreach}
+{/if}
+{/foreach}
+{/if}
+{else}
+Starts {$m.release_date}
+{/if}
+
+{else}
+
+<ul class="sessions">
+    {foreach from=$sessions item="s" name="s" key="date"}
+    {assign var="cnt" value=0}
+
+    {if $smarty.foreach.s.first}
+    <li>
+        <strong>{$date|date_format:'%A %e %b'}</strong>
+        {/if}
+        {foreach from=$s item=st name=st}
+        {assign var="newDate" value=$date|cat:' '|cat:$st.time}
+        {assign var="mmDate" value=$date|cat:' '|cat:'02:00am'}
+
+        {if $newDate|date_format:"%Y-%m-%d %H:%M:%S" <= $mmDate|date_format:"%Y-%m-%d %H:%M:%S"}
+        {if $smarty.foreach.s.first}
+        {assign var="cnt" value=$cnt+1}
+        {else}
+        {if $st.bms_cid and $st.bms_sid and $st.timestamp|date_format:"%s" > $smarty.now}
+        <a href="{$bms_session_booking_url}?cid={$st.bms_cid}&sid={$st.bms_sid}" target="_blank">
+            {$st.time}
+        </a>
+        {else}
+        <span{if $st.label} title="{$st.label}"{/if}>{$st.time}{if $st.label} ({$st.label}){/if}</span>
+        {/if}
+        {if $st.comment} ({$st.comment}){/if}
+        &nbsp;&nbsp;
+        {/if}
+        {else}
+
+        {if $smarty.foreach.s.first}
+
+        {else}
+        {if $cnt == 0}
+    <li>
+        <strong>{$date|date_format:'%A %e %b'}</strong>
+        {/if}
+        {/if}
+
+        {assign var="cnt" value=$cnt+1}
+
+        {if $st.bms_cid and $st.bms_sid and $st.timestamp|date_format:"%s" > $smarty.now}
+        <a href="{$bms_session_booking_url}?cid={$st.bms_cid}&sid={$st.bms_sid}" target="_blank">
+            {$st.time}
+        </a>
+        {else}
+        <span{if $st.label} title="{$st.label}"{/if}>{$st.time}{if $st.label} ({$st.label}){/if}</span>
+        {/if}
+        {if $st.comment} ({$st.comment}){/if}
+        &nbsp;&nbsp;
+
+        {/if}
+
+        {/foreach}
+        {/foreach}
+    </li>
+</ul>
+
+{/if}
+
+{/strip}
+
+#}

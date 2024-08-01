@@ -1,0 +1,26 @@
+﻿<%if(showBackButton){ %>
+<% 
+if(window.ConfigurationProvider.chainType() == "multi" ){%>
+<span class="separator"></span>
+<%}%>
+<div class="nav-content">
+    <a href="<%= buttonNavigate %>" class="btn btn-back btn-inverse" >
+        &larr; <%= localize.back %></a>
+<%} %>
+
+    <% for(i=0;i<navigation.length;i++){
+        if(window.singleSite && i < navigation.length - 1 && navigation[i].name == "Movies") {
+          navigation[i].isLink = false;
+          i++;
+         }
+        if(navigation[i].isLink){
+    %>
+<a href="<%= navigation[i].href %>">
+        <%= navigation[i].name %></a>
+    <%}else{ %>
+        <%= navigation[i].name %>
+    <%}if((navigation.length - 1) != i){ %>&raquo;<%} %>
+    <%} %>
+        <div class="clear"></div>
+
+</div>

@@ -1,0 +1,53 @@
+{% set showtimes = getHouseTimes(showdates, house_id,  movies.movies) %}
+{% set all_movies = movies.movies %}
+{% set available_dates = [] %}
+
+<section id="showdates" class="clearfix">
+    {% for key,showdate in showtimes.dates %}
+        {% set showdate_title = showdate|date('D n/j') %}
+        {% if showdate == 'now'|date('Y-m-d') %}
+            {% set showdate_title = 'Today' %}
+        {% endif %}
+        {% set available_dates = available_dates|merge([showdate]) %}
+        <a href="#" class='showdate' data-date='{{- showdate -}}'>{{ showdate_title }}</a>
+    {% else %}
+        No showtimes available
+    {% endfor %}
+    <input id='datepicker' type='text' name='date' value='More' readonly/>
+</section>
+
+<div id="showtimes" class="clearfix">
+    {#% set sortedMovies = the_house.movies|groupMovieShowtimes %}#}
+    {% for key_date,showdate in showtimes.showtimes %}
+        <div id="{{ key_date }}" class="location_date">
+            {% for key_movie,movie in showdate.movies %}
+                <div id="showtimes_movie" class='clearfix'>
+                    <a href='{{- all_movies[key_movie].url -}}' id="location_poster">
+                        <img src='{{ all_movies[key_movie].poster }}' class='poster'
+                             alt='Poster of {{ all_movies[key_movie].name }}'/>
+                    </a>
+                    <div id="info">
+                        <h2 class="movie-title">
+                            <a href="{{- all_movies[key_movie].url -}}" class="name">
+                                {{ all_movies[key_movie].name }}
+                            </a>
+                        </h2>
+                        <h3>
+                            <span class="mpaa">{{ all_movies[key_movie].mpaa }}</span>
+                            <span class="runtime"><br>{{ all_movies[key_movie].runtime|date('g \\h\\r\\. i \\m\\i\\n\\.') }}</span>
+                        </h3>
+                        <div class="synopsis_box">
+                            <span class="synopsis">{{ all_movies[key_movie].synopsis_short }}</span>
+                        </div>
+                        {{ include('helper/showtimes.twig', {showtimes: showdate.movies[key_movie]}, false) }}
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+<script type="text/javascript">
+    var availableDates = {{ available_dates|json_encode|raw }};
+</script>

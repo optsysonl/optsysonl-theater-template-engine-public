@@ -1,0 +1,66 @@
+﻿<%           
+    var j = 0;
+    if ((collection.offset + collection.count) > collection.models.length)
+    var toCond = collection.models.length;
+    else
+var toCond = collection.offset + collection.count;
+
+var holdTicket = window.ObjectModels.OrderModel.get('tickets').find(function (t) {return t.get('name') == "Hold";});
+       var friends = holdTicket ? holdTicket.friends : null;
+
+         for (var i = (collection.offset < toCond ? collection.offset : 0); i < toCond; i++) {
+                var friend = collection.models[i];
+                var id = friend.get('id');
+                if (j == 0) {%>
+                    <div class="fb-row">
+                        <%}%>
+                    <div class="fb-friend">
+                        <div style="margin: 10px 5px 5px 5px;" class="fb-field">
+                            <%if(!isOnHold){%>
+                            <input style="width: 20px" type="radio" name="user" id="<%= friend.get('id')%>" <%=friend.get('ticketSerial') ? 'checked':''%>/>
+                            <%}%>
+                        </div>
+                        <div style="margin: 10px 5px 5px 5px; border: 5px solid #E6E6E6; border-radius: 10px;" class="fb-field">
+                            <img  src="//graph.facebook.com/<%=friend.get('id')%>/picture" />
+                        </div>
+                        <div style="margin: 15px 5px 5px 0px;" class="fb-field long-name">
+                            <a><%= friend.get('name')%></a>
+                        </div><%if(isOnHold){%>
+                        <%if(friends){
+                        
+                        var numberOfHoldTickets = 0;
+                        var newFriend = _.find(friends, function(f){return f.get('id') == friend.get('id');});
+                        if(newFriend)
+                            numberOfHoldTickets = newFriend.get('quantity');
+                        }%>
+                        <div id="b<%= id %>" class="btn-group btn-hover pull-right" style="top: 15px;">
+                            <div class="span3 addRemove">
+                                <div class="span1">
+                                    <div class="remove" style="cursor: pointer">
+                                        <img id="fbRemove" src="/assets/files/ncr-content/img/minus.png" data-id="<%=id %>" alt="" class="<%=numberOfHoldTickets == 0 ? 'hide' : ''%>" />
+                                    </div>
+                                </div>
+                                <div class="span1">
+                                    <div class="count">
+                                        <label id="quantity<%= id %>"><%=numberOfHoldTickets == 0 ? '' : numberOfHoldTickets%></label>
+                                    </div>
+                                </div>
+                                <div class="span1">
+                                    <div class="add" style="cursor: pointer">
+                                        <img id="fbAdd" src="/assets/files/ncr-content/img/plus.png" data-id="<%=id %>" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <%}%>
+                    </div>
+                        <% j++;
+                if (j == 2){
+                    j = 0;%>
+                    </div>
+<%} else if ((i + 1) == toCond){%>
+                    </div> 
+               <%}%>
+            <%}%>
+            

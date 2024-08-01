@@ -1,0 +1,46 @@
+{% set tab_index = 1 %}
+{% if site.config.template_options.slider_npcs.np is defined %}
+    {{ include('helper/blocks/home-movie-slider-block.twig',
+        {   movies: movies.np,
+            class: 'now-playing',
+            tab: tab_index,
+            show_titles: site.config.template_options.slider_title
+        })
+    }}
+    {% set tab_index = tab_index + 1 %}
+{% endif %}
+{% if site.config.template_options.slider_npcs.cs is defined %}
+    {{ include('helper/blocks/home-movie-slider-block.twig',
+        {   movies: movies.cs,
+            class: 'coming-soon',
+            tab: tab_index,
+            show_titles: site.config.template_options.slider_title
+        })
+    }}
+    {% set tab_index = tab_index + 1 %}
+{% endif %}
+{% if site.config.template_options.slider_npcs.adv is defined %}
+    {{ include('helper/blocks/home-movie-slider-block.twig',
+        {   movies: movies.adv,
+            class: 'advance-tickets',
+            tab: tab_index,
+            show_titles: site.config.template_options.slider_title
+        })
+    }}
+    {% set tab_index = tab_index + 1 %}
+{% endif %}
+{% if movies.filters is defined %}
+    {% for filter in movies.filters %}
+        {{ include('helper/blocks/home-movie-slider-block.twig',
+            {   movies: filter.items,
+                class: 'filter ' ~ filter.filter_id,
+                tab: tab_index,
+                show_titles: site.config.template_options.slider_title
+            })
+        }}
+        {% set tab_index = tab_index + 1 %}
+    {% endfor %}
+{% endif %}
+<div class="view-all-movies-container">
+    <a href="/movies">View all Movies</a>
+</div>

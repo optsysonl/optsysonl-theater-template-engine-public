@@ -1,0 +1,176 @@
+﻿<div class="row">
+    <div class="span16">
+        <div class="showtime-legend" style="display: <%= (!availableLegends.showPassesAllowed || availableLegends.showdDDFlag || availableLegends.showimaxFlag || availableLegends.showisReservedSeating) ? 'block' : 'none' %>">
+            <% if(!availableLegends.showPassesAllowed){%>
+            <span class="no-passes"><%= localize.noPasses %></span> 
+            <%}%>
+
+            <% if(availableLegends.showdDDFlag){%>
+            <span class="threeD"><%= localize.dDDFlag %></span> 
+            <%}%>
+
+            <% if(availableLegends.showimaxFlag){%>
+            <span class="imax"><%= localize.imaxFlag %></span> 
+            <%}%>
+
+            <% if(availableLegends.showisReservedSeating){%>
+            <span class="seat-sel"><%= localize.seatSelection %></span>
+            <%}%>
+        </div>
+    </div>
+    <%if (window.appConfig.GroupMovies) { 
+    _.each(theaters,function(t){
+    var theater  = t;%>
+    <div class="clear">
+        <div class="span16 theater-list">
+            <div class="span2 movie-marker">
+
+            </div>
+            <div class="span12">
+                <h3 style="font-size: 19px">
+                    <%= theater.get('name') %></h3>
+                <span class="theater-details">
+                    <%= theater.get('addressLine1') %><br />
+                    <% if(theater.get("addressLine2")){%>
+                    <%= theater.get("addressLine2") %><br />
+                    <%}%>
+                    <%= theater.get('addressCity') %>,
+                    <%= theater.get('addressState') %>
+                    <%= theater.get('addressZip') %>
+                </span>
+            </div>
+            <div class="span2">
+                <div class="miles">
+                    <%if(showDistance) { %>
+                    <%= theater.get('distance').toFixed(1) %><br />
+                    <span><%= distanceUnit %></span>
+                    <%}%>
+                    <a target="_parent" href="#mapLightBox" data-toggle="lightbox" class="view-map" data-theater-id="<%= theater.get('id') %>" theatername="<%= theater.get('name') %>"
+                       lat="<%= theater.get('latitude') %>" lon="<%= theater.get('longitude') %>"><%= localize.viewMap %></a>
+                </div>
+            </div>
+        </div>
+        <div class="span16">
+                    <div class="performances">
+                        <% _.each(t.group, function(groupMovie, i){
+                            var hasPerformance = _.any(groupMovie.performances,function(performance){ return filterDate.format('yyyymmdd') == performance.businessDate; });
+                        %>
+                        <%if(hasPerformance){%>
+                    <div class="clear"></div>
+                    <h3 style="float: left; font-size: 17px"><%= groupMovie.get('name')%></h3>
+                    <div class="clear"></div>
+                    <%var now = new Date().toISOString(); 
+                        var movieCode = groupMovie.get('code');
+                    _.each( groupMovie.performances, function( performance, j ){
+                    var status = performance.status == 'L' || performance.status == 'S' ? 'disabled' : '';
+                    var time = new Date(performance.showTime);
+                
+                    time.setMinutes(time.getMinutes() + theater.get("performanceExpirationInMinutes"));
+                    if (performance.businessDate === window.DtHelper.getBussinessDate(filterDate)){%>
+                    <% if(time.toISOString() > now){ 
+                    var getTickets = status ?  '' : 'href=#tickets/' + performance.number + '/' + $.trim(movieCode) + '/' + theater.id;
+                    %>
+                    <a class="<%= status %>" <%= getTickets %>>
+                    <i class="decor-left"></i>
+                    <%=  Globalize.format(DtHelper.convertDate(performance.showTime), Globalize.findClosestCulture(theater.get('culture')).calendar.patterns.t, theater.get('culture'))  %>
+                    <b class="flags">
+                        <%= !performance.passesAllowed?'<img src="/assets/files/ncr-content/img/noPasses.png" />' : ''%>
+                        <%= performance.dDDFlag ?'<img src="/assets/files/ncr-content/img/3d.png" />' : ''%>
+                        <%= performance.imaxFlag ?'<img src="/assets/files/ncr-content/img/imax.png" />' : ''%>
+                        <%= performance.isReservedSeating? '<img src="/assets/files/ncr-content/img/seatSelection.png" />' : ''%>
+                    </b><i class="decor-right"></i></a> <%}%>
+                    <%}%>
+                    <%});%>
+                    <div class="clear"></div>
+                    <% var now = new Date().toISOString(); 
+                    var performancesForDay = _.filter(groupMovie.performances, function(performance) {
+                    var performanceTime = new Date(performance.showTime);
+                    performanceTime.setMinutes(performanceTime.getMinutes() + theater.get("performanceExpirationInMinutes"));  
+                    return performance.businessDate === window.DtHelper.getBussinessDate(filterDate) && performanceTime.toISOString() > now
+                    });%>
+                    <% if(performancesForDay.length === 0) { %>
+                    <div style='float:left;'><h5><%= localize.noShowtimesForThisDate %></h5></div>
+                        <% } %>
+                        <% } %>
+                    <%});%>
+                </div>
+         </div>
+    </div>
+    <div class="row row-separator">
+    </div>
+    <%}); 
+    } else {
+    _.each( theaters, function( t, i ){
+    var theater = t.theater;
+    if(theater != undefined){%>
+    <div class="clear">
+        <div class="span16 theater-list">
+            <div class="span2 movie-marker">
+      </div>
+            <div class="span12">
+                <h4><%= theater.get('name') %></h4>
+                <span class="theater-details">
+                    <%= theater.get('addressLine1') %><br />
+                    <% if(theater.get("addressLine2")){%>
+                    <%= theater.get("addressLine2") %><br />
+                    <%}%>
+                    <%= theater.get('addressCity') %>,
+                    <%= theater.get('addressState') %>
+                    <%= theater.get('addressZip') %>
+                </span>
+            </div>
+            <div class="span2">
+                <div class="miles">
+                    <%if(showDistance) { %>
+                    <%= theater.get('distance').toFixed(1) %><br />
+                    <span><%= distanceUnit %></span>
+                    <%}%>
+                    <a target="_parent" href="#mapLightBox" data-toggle="lightbox" class="view-map" data-theater-id="<%= theater.get('id') %>" theatername="<%= theater.get('name') %>"
+                       lat="<%= theater.get('latitude') %>" lon="<%= theater.get('longitude') %>"><%= localize.viewMap %></a>
+                </div>
+            </div>
+         </div>
+        <%}%>
+        <div class="span16">
+            <div class="performances">
+                <%
+                if(theater != undefined){ 
+                var now = new Date().toISOString();
+                _.each( t.performances, function( performance, j ){
+                
+                var status = performance.status == 'L' || performance.status == 'S' ? 'disabled' : '';
+          
+                var time = new Date(performance.showTime);
+                time.setMinutes(time.getMinutes() + theater.get("performanceExpirationInMinutes"));
+                
+                if (performance.businessDate === window.DtHelper.getBussinessDate(filterDate)){
+                %>
+                <% if(time.toISOString() > now){ 
+                var getTickets = status ?  '' : 'href=#tickets/' + performance.number + '/' + $.trim(movieCode) + '/' + theater.id;
+                %>
+                <a class="<%= status %>" <%= getTickets %>>
+                <i class="decor-left"></i>
+                <%=  Globalize.format(DtHelper.convertDate(performance.showTime), Globalize.findClosestCulture(theater.get('culture')).calendar.patterns.t, theater.get('culture'))  %>
+                <b class="flags">
+                    <%= !performance.passesAllowed?'<img src="/assets/files/ncr-content/img/noPasses.png" />' : ''%>
+                    <%= performance.dDDFlag ?'<img src="/assets/files/ncr-content/img/3d.png" />' : ''%>
+                    <%= performance.imaxFlag ?'<img src="/assets/files/ncr-content/img/imax.png" />' : ''%>
+                    <%= performance.isReservedSeating? '<img src="/assets/files/ncr-content/img/seatSelection.png" />' : ''%>
+                </b><i class="decor-right"></i></a> <%}%>
+                <%}%>
+                <% }); %>
+                <% var now = new Date().toISOString();
+                var performancesForDay = _.filter(t.performances, function(performance) { var performanceTime = new Date(performance.showTime); performanceTime.setMinutes(performanceTime.getMinutes() + theater.get("performanceExpirationInMinutes"));  return performance.businessDate === window.DtHelper.getBussinessDate(filterDate) && performanceTime.toISOString() > now});
+                }%>
+                <% if(performancesForDay.length === 0) { %>
+                <div style='float:left;'><h5><%= localize.noShowtimesForThisDate %></h5></div>
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+    <%}); %>
+    <%}%>
+</div>
+<div class="clear">
+</div>

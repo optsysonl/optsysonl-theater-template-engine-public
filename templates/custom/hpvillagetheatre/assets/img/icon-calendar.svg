@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Calendar</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M19.9713139,10 L3.9968589,10 L3.9968589,6.971 C3.9968589,6.435 4.4311639,6 4.9663079,6 L5.9936679,6 L5.9936679,8 L7.9904779,8 L7.9904779,6 L15.9776979,6 L15.9776979,8 L17.9745079,8 L17.9745079,6 L18.9729109,6 C19.5240289,6 19.9713139,6.448 19.9713139,7 L19.9713139,10 Z M19.9712589,19 C19.9712589,19.55 19.5219779,20 18.9728559,20 L4.9952559,20 C4.4441379,20 3.9968529,19.552 3.9968529,19 L3.9968529,12 L19.9712589,12 L19.9712529,19 L19.9712589,19 Z M2.0639589,19.761 C2.0639589,20.865 3.0214269,22 4.1236589,22 L20.0980589,22 C21.2012889,22 22.0000189,20.979 22.0000189,19.761 C22.0000189,19.372 21.96807,7.36 21.96807,6.708 C21.96807,4.626 21.687519,4 17.97446,4 L17.97446,2 L15.97765,2 L15.97765,4 L7.99043,4 L7.99043,2 L5.99362,2 L5.99362,4 L3.99681,4 C2.89857,4 2,4.9 2,6 L2.0638978,19.761 L2.0639589,19.761 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Calendar">
+            <rect id="24pt-Bounding-Box" x="0" y="0" width="24" height="24"></rect>
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Calendar"></g>
+            <g id="Color/Primary" mask="url(#mask-2)" fill="#FFFFFF">
+                <rect id="Base" x="0" y="0" width="24" height="24"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

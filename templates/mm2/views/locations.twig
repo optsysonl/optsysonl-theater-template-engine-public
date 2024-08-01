@@ -1,0 +1,42 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %} Locations | {{ parent() }} {% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+
+    <div class="container moviespage" id="main">
+        {{ include('helper/leaderboard.twig') }}
+
+        <h1>Locations</h1>
+        {% set count = 1 %}
+        <div class='row locationboxes'>
+            {% for house in data.houses %}
+                {% if count > 3 %}
+                    </div>
+                    <div class="row locationboxes">
+                {% set count = 1 %}
+                {% endif %}
+
+                <div class="col-md-4">
+                    <div class="location-box">
+                        <a class="nolink" href="{{ house['url'] }}"><h4>{{ house.name }}</h4>
+                            {% if house.photo is defined and house.photo != '' %}
+                                <div class='image_container'>
+                                    <img src='{{ house.photo }}'/>
+                                </div>
+                            {% endif %}
+                            <p>
+                                {{ house.address }} <br>
+                                {{ house.city }}, {{ house.state_short }} {{ house.zip }} <br>
+                                {% if house['movieline'] != '0' and house['movieline'] != '' %}{{ house.movieline }}{% endif %}
+                            </p>
+                        </a>
+                    </div>
+                </div>
+                {% set count = count + 1 %}
+            {% endfor %}
+        </div>
+    </div>
+    {{ include('common/footer.twig') }}
+{% endblock %}

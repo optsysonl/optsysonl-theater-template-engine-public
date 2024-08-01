@@ -1,0 +1,47 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Locations {% endblock %}
+
+{% block content %}
+    <div id="main_wrapper">
+        {{ include('common/header.twig') }}
+        <div id="content_wrapper" class="clearfix">
+            <div id="content">
+                <section>
+                    <h1>Locations </h1>
+                </section>
+
+                <article>
+                    {% for house in data.houses %}
+                        <p>
+                            <strong>
+                                <span style="color: #eeeeee;">
+                                    <a href="/location/{{- house['house_id'] -}}/{{- house['url'] -}}">
+                                        {{ house.name|replace({"Cinema Cafe - ": ""}) }}
+                                    </a>
+                                </span>
+                            </strong>
+                            <br> {{ house.address }}
+                            <a href="/location/{{- house['house_id'] -}}/{{- house['url'] -}}"
+                               target="_blank">
+                                <img class="buy_online" style="float: right;" src="/assets/img/button_buytickets.gif"
+                                     alt="button_buytickets.gif" width="142"
+                                     height="24">
+                            </a>
+                            <br> {{ house.city -}}, {{ house.state_short }} {{ house.zip }} <br>
+                            Phone: {{ house.movieline }} <br>
+                            {{ house.tagline }}
+                        </p>
+                        <hr>
+
+                    {% endfor %}
+                </article>
+            </div>
+            <aside>
+                {{ include('parts/aside.twig') }}
+                {{ include('parts/aside_lower.twig') }}
+            </aside>
+        </div>
+    </div>
+    {{ include('common/footer.twig') }}
+{% endblock %}

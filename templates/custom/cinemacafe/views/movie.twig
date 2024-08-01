@@ -1,0 +1,138 @@
+{% extends "common/base.twig" %}
+{% set this_movie = data.movies.movies[this_page.movie_id] %}
+{% block meta_title %}{{ parent() }} | Movie | {{ this_movie.name }}{% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <main id="main_wrapper">
+        {{ include('common/header.twig') }}
+        <div id="content_wrapper" class="clearfix">
+            <div id="content">
+                <section id="movie_title">
+                    <h1>{{ this_movie.name }}</h1>
+                </section>
+                <div class="clearfix">
+                    <figure id="poster_box">
+                        {%  if this_movie.trailer.url is defined %}
+                            <a href='/trailer/{{- this_movie.trailer.url -}}' target='_blank' id='play-trailer' data-fancybox-type='iframe' title='{{ this_movie.name }}' />
+                            <div id='trailer'>
+                                <img src="{{- this_movie.poster -}}" class="poster" alt="Poster of {{ this_movie.name }}">
+                            </div>
+                            </a>
+                        {% else %}
+                            <div id='missing-trailer'>
+                                <img src="{{- this_movie.poster -}}" class="poster" alt="Poster of {{ this_movie.name }}">
+                            </div>
+                        {% endif %}
+                    </figure>
+
+                    <article id="movie_info">
+
+                        {% if this_movie.synopsis != '' %}{{ this_movie.synopsis|raw }}{% endif %}
+
+                        <div class="clearfix">
+                            <div style="float:left;width:45%;">
+                                <section class="info_header">
+                                    <h2>Details</h2>
+                                </section>
+
+                                <article class="info">
+                                    {% if this_movie.genres is defined %}
+                                        {{ this_movie.genres|join(', ') }}
+                                    {% endif %} <br/>
+                                    {{ this_movie.runtime|date('g \\h\\r\\. i \\m\\i\\n\\.') }} <br/>
+                                    {% if this_movie.release > 'now'|date('Y-m-d') %}Opens {% else %}Opened {% endif %} {{ this_movie.release|date('l, F jS') }}
+                                </article>
+                                {% if this_movie.director != '' %}
+                                    <section class="info_header">
+                                        <h2>Director</h2>
+                                    </section>
+                                    <article class="info">
+                                        {{ this_movie.director }}
+                                    </article>
+                                {% endif %}
+
+                                {% if this_movie.writer != '' %}
+                                    <section class="info_header">
+                                        <h2>Writer</h2>
+                                    </section>
+                                    <article class="info">
+                                        {{ this_movie.writer }}
+                                    </article>
+                                {% endif %}
+
+                                {% if this_movie.mpaa != '' %}
+                                    <section class="info_header">
+                                        <h2>Advisory</h2>
+                                    </section>
+                                    <article class="info">
+                                        Rated {{ this_movie.mpaa }} {% if this_movie.advisory != '' %}{{ this_movie.advisory }}{% endif %}
+                                    </article>
+                                {% endif %}
+                            </div>
+                            <div style="float:right:45%;">
+                                {% if this_movie.actors != '' %}
+                                    <section class="info_header">
+                                        <h2>Cast</h2>
+                                    </section>
+                                    <article class="info">
+                                        {{ this_movie.actors|join(', ') }}
+                                    </article>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </article>
+                </div>
+
+                {{ include('helper/stills.twig', {stills: this_movie.stills}, with_context = false) }}
+
+                <section id="movie-details-side">
+                    {{ include('parts/showdates_movie.twig', {showdates: data.showdates, movie_id: this_page.movie_id, houses: data.houses}, false) }}
+                </section>
+            </div>
+            <aside>
+                {{ include('parts/aside.twig') }}
+                {{ include('parts/aside_lower.twig') }}
+            </aside>
+        </div>
+    </main>
+    {{ include('common/footer.twig') }}
+{% endblock %}
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+
+            //change date on button click
+            $('#movie-showdates').on('change', function(){
+                var class_name = "location_date";
+                //get data-attribute 'date' of clicked button
+                var sel_date = $(this).val();
+
+                //calls function from /assets/js/functions.js
+                openDate(sel_date, class_name);
+
+                //prevent default
+                return false;
+            });
+
+            //load initial showtimes
+            $('#movie-showdates option:first').trigger('change');
+        });
+    </script>
+{% endblock %}

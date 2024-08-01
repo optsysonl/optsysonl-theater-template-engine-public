@@ -1,0 +1,42 @@
+﻿<div class="row">
+    <h4><%= localize.yourIndividualTickets %></h4>
+</div>
+<div class="row">
+    <div class="span16">
+        <div class="individualTickets">
+            <span class="triangle-down"></span>
+            <% 
+            var giftAllowed = window.ConfigurationProvider.allowGifting();
+            var index = 0;
+            _.each(tickets, function (ticket) {
+            index++;
+            var serial = ticket.serialNumber;
+            var orderModel = window.ObjectModels.OrderModel;
+            var dateShowTime = DtHelper.convertDate(orderModel.get('performance').get('showTime'));
+            var showTime = Globalize.format(dateShowTime, 't', orderModel.get('theater').get('culture'));
+            var showDate = Globalize.format(dateShowTime, 'D', orderModel.get('theater').get('culture'));
+            var performance = orderModel.get('performance');          
+            %>
+            <%if(ticket.name.toLowerCase() != 'hold'){%>
+            <div class="gift-box">
+                <h5><%= orderModel.get('movie').get('name') %></h5>
+                <div><%= orderModel.get('theater').get('name') %></div>
+                <div><%= performance.get('auditorium') %></div>
+                <div><%= showDate %>, <%= showTime %> - <%= ticket.name %> <%= ticket.seatName != 'GA' ? ', <b>' + ticket.seatName + '</b>' : '' %></div>
+                <div>
+                    <% if (giftAllowed) {%>
+                    <div id="<%= serial %>" class="btn btn-block giftTicket" data-id="giftTicket"><%= localize.giftThisTicket %></div>
+                    <% } %>
+
+                </div>
+                <div><%= serial %></div>
+            </div>
+            <% }}); %>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id="friends">
+</div>

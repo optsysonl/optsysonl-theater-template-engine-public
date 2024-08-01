@@ -1,0 +1,114 @@
+{% if debug.header is defined %}{{ debug.header|join('\n')|raw }}{% endif %}
+<!DOCTYPE html>
+<html
+        xmlns="https://www.w3.org/1999/xhtml"
+        xmlns:fb="https://www.facebook.com/2008/fbml"
+        xmlns:og="http://ogp.me/ns http://ogp.me/ns/video"
+        lang="en">
+<head>
+{% block head %}
+    <title>{% block meta_title %}{{ site.config.title }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ site.config.description }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{{ site.config.keywords }}{% endblock %}">
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+    <!-- add Favicon -->
+    {% if site.meta['icon'] is defined %}<link rel="icon" href="{{ site.meta['icon'] }}" sizes="16x16 32x32 96x96" type="image/x-icon">{% endif %}
+    {% if site.meta['android_icon'] is defined %}<link rel="android-icon" href="{{ site.meta['android_icon'] }}" sizes="36x36 48x48 72x72 96x96" type="image/x-icon">{% endif %}
+    {% if site.meta['apple_icon'] is defined %}<link rel="apple-touch-icon" href="{{ site.meta['apple_icon'] }}" sizes="57x57 60x60 72x72 76x76 114x114 120x120 144x144 152x152 180x180" type="image/x-icon">{% endif %}
+    {% if site.meta['apple_icon_precomposed'] is defined %}<link rel="apple-touch-icon-precomposed" href="{{ site.meta['apple_icon_precomposed'] }}" sizes="57x57 60x60 72x72 76x76 114x114 120x120 144x144 152x152 180x180" type="image/x-icon">{% endif %}
+    {% if site.meta['shortcut_icon'] is defined %}<link rel="shortcut-icon" href="{{ site.meta['shortcut_icon'] }}" sizes="70x70 144x144 150x150 310x310" type="image/x-icon">{% endif %}
+    
+    {% block css %}
+<!-- CSS -->
+        {% block meta_google_fonts %}{{ site.meta['google_fonts']|raw }}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="/assets/css/reset.css">
+        <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+        
+        <!-- Fancybox -->
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"/>
+    {% endblock %}
+    
+    {% block js_scripts %}
+<!-- JS -->
+        <!-- jQuery -->
+        <script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous"></script>
+        
+        <!-- Custom JS -->
+        <script src="/assets/js/functions.js"></script>
+        
+	{% endblock %}
+    
+    {% block js_analytics %}    
+        {% if site.meta['analytics'] is not empty %}
+        	<!-- Google Analytics -->
+            <script>
+                // JavaScript Document
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                
+                ga('create', '{{ site.meta['analytics'] }}', '');
+                ga('send', 'pageview');
+            </script>
+        {% endif %}
+    {% endblock %}
+    
+    {% block adwords %}
+		<script type='text/javascript'>
+            var googletag = googletag || {};
+            googletag.cmd = googletag.cmd || [];
+            (function() {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') + 
+            '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+            })();
+        </script>
+        <script type='text/javascript'>
+            googletag.cmd.push(function() {
+                var mappingLeaderboard = googletag.sizeMapping().
+                 addSize([970, 90 ], [970, 90]).
+                 addSize([728, 90 ], [728, 90]).
+                 addSize([1, 1 ], [320, 50]).
+                 build();
+                var mappingBox = googletag.sizeMapping().
+                 addSize([1024, 768 ], [300, 250]).
+                 addSize([500, 500 ], [300, 250]).
+                 addSize([1, 1 ], [300, 250]).
+                 build();
+                
+                {% if site.config.google_adwords_code is not empty %}
+                    {{ site.config.google_adwords_code|raw }}
+                {% endif %}
+                googletag.enableServices();
+            });
+        </script>
+    {% endblock %}
+    {% block meta_misc_html %}{{ site.config.misc_html|raw }}{% endblock %}
+    {% block social_meta_tags %}{% endblock %}
+{% endblock %}
+</head>
+<body id="{{- this_page.class['body'] -}}">
+{% block content %}{% endblock %}
+{% block js_scripts_footer %}
+    {% if site.config.template_options.footer_scripts != '' %}
+        {{ site.config.template_options.footer_scripts|raw }}
+    {% endif %}
+<!-- Fancybox -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+{% endblock %}
+</body>
+</html>
+{% if debug.footer is defined %}{{ debug.footer|join('\n')|raw }}{% endif %}

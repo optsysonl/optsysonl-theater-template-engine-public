@@ -1,0 +1,66 @@
+{% extends "common/base.twig" %}
+{% set page_class = "seances" %}
+{% block meta_title %} Showtimes for {{ data.houses[active_house_id].name }} | {{ parent() }} {% endblock %}
+
+{% block css_header %}
+    <link rel="stylesheet" href="/assets/css/horaires2017.min.css" type="text/css">
+    {#<link rel="stylesheet" href="/assets/css/jquery-ui.min.css" type="text/css">#}
+    <link rel="stylesheet" href="/assets/css/picker/classic.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/picker/classic.date.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/picker/classic.time.css" type="text/css">
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% set groupedMoviesData = showdatesPageMoviesData(active_house_id, data.movies.movies, data.showdates)|sortByReleaseDate %}
+    <div class="ct_head">
+        <div class="wrap">
+            <h1>Showtimes</h1>
+        </div>
+    </div>
+
+    <div class="sticky-tab-seances-wrapper">
+        <div class="sticky-tab-seances">
+            {{ include('helper/showtimes-buttons.twig', {}, with_context = false) }}
+        </div>
+    </div>
+
+    <div id="content" class="showdates-container">
+        <div id="ct_main">
+            <div id="maincontent-x-large" class="ct_left">
+
+                <div class="cadre-out">
+                    <div class="cadre-in">
+                        <div>
+                            {% if data.houses[active_house_id]['drivein'] %}
+                                {% set groupedMoviesData1 = showdatesPageMoviesDataDriveIn(groupedMoviesData) %}
+                                {{ include('helper/grid-showtimes-drivein.twig', {movies: groupedMoviesData1}) }}
+                            {% else %}
+                                {{ include('helper/grid-showtimes.twig', {movies: groupedMoviesData}) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="resa_mail" class=""></div>
+        </div>
+    </div>
+    <br class="clr">
+
+{% endblock %}
+
+{% block footer_scripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="/assets/js/picker/picker.js"></script>
+    <script type="text/javascript" src="/assets/js/picker/picker.date.js"></script>
+    <script type="text/javascript" src="/assets/js/picker/picker.time.js"></script>
+
+    {% if not data.houses[active_house_id]['drivein'] %}
+    <script type="text/javascript" src="/assets/js/showtimes.js"></script>
+    {% endif %}
+
+    <script type="text/javascript" src="/assets/js/movies-script.js"></script>
+
+{% endblock %}

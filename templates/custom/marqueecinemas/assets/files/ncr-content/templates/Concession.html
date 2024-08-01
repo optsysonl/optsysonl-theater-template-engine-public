@@ -1,0 +1,45 @@
+﻿<div class="row span16">
+
+    <div class="span11 concession-content">
+        <div class="row">
+            <div class="span11">
+            <% if (!message){  %>
+                <div class="concession-navigation">
+                        <ul class="nav nav-pills">
+                            <% _.each( model.models, function(item){ %>
+                            <% if(model.category == item.get("name")) { %>
+                            <li class="active"><a class="concessionMenuItem" id="<%= encodeURIComponent(item.get('name')) %>"><%= item.get("name") %></a></li>
+                            <% } else { %>
+                            <li><a class="concessionMenuItem" id="<%= encodeURIComponent(item.get('name')) %>"><%= item.get("name") %></a></li>
+                            <% } %>
+                            <% }); %>
+                        </ul>
+                    </div>
+                     
+                <% } else{%>
+<%= message %>
+<% } %>
+            </div>
+        </div>
+        <div class="row" id="concession-items" style="height: 565px; overflow: auto; overflow-x : hidden"></div>
+    </div>
+  
+
+    
+
+  <div class="span5">
+            <div class="row">
+                <div class="timeToOrder"> <!--addClass .minuteLeft when time < 1:00-->
+                    <%= localize.timeLeftToOrder %>
+                    <h4 class="order-time"></h4>
+                </div>
+            </div>
+            <div class="clear" style="height: 20px;"></div>
+            <div class="row">
+                <div id="purchaseSummaryConcession"></div>
+            </div>
+
+    </div>
+</div>
+<br />
+<div class="concession-dialog"></div>

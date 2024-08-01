@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<!-- jwPlayer -->
+<script type="text/javascript" src="/assets/js/jwplayer/jwplayer.js"></script>
+<script type="text/javascript">jwplayer.key = "2I0Bs/bS9LXxqvIFZ/F9d/VqzrRdCWPytp4bdA==";</script>
+
+</head>
+<body>   
+	<div id="video"></div>    
+    <script type="text/javascript">
+    	jwplayer('video').setup({ 
+			autostart: true,
+			controllbar : 'none',
+			file: '{{- data.trailer -}}',
+			flashplayer: '/assets/js/jwplayer.flash.swf',
+			width: 786,
+			height: 440,
+			stretching: 'fill',
+		});
+    </script>
+    </body>
+</html>

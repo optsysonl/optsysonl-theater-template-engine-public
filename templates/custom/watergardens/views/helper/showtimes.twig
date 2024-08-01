@@ -1,0 +1,29 @@
+{% for showdate, movie in showdates if showdate != 'movie' and showdate != 'showdates' %}
+    {% set timeByComment = movie.times|groupByComment %}
+    {% for comment, times  in timeByComment -%}
+        <p class="showtimes-details showtime-title {{ showdate }}">{{- comment -}}</p>
+        {%- for time, time_item in times -%}
+            {%- if time_item.soldout is defined -%}
+                <span class="showtime soldout {{ showdate }}">
+                    <span class="time">
+                        <span class="number">Sold Out</span>
+                    </span>
+                </span>
+            {%- elseif not time_item.expired and time_item.link is defined -%}
+                <a class="showtime {{ showdate }}" href="{{ time_item.link }}" target="_blank">
+                    <span class="time">
+                        <span class="number">{{- time|date('g:i A') -}}</span>
+                    </span>
+                </a>
+            {%- else -%}
+                <span class="showtime  {{ showdate }} {{ time_item.expired ? 'expired' : '' }}">
+                        <span class="time">
+                            <span class="number">{{- time|date('g:i A') -}}</span>
+                        </span>
+                </span>
+            {%- endif -%}
+        {%- endfor -%}
+    {%- endfor -%}
+{% else %}
+    <span class="showtimes no-available-showtimes">No showtimes available</span>
+{%- endfor %}

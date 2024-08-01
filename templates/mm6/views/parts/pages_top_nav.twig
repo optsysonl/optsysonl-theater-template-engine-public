@@ -1,0 +1,34 @@
+{% for nav_item in this_page.header.top_nav %}
+    {%- if nav_item['sub_nav'] is defined -%}
+        <li class='sub-nav-container'>
+            <a href='#'>
+                <i class="icon">
+                    {% if nav_item.icon is defined and nav_item.icon is not empty %}
+                        <img class="" src="{{ nav_item.icon }}" alt="{{ nav_item['name'] }}"/>
+                    {% endif %}
+                </i>{#
+                #}<span class="name">{{- nav_item['name'] -}}</span>
+            </a>
+            <ul class='sub-nav'>
+                {% for sub_item in nav_item['sub_nav'] -%}
+                    <li>
+                        <a href='{{- sub_item['url'] -}}' {{ sub_item['target'] }}>
+                            {{- sub_item['name'] -}}
+                        </a>
+                    </li>
+                {%- endfor %}
+            </ul>
+        </li>
+    {%- else -%}
+        <li>
+            <a href='{{- nav_item['url'] -}}' {{ nav_item['target'] }}>
+                <i class="icon">
+                    {% if nav_item.icon is defined and nav_item.icon is not empty %}
+                        <img class="" src="{{ nav_item.icon }}" alt="{{ nav_item['name'] }}"/>
+                    {% endif %}
+                </i>{#
+                #}<span class="name">{{- nav_item['name'] -}}</span>
+            </a>
+        </li>
+    {%- endif -%}
+{% endfor %}

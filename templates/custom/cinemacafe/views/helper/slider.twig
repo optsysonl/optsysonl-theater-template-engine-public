@@ -1,0 +1,16 @@
+{% for slide in slides %}
+    <div>
+        <a href="{{- slide.url -}}" target="{{- slide.target -}}">
+            <img src="{{- slide.image -}}" alt="{{- slide['altTag'] -}}">
+            {% if slide['image_text'] is not empty %}
+                <div class="caption-main">
+                    <span class="captiontext_full">{{ slide['image_text'] }}</span>
+                </div>
+            {% endif %}
+            <span id="slick-slide{{ loop.index0 }}"></span>
+        </a>
+    </div>
+{% endfor %}
+
+
+

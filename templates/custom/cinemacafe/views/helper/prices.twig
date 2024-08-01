@@ -1,0 +1,16 @@
+{% for price in prices %}
+    <table>
+        <tr>
+            <td class='price_category' colspan='2'>{{ price.cat }}</td>
+        </tr>
+        {% for a_price in price.prices %}
+            <tr>
+                <td class='field'>{{ a_price.name }}</td>
+                <td class='price'>{{ a_price.value }}</td>
+            </tr>
+        {%- endfor %}
+    </table>
+{%- endfor %}
+
+
+

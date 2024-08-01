@@ -1,0 +1,8 @@
+{% for movie in carousel %}
+    <figure class='carousel-image'>
+        <a href='{{- movie.url -}}'>
+            <img src='{{- movie.poster -}}' alt='Poster of {{- movie.name -}}'/>
+            <figcaption class='carousel-info'>{{- movie.name -}}<span class='click-details'>Click here for details</span></figcaption>
+        </a>
+    </figure>
+{% endfor %}

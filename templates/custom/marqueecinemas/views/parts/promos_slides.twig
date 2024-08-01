@@ -1,0 +1,5 @@
+{% for slide in slides %}
+    <a href='{{- slide.url -}}' target='{{- slide.target -}}'>
+        <img src='{{- slide.image -}}' alt='{{- slide['altTag'] -}}'/>
+    </a>
+{% endfor %}

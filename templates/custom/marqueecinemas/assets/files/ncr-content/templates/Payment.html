@@ -1,0 +1,147 @@
+﻿<div class="payment">
+    <div class="row">
+        <div class="paymentListTikets">
+            <div class="row">
+                <h3><%= localize.paymentInformation%></h3>
+            </div>
+            <div class="row" <% if(!param.acceptsSVC) {%> style="display:none" <%} %>>
+                <div class="btn-group">
+                    <button data-id="creditCard" type="button" class="btn <%=window.ActivePaymentMethod == 'CreditCard' ? 'active':''%>"><%= localize.creditCard%></button>
+                    <button data-id="giftCard" type="button" class="btn <%=window.ActivePaymentMethod == 'GiftCard' ? 'active':''%>" ><%= localize.giftCard%></button>
+                </div>
+            </div>
+            <div class="row cardForm">
+                <form id="cardForm" class="validate">
+                    <div id="creditCard" style="display: <%=window.ActivePaymentMethod == 'CreditCard' ? 'block' : 'none'%>">
+                        <div class="span3"><b><%= localize.byFirstName%></b></div>
+                        <div class="span8">
+                            <input type="text" id="firstName" name="firstName" placeholder="<%= localize.byFirstName%>" class="required" value="<%=window.ActivePaymentMethod == 'CreditCard' ? paymentData.firstName : ''%>" maxlength="20"/></div>
+                        <div class="clear"></div>
+                        <div class="span3"><b><%= localize.byLastName%></b></div>
+                        <div class="span8">
+                            <input type="text" id="lastName" name="lastName" placeholder="<%= localize.byLastName%>" class="required" value="<%=window.ActivePaymentMethod == 'CreditCard' ? paymentData.lastName : ''%>" maxlength="30"/></div>
+                        <div class="clear"></div>
+                        <div class="span3"><b><%= localize.cardNumber%></b></div>
+                        <div class="span8 relative">
+                             <input style="" type="text" id="creditCardNumber" name="creditCardNumber" placeholder="<%= localize.cardNumber%>" class="required creditCardNumber" value="<%=window.ActivePaymentMethod == 'CreditCard' ? paymentData.cardNumber : ''%>" />
+                            <div class="cardIcons">
+                                <% if (param.acceptsVisa) { %>
+                                <img src="/assets/files/ncr-content/img/visa.png" alt="lists" style="width: 30px" />
+                                <%} %>
+                                <% if (param.acceptsMasterCard) { %>
+                                <img src="/assets/files/ncr-content/img/mastercard.png" alt="lists" style="width: 30px"  />
+                                <%} %>
+                                <% if (param.acceptsAmericanExpress) { %>
+                                <img src="/assets/files/ncr-content/img/amex.png" alt="lists" style="width: 30px" />
+                                <%} %>
+                                <% if (param.acceptsDiscover) { %>
+                                <img src="/assets/files/ncr-content/img/discover.png" alt="lists" style="width: 30px"  />
+                                <%} %>
+                            </div>
+                        </div>
+                        <%if (param.aVSRequiredForCredit) {%>
+                            <div class="clear"></div>
+                            <div class="span3"><b><%= localize.zipCode%></b></div>
+                            <div class="span8">
+                                <input style="" type="text" id="zipCode" name="zipCode" placeholder="<%= localize.zip%>" class="required zipCode" value="<%=window.ActivePaymentMethod == 'CreditCard' ? paymentData.zipCode : ''%>"  /></div>
+                        <%} %>
+                        <%if (param.cVV2RequiredForCredit) {%>
+                        <div class="clear"></div>
+                        <div class="span3"><b><%= localize.securityCode%></b></div>
+                        <div class="span8 relative">
+                            <input style="width: 108px;" type="text" class="input-small required securityCode" id="securityCode" name="securityCode" placeholder="<%= localize.securityCode%>" value="<%=paymentData.securityCode%>"  />
+                            <span class="questionMark" id="questionMark">?</span>
+                        </div>
+                        <%} %>
+                        <div class="clear"></div>
+                        <div class="span3"><b><%= localize.expirationDate%></b></div>
+                        <div class="span8">
+                              <select id="expDateMonth" style="width:90px"  name="expDateMonth" placeholder="<%= localize.month%>" class="required expDate">
+                              </select>
+                              <select id="expDateYear" style="width:90px" name="expDateYear" placeholder="<%= localize.year%>" class="required expDate">
+                              </select>                            
+                        </div>
+                        <div class="clear"></div>
+                        <%if (window.ConfigurationProvider.useEmailConfirmation() || window.ConfigurationProvider.useSMSConfirmation()){%>
+                          <div class="span3"><b style="margin-top: -2px;"><%= localize.receiptTicketDelivery%></b></div>
+                          <%} %>
+                          <%if (window.ConfigurationProvider.useEmailConfirmation()){%>
+                          <div class="span8">
+                              <input type="text" id="email" name="email" placeholder="<%= localize.emailAddress%>" class="email" value="<%=paymentData.email%>"/></div>
+                          <div class="clear"></div>
+                          <%} %>
+                     </div>
+                    <div id="giftCard" style="display: <%= window.ActivePaymentMethod == 'GiftCard' ? 'block':'none'%>">
+                        <div class="span3"><b><%= localize.byFirstName%></b></div>
+                        <div class="span8">
+                            <input type="text" id="firstNameGift" name="firstName" placeholder="<%= localize.byFirstName%>" value="<%=window.ActivePaymentMethod == 'GiftCard' ? paymentData.firstName : ''%>" maxlength="20"/></div>
+                        <div class="clear"></div>
+                        <div class="span3"><b><%= localize.byLastName%></b></div>
+                        <div class="span8">
+                            <input type="text" id="lastNameGift" name="lastName" placeholder="<%= localize.byLastName%>" value="<%=window.ActivePaymentMethod == 'GiftCard' ? paymentData.lastName : ''%>" maxlength="30"/></div>
+                        <div class="clear"></div>
+                        <div class="span3"><b><%= localize.cardNumber%></b></div>
+                        <div class="span8">
+                            <input type="text" id="creditCardNumberGift" name="creditCardNumberGift"  class="required giftCard" placeholder="<%= localize.cardNumber%>" value="<%=window.ActivePaymentMethod == 'GiftCard'? paymentData.giftCardNumber : ''%>"/></div>
+                        <div class="clear"></div>
+                        <% if(configurationProvider.useGiftCardBalance()){%>
+                        <div class="span3"><b><%= localize.giftCardBalance%>:</b></div>
+                        <div class="span8" style="padding-top:10px;">
+                            <div id="giftCardBalance"><%=paymentData.giftCardBalance || Globalize.format(0, 'c', window.AppConfig.AppCulture) %></div>
+                            <img class="balanceLoader" src="/assets/files/ncr-content/img/balanceLoader.gif">
+                        </div>
+                        <%}%>
+                    </div>
+                    <div class="row">
+                        <div class="row-separator2" style="margin-top: 0px"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <h3><%= localize.optional%></h3>
+            </div>
+
+            <div class="row cardForm" style="margin-top: 0px;">
+                <form id="receiptForm" class="validate">
+                    <%if(param.useLoyalty){%>
+                    <div class="span3"><b><%= localize.loyaltyRewards%></b></div>
+                    <div class="span8">
+                        <input type="text" id="loyaltyCardNumber" name="loyaltyCardNumber" placeholder="<%= localize.loyaltyCardNumber%>" value="<%= paymentData.loyaltyCardNumber ? paymentData.loyaltyCardNumber: ''%>" class="loyalty"/></div>
+                    <div class="clear"></div>
+                    <%}%>
+                    
+                    <div class="span3"><b></b></div>
+                    <%if (window.ConfigurationProvider.useSMSConfirmation()){%>
+                    <div class="span8">
+                        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="<%= localize.mobilePhoneNumber%>" class="phone" value="<%=paymentData.phone%>"/>
+                        <div><%= localize.textMessagesCharges%></div>
+                    </div>
+                    <%} %>
+                </form>
+            </div>
+        </div>
+
+   
+        <div class="span5">
+            <div class="row">
+                <div class="timeToOrder">
+                    <%= localize.timeLeftToOrder %>
+                    <h4 class="order-time"></h4>
+                </div>
+            </div>
+            <div class="clear" style="height: 20px;"></div>
+            <div class="row">
+                <div id="purchaseSummary"></div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+

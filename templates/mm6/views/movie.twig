@@ -1,0 +1,269 @@
+{% extends "common/base.twig" %}
+{% set this_movie = data.movies.movies[this_page.movie_id] %}
+{% set showtimes = getMovieTimes(data.showdates, this_page.movie_id, data.movies.movies) %}
+{% block meta_title %}{{ parent() }} | Movie | {{ this_movie.name }}{% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% if '000000H2' in this_movie.trailer.image  %}
+        {% set tr_background = '' %}
+    {% else %}
+        {% set tr_background = 'background-image: url(' ~ this_movie.trailer.image ~ ');' %}
+    {% endif %}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix">
+            <div class="blocks">
+                <header id="movie-header" style="{{- tr_background }}">
+                    <h1>{{ this_movie.name }}</h1>
+                    <div>
+                        {% if this_movie.mpaa and this_movie.mpaa != 'NR' %}
+                            <span class="mpaa">{{ this_movie.mpaa }}</span>
+                        {% endif %}
+
+                        {% if this_movie.mpaa and this_movie.mpaa != 'NR' and this_movie.runtime %}
+                            <span class="dot"></span>
+                        {% endif %}
+
+                        {% if this_movie.runtime %}
+                            <span class="runtime">{{ this_movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</span>
+                        {% endif %}
+                    </div>
+
+                    {% if this_movie.trailer.url != '' %}
+                        <span id='play-trailer'>
+                        <img src="/assets/img/icon-play.svg" class="svg"/>
+                    </span>
+                    {% endif %}
+                </header>
+
+                {% if this_movie.trailer.url != '' %}
+                    {% if this_movie.trailer.url|url_decode matches '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i' %}
+                        <div class="movie-video-wrapper"><div id="movie-video" data-video="{{- this_movie.trailer.url|url_decode -}}"></div></div>
+                    {% else %}
+                        <video id="movie-video" poster="{{- this_movie.trailer.image }}" controls>
+                            <source src="{{- this_movie.trailer.url|url_decode -}}" type="video/mp4;">
+                        </video>
+                    {% endif %}
+                {% endif %}
+
+                <div class="width-wrapper">
+                    <section id="movie-details">
+                        <img src="{{- this_movie.poster -}}" class="poster" alt="Poster of {{ this_movie.name }}">
+                        <div class="info">
+                            <h1>{{ this_movie.name }}</h1>
+                            {% if this_movie.synopsis != '' %}
+                                <h2>Synopsis</h2><span class='detail'>{{ this_movie.synopsis|raw }}</span>
+                            {% endif %}
+                            {% if this_movie.custom_text !='' %}
+                                <span class='custom_text'>{{ this_movie.custom_text|raw }}</span>
+                            {% endif %}
+                            <h2>Details</h2>
+                            <span class='detail'>
+                                {{ this_movie.genres|join(', ') }}<br/>
+
+                                {% if this_movie.runtime %}
+                                    {{ this_movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}<br/>
+                                {% endif %}
+
+                                {% if this_movie.release > 'now'|date('Y-m-d') %}Opens {% else %}Opened {% endif %}
+                                {{ this_movie.release|date('l, F jS') }}<br/>
+                            </span>
+                            {% if this_movie.director != '' %}
+                                <h2>Director</h2><span class='detail'>{{ this_movie.director }}</span>
+                            {% endif %}
+                            {% if this_movie.actors is defined %}
+                                <h2>Cast</h2><span class='detail'>{{ this_movie.actors|slice(0, 5)|join(', ') }}</span>
+                            {% endif %}
+                            {% if this_movie.mpaa and this_movie.mpaa != 'NR' %}
+                                <h2>Advisory</h2>
+                                <span class='detail'>Rated {{ this_movie.mpaa }} {% if this_movie.advisory != '' %}{{ this_movie.advisory }}{% endif %} </span>
+                            {% endif %}
+                        </div>
+                    </section>
+                    <section class="showtimes-block blocks">
+                        <h2>Showtimes</h2>
+                        <div id="showtimes-container" class="clearfix">
+                            {{ include('parts/showdates_movie.twig', {showtimes: showtimes, movie_id: this_page.movie_id, houses: data.houses, movie_formats: data.movies.movie_formats}, false) }}
+                        </div>
+                    </section>
+                    <section id="movie-stills">
+                        {% if this_movie.stills_custom is not empty %}
+                            {% for key, img_url in this_movie.stills_custom %}
+                                <img src="{{ img_url }}"/>
+                            {% endfor %}
+                        {% else %}
+                            {% for img_url in this_movie.stills %}
+                                <img src="{{ img_url }}"/>
+                            {% endfor %}
+                        {% endif %}
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
+    <script type="text/javascript">
+        var availableDates = {{ showtimes.dates|json_encode|raw }};
+
+        function available(date) {
+            var ymd = date.getFullYear() + '-' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + date.getDate()).slice(-2);
+            if ($.inArray(ymd, availableDates) != -1) {
+                return [true, '', 'Available'];
+            } else {
+                return [false, '', 'unAvailable'];
+            }
+        }
+
+        $(function () {
+
+            //start showdate carousel
+            $('#showdates').slick(carouselSettings(false, false));
+
+            //change date on button click
+            $('.showdate').on('click', function () {
+                $('.showdate').removeClass('showdate-selected');
+                $(this).addClass('showdate-selected');
+
+                var sel_date = $(this).data("date");
+                var class_name = "location_date";
+                openDate(sel_date, class_name);
+                showtimesFilter();
+
+                //prevent default
+                return false;
+            });
+
+            $('#datepicker').datepicker({
+                // minDate: new Date(),
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay: available,
+                showButtonPanel: true,
+                closeText: 'Close',
+                onSelect: function (date, inst) {
+                    $('.showdate[data-date="' + date + '"]').click();
+                }
+            });
+
+            $('#filter .filters').slick({
+                arrows: false,
+                infinite: false,
+                variableWidth: true,
+                accessibility: false,
+            });
+
+            $('#filter .filters .filter').on('click', function () {
+                $(this).toggleClass('active');
+                showtimesFilter();
+            });
+
+            //load initial showtimes
+            $('.showdate:first').trigger('click');
+            $('#showtimes-tab').addClass('tab-selected');
+
+            if ($('#movie-video').length) {
+                var $movieHeader = $('#movie-header');
+                var player;
+                var isYoutube = ($('#movie-video').is('div')) ? true : false;
+
+                $movieHeader.addClass('play-video');
+
+                if(isYoutube) {
+
+                    var id = $('#movie-video').data('video').split('/');
+                    id = id[id.length - 1];
+
+                    window.YT.ready(function() {
+                        player = new YT.Player('movie-video', {
+                            height: '720',
+                            width: '1280',
+                            videoId: id,
+                            // playlist: id,
+                            playerVars: {
+                                playlist: id,
+                                controls: 0,
+                                loop: 1,
+                                modestbranding: 1,
+                                disablekb: 1,
+                                rel: 0,
+                                fs: 0
+                            },
+                            events: {
+                                // 'onReady': onPlayerReady,
+                                'onStateChange': function(e){
+                                    if (e.data === YT.PlayerState.ENDED) {
+                                        player.playVideo();
+                                    }
+                                }
+                            }
+                        });
+                    });
+                }
+
+                // video play (desktop/mobile/tablet)
+                $movieHeader.click(function () {
+                    var video = document.getElementById('movie-video');
+
+                    if ($('html').hasClass('d-desktop')) {
+                        $(this).hide();
+                        $(this).parent().find('#movie-video').show();
+                    } else {
+                        if (video.requestFullscreen) {
+                            video.requestFullscreen();
+                        } else if (video.mozRequestFullScreen) {
+                            video.mozRequestFullScreen();
+                        } else if (video.webkitRequestFullscreen) {
+                            video.webkitRequestFullscreen();
+                        }
+                    }
+
+                    if(isYoutube){
+                        player.playVideo();
+                    }else {
+                        video.play();
+                    }
+
+                });
+
+                // video stop (desktop)
+                if ($('html').hasClass('d-desktop')) {
+                    $('body').on('click', '#movie-video', function (e) {
+                        e.preventDefault();
+                        var video = document.getElementById('movie-video');
+                        $(this).hide();
+                        $(this).parent().find('#movie-header').show();
+                        video.pause();
+                    });
+                    $('.movie-video-wrapper').on('click', function(){
+                        $('#movie-video').hide();
+                        $(this).parent().find('#movie-header').show();
+                        player.pauseVideo();
+                    })
+                }
+            }
+
+            $('#movie-stills').slick({
+                arrows: false,
+                centerMode: true,
+                variableWidth: true
+            });
+        });
+    </script>
+{% endblock %}

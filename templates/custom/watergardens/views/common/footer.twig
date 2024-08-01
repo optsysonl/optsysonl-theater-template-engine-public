@@ -1,0 +1,20 @@
+<footer id="site-footer">
+    <div id="footer-content" class="clearfix">
+        <div class="row">
+            <div class="center-col">
+                <nav id="bottom-nav" class="clearfix">
+                    {{ include('parts/pages_bottom_nav.twig') }}
+                </nav>
+            </div>
+            <div class="right-col">
+                <div id="site-social-icons">
+                    <p class="social-title">Follow Us</p>
+                    {{ include('helper/social_media.twig', {icons: this_page.header.social_icons}, false) }}
+                </div>
+            </div>
+            <div class="left-col">
+                <a href="/" class="logo"><img src="/assets/img/footer-logo.jpg" alt="Logo for {{ site.config.title }}"/></a>
+            </div>
+        </div>
+    </div>
+</footer>

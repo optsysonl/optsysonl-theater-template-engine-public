@@ -1,0 +1,57 @@
+<div id="header">
+    <div class="wrap">
+        <div id="logo">
+            <a href="/">
+                <img src="{{- this_page.header.logo -}}" alt="Logo for {{ site.config.title }}"/>
+            </a>
+        </div>
+
+        <div id="top">
+            <div class="close"></div>
+            <ul>
+                <li class="films">
+                    <a href="/movies" class="mainlevel {% if(page_class == 'films') %} active-menu {% endif %}"
+                       title="Movies playing at this theater">Movies</a>
+                </li>
+                <li class="infos-pratiques">
+                    <a href="/about" class="mainlevel {% if(page_class == 'about-page') %} active-menu {% endif %}" target="_self"
+                       title="Information about the theater">
+                        {% if site.config.site_country == "GBR" %}
+                            Theatre Info
+                        {% else %}
+                            Theater Info
+                        {% endif %}
+                    </a>
+                </li>
+                {% set break = 0 %}
+                {% for page in data.pages if break == 0 %}
+                    {% if active_house_id in page.house_ids|split(';') and page.nav_top == '1' %}
+                        {% set break = 1 %}
+                        <li class="mobile-more-link">More</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul class="mobile-menu">
+                {% for page in data.pages %}
+                    {% if active_house_id in page.house_ids|split(';') and page.nav_top == '1' %}
+                        {% set show_more = true %}
+                        {% set nav_page_id = 'page-'~page.page_id %}
+                        <li><a href="{{ page.url }}" title="{{ page.site_headline }}"
+                               class="{% if(nav_page_id in page_class) %} active-menu {% endif %}">{{ page.site_headline }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="liens_utiles">
+            <div id="social_buttons">
+                {{ include('helper/social_icons.twig', {icons: this_page.header.social_icons, house_icons: data.houses[active_house_id].social_icons, email: data.houses[active_house_id].email}, false) }}
+            </div>
+            {% if show_house_block %}
+                <div class="location-picker">
+                    <span class="label">Current Theater:</span>
+                    <span class="active-theater active-theater-btn">{{ data.houses[active_house_id].name }}</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

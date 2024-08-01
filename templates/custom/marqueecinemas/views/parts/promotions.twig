@@ -1,0 +1,18 @@
+<div id="promotions">
+    <h1 class="titlebar">Promotions</h1>
+    <div class="promobox adzerk">
+        <a href='//csxutils.fbmovies.cinema-source.com/subscribe/?cust_id=226&iframe=true&width=600&height=400' class="signup" data-fancybox-type="iframe">
+            <img src="/assets/img/newsletter.png" alt="Newsletter" />
+        </a>
+    </div>
+    <div id="promo_left" class="promobox">
+        {{ include('parts/promos_slides.twig', {slides: data.slides.slides.left.images}) }}
+    </div>
+    <div id="promo_right" class="promobox">
+        {{ include('parts/promos_slides.twig', {slides: data.slides.slides.right.images}) }}
+    </div>
+    <div class="promobox adzerk">
+        <a href='/giftcards'><img src="/assets/img/giftcards-new.jpg" alt="GiftCard" /></a>
+    </div>
+    <div class="clearfix"></div>
+</div>

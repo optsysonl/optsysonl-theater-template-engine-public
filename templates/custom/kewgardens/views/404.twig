@@ -1,0 +1,22 @@
+{% extends "common/base.twig" %}
+{% set page_class = "page page-404" %}
+{% block meta_title %}{{ parent() }} | Page Not Found {% endblock %}
+{% set show_house_block = false %}
+{% block content %}
+
+
+    <div class="ct_head">
+        <div class="wrap">
+            <h1>404 - Page Not Found</h1>
+        </div>
+    </div>
+    <div id="fxp-content">
+        <div class="standardpage">
+        <h2 id="error-sorry">Sorry, the page you were looking for seems to be missing</h2>
+        <strong>Try using one of the links above or search our site or return to the homepage</strong>
+        <a href="/"><button class="cta-404">Return to homepage</button></a>
+        </div>
+    </div>
+    <script>var show_popup = false;var active_house = {{ data.houses|first.house_id }};</script>
+{% endblock %}
+{% block footer_scripts %}{% endblock %}

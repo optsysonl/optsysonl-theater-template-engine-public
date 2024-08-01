@@ -1,0 +1,25 @@
+{% set sortedShowtimes = sortShowtimesByCommentLength(showtimes) %}
+{%- for format, comments in sortedShowtimes -%}
+    {%- for comment, times in comments -%}
+        <span class='times'>
+        {% if day is defined %}
+            <strong>{{ day }}: </strong>
+        {% endif %}
+        {%- for time, time_item in times %}
+            {% if time_item.details.soldout is defined %}
+                <span class="showtime soldout">Sold Out<span class="showtime-soldout">{{- time|date('g:i a') -}}</span></span>
+            {% elseif not time_item.details.expired and time_item.details.link is defined %}
+                <a class="showtime hvr-sweep-to-right" href="{{ time_item.details.link }}" target="_blank">{{- time|date('g:i a') -}}</a>
+            {% else %}
+                <span class="times_no-tix {{ time_item.details.expired ? 'expired' : '' }}">{{- time|date('g:i a') -}}</span>
+            {% endif %}
+        {% endfor -%}
+        </span>
+        {% if comment != '' %}
+            <span class="comment">{{- comment -}}</span>
+        {%- endif -%}
+        <hr>
+    {%- endfor -%}
+{% else %}
+    <div id='showtimes_movie'>No Showtimes Available.</div>
+{%- endfor -%}

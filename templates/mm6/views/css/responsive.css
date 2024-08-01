@@ -1,0 +1,431 @@
+@media only screen and (max-width: 1280px) {
+    #header-content,
+    #main-content,
+    #footer-content {width: calc(100% - 30px);}
+    #header-content {padding-bottom: 12px;}
+    #main-content.left #showtimes .showtimes-details .info,
+    #main-content.right #showtimes .showtimes-details .info {
+        width: calc(100% - 180px - 244px);
+    }
+    #main-content.left #showtimes .showtimes-details .showtimes,
+    #main-content.right #showtimes .showtimes-details .showtimes {width: 244px;}
+}
+@media only screen and (max-width: 1024px) {
+    #header-content #logo-home-link {
+        display: inherit!important;
+        float: none!important;
+        margin: 0 auto!important;
+        position: relative!important;
+        left: 0!important;
+    }
+    #social-icons a,
+    #social-icons a:last-child {margin: 0 3px;}
+    #site-header #header-content #site-social-icons,
+    #site-header #header-content #nav-block {
+        position: relative!important;
+        float: none!important;
+        text-align: center!important;
+        margin-top: 10px!important;
+    }
+    #top-nav {float: none;}
+    #top-nav > ul > li:first-child {margin-left: 5px;}
+    #top-nav > ul > li:last-child {margin-right: 5px;}
+    #site-header.csn #header-content #nav-block #top-nav > ul > li.csn-logo-after {margin-right: 5px;}
+    #site-header.csn #header-content #nav-block #top-nav > ul > li.csn-logo-after + li {margin-left: 5px;}
+    #showtimes .showtimes-details {padding: 10px;}
+    #showtimes .showtimes-details .poster {width: 150px;}
+    #showtimes .showtimes-details .info {
+        width: calc(100% - 170px)!important;
+        margin-right: 0;
+        height: 229px;
+    }
+    #showtimes .showtimes-details .info .name {
+        font-size: 22px!important;
+        line-height: 26px!important;
+    }
+    #showtimes .showtimes-details .showtimes {
+        width: 100%!important;
+        margin-top: 0;
+    }
+    #site-footer {padding: 20px 0;}
+    #site-footer .frow .fcols {flex-basis: 100%;}
+    #site-footer .frow .fcol-3,
+    #site-footer .frow .fcol-2 {margin-top: 20px;}
+}
+@media only screen and (max-width: 768px) {
+    #header-content,
+    #main-content,
+    #footer-content {width: 100%;}
+    #home-location #main-content,
+    #movies #main-content,
+    #movie #main-content {width: 100%;}
+    #site-header {
+        box-shadow: none;
+        margin: 0;
+    }
+    #header-content {padding: 5px 0;}
+    #header-content #logo-home-link img {
+        display: inline-block;
+        height: 38px!important;
+    }
+    #header-content #site-social-icons {display: none!important;}
+    label[for="nav-trigger"] {display: block;}
+    #nav-trigger ~ header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 9999;
+        height: 0;
+        transition-delay: 500ms;
+    }
+    #nav-trigger ~ header #header-content {
+        position: initial;
+        box-shadow: 0 2px 0 0 rgba(48, 49, 51, 0.1);
+        background-color: #FFFFFF;
+        margin: 0!important;
+    }
+    #nav-trigger ~ header #header-content #nav-block {
+        position: absolute!important;
+        top: 0;
+        right: 0;
+        width: 0!important;
+        height: 100%;
+        margin: 0!important;
+        z-index: 9999;
+        transition: width 500ms;
+    }
+    #nav-trigger ~ header #header-content #nav-block:before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: {{ data.css.background_color_1 }};
+        opacity: 0.5;
+        margin-top: 52px;
+    }
+    #nav-trigger ~ header #top-nav {
+        background-color: {{ data.css.background_color_1 }};
+        display: inline-block;
+        position: absolute;
+        top: 52px;
+        right: 0;
+        width: 90%;
+        height: 100%;
+        z-index: 9999;
+    }
+    #nav-trigger ~ header #top-nav .mobile-title {
+        display: block;
+        color: {{ data.css.background_color_2 }};
+        background-color: #000000;
+        font-family: {{ data.css.font|raw }};
+        font-size: 37px;
+        font-weight: bold;
+        line-height: 48px;
+        padding: 0 5px;
+    }
+    #nav-trigger ~ header #top-nav a {
+        position: relative;
+        font-family: {{ data.css.font|raw }};
+        color: #C4C4C4;
+        font-size: 16px;
+        line-height: 20px;
+        padding: 15px 20px;
+        white-space: nowrap;
+    }
+    #nav-trigger ~ header #top-nav a .icon {display: inline-block;}
+    #nav-trigger ~ header #top-nav a .icon path{fill: {{ data.css.background_color_2 }};}
+    #nav-trigger ~ header #top-nav > ul {
+        overflow-y: auto;
+        max-height: calc(100% - 100px);
+    }
+    #nav-trigger ~ header #top-nav > ul > li {
+        display: block;
+        width: 100%!important;
+        border: none;
+        text-align: left;
+        margin: 0!important;
+    }
+    #nav-trigger ~ header #top-nav > ul > li > a:before {
+        content: "";
+        -webkit-mask: url(../../assets/img/icon-arrow-right.svg);
+        -webkit-mask-size: cover;
+        mask-size: cover;
+        position: absolute;
+        width:24px;
+        height:24px;
+        display:block;
+        background-color:{{ data.css.background_color_2 }};
+        right: 10px;
+    }
+    #nav-trigger ~ header #top-nav > ul > li.sub-nav-container:hover > ul.sub-nav {display: none;}
+    #nav-trigger ~ header #top-nav > ul > li.sub-nav-container > a.opened {
+        color: #FFFFFF;
+        background-color: #557B79;
+    }
+    #nav-trigger ~ header #top-nav > ul > li.sub-nav-container > a.opened > .icon svg path {fill: #FFFFFF;}
+    #nav-trigger ~ header #top-nav > ul > li > a.opened:before {content: url(../../assets/img/icon-arrow-right-white.svg);}
+    #nav-trigger ~ header #top-nav > ul > li.sub-nav-container > ul.sub-nav {
+        background-color: #557B79;
+        position: relative;
+        top: -1px;
+        padding: 0;
+        width: 100%;
+        opacity: 1!important;
+    }
+    #nav-trigger ~ header #top-nav > ul > li.sub-nav-container > ul.sub-nav > li > a {
+        display: block;
+        padding: 5px 20px;
+    }
+    #nav-trigger ~ header #top-nav > ul > li.sub-nav-container > ul.sub-nav > li.sub-header {
+        text-align: center;
+        width: 100%;
+        margin: 0;
+    }
+    #nav-trigger ~ #wrapper {margin-top: 52px;}
+    #nav-trigger:checked ~ header {
+        height: 100%;
+        transition-delay: 0ms;
+    }
+    #nav-trigger:checked ~ header #hamburger {display: none;}
+    #nav-trigger:checked ~ header #close {display: block;}
+    #nav-trigger:checked ~ header #header-content #nav-block {width: 100%!important;}
+    .slick-dotted.slick-slider {margin: 0;}
+    .slick-dotted.slick-slider .slick-dots {display: none!important;}
+    #showdates {
+        width: calc(100% - 50px);
+        margin-right: 5px;
+    }
+    #filter {margin: 10px 5px;}
+    #filter .filters .slick-list:after {
+        content: '';
+        background: linear-gradient(to right, rgba(255,255,255,0), white);
+        width: 50px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    #main-content .showtimes-block,
+    #main-content .now_playing-block,
+    #main-content .coming_soon-block,
+    #main-content .promotions-block {
+        float: none!important;
+        width: 100%!important;
+        margin-left: 0!important;
+        margin-right: 0!important;
+    }
+    #main-content .promotions-block .banners .banner { }
+    #main-content .promotions-block .banners .banner img {width: auto;}
+    #main-content .location_info-block .info {width: 220px;}
+    #site-footer #bottom-nav > ul {flex-direction: column;}
+    #site-footer.compact #footer-content {flex-direction: column;}
+    #site-footer.compact #footer-content > div {
+        margin: 0 0 20px;
+        flex-basis: 100%!important
+    }
+    #site-footer.compact #footer-content > div:last-child {margin: 0;}
+    #site-footer.compact #bottom-nav > ul > li {text-align: center;}
+
+    #site-footer #newsletter-form button {border-radius: 0 4px 4px 0;}
+}
+@media only screen and (max-width: 480px) {
+    #main-content .location_info-block {display: none;}
+    #showdates .slick-list .slick-slide {
+        padding-left: 3px;
+        padding-right: 3px;
+        border-right: none;
+    }
+    .ui-datepicker {
+        position: fixed!important;
+        top: 0!important;
+        left: 0!important;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: none!important;
+    }
+    #filter .filters .filter {
+        height: 30px;
+        width: 90px;
+        line-height: 30px;
+    }
+    #showtimes .showtimes-details {
+        border: none;
+        padding: 0!important;
+        margin-bottom: 10px;
+    }
+    #showtimes .showtimes-details .poster {
+        margin: 0;
+        width: 100%!important;
+    }
+    #showtimes .showtimes-details .poster .mobile {display: block;}
+    #showtimes .showtimes-details .poster .mobile + .desktop {display: none;}
+    #showtimes .showtimes-details .poster img {
+        width: 100%;
+        height: 170px;
+        border-radius: 4px 4px 0 0;
+        object-fit: cover;
+        box-shadow: 0 1px 5px;
+    }
+    #showtimes .showtimes-details .poster i.icon-info {display: inline-block;}
+    #showtimes .showtimes-details .info {
+        width: calc(100% - 10px)!important;
+        height: 165px!important;
+        color: #FFFFFF;
+        margin: 0 5px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    #showtimes .showtimes-details .info .name,
+    #showtimes .showtimes-details .info .mpaa,
+    #showtimes .showtimes-details .info .runtime {
+        text-shadow: 0 0 5px #000000;
+    }
+    #showtimes .showtimes-details .info .name {
+        font-size: 20px!important;
+        line-height: 24px!important;
+    }
+    #showtimes .showtimes-details .info .synopsis {display: none;}
+    #showtimes .showtimes-details .info a.more-details {
+        background: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-indent: -9999px;
+    }
+    .showtimes {margin: 0;}
+    .showtimes span.showtime,
+    .showtimes a.showtime {
+        margin-top: 5px;
+        margin-left: 5px;
+        width: 78px;
+        height: 30px;
+    }
+    .showtimes .showtime .time .ampm,
+    .showtimes .showtime .format {
+        font-size: 11px;
+        line-height: 8px;
+    }
+    .ui-state-default,
+    .ui-widget-content .ui-state-default,
+    .ui-widget-header .ui-state-default, .ui-button,
+    html .ui-button.ui-state-disabled:hover,
+    html .ui-button.ui-state-disabled:active {padding: 15px 0;}
+    .ui-datepicker .ui-datepicker-buttonpane {margin-top: 40px;}
+    #site-footer {padding: 10px 0;}
+    #site-footer #newsletter-form input {width: 58%;}
+    #site-footer #newsletter-form button {width: 32%;border-radius: 0 4px 4px 0;}
+
+    /* Movies page */
+    #movies .items {margin: 0;}
+    #movies .grid-poster {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+    #movies .grid-poster .poster {
+        margin: 0;
+        width: 100%!important;
+    }
+    #movies .grid-poster .poster img {
+        width: 100%;
+        height: 170px;
+        border-radius: 4px 4px 0 0;
+        object-fit: cover;
+        box-shadow: 0 1px 5px;
+    }
+    #movies .grid-poster .poster i.icon-info {display: inline-block;}
+    #movies .grid-poster .info {
+        width: calc(100% - 10px)!important;
+        height: 165px!important;
+        color: #FFFFFF;
+        margin: 0 5px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    #movies .grid-poster .info .mpaa_runtime {display: block;}
+    #movies .grid-poster .info .name,
+    #movies .grid-poster .info .mpaa,
+    #movies .grid-poster .info .runtime {
+        text-shadow: 0 0 5px #000000;
+    }
+    #movies .grid-poster .info .name {
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    /* Movie page */
+    #movie #main-content .blocks {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+    #movie #movie-header {
+        width: calc(100% - 40px);
+        height: 160px;
+        padding-right: 20px;
+        margin-bottom: 3px;
+        z-index: 9990;
+    }
+    #movie #movie-header #play-trailer {
+        right: calc(50% - 42px);
+        top: 10px;
+    }
+    #movie .width-wrapper {
+        display: flex;
+        flex-flow: column;
+    }
+    #movie .width-wrapper #movie-details {order: 2;}
+    #movie .width-wrapper .showtimes-block {order: 1;}
+    #movie .width-wrapper .showtimes-block h2 {display: none;}
+    #movie .width-wrapper #movie-stills {order: 3;}
+    #movie.scrolled  #movie-header {
+        position: fixed;
+        height: 40px;
+    }
+    #movie.scrolled  #movie-header h1 {margin-top: 0;}
+    #movie.scrolled #movie-header #play-trailer {
+        top: calc(50% - 17px);
+        right: 10px;
+        width: 34px;
+        height: 34px;
+    }
+    #movie.scrolled #movie-header #play-trailer svg {
+        width: 34px;
+        height: 34px;
+    }
+    #movie.scrolled  #movie-video {position: fixed;}
+    #movie.scrolled .width-wrapper {margin-top: 160px;}
+    #movie .showtimes {margin: 0;}
+    #movie #movie-details {margin: 0 5px;}
+    #movie #movie-details .poster {display: none;}
+    #movie #movie-details .info {
+        float: none;
+        width: 100%;
+        margin: 0;
+    }
+    #movie #movie-details .info h1 {display: none;}
+    #movie #movie-details .info h2 {
+        font-size: 16px;
+        line-height: 16px;
+        font-weight: bold;
+    }
+    #movie #movie-details .info .detail {
+        font-size: 16px;
+        line-height: 19px;
+    }
+    #movie #movie-stills .slick-slide {
+        height: 200px;
+        margin: 0 5px;
+    }
+}

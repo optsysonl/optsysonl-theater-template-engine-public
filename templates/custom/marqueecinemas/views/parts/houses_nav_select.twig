@@ -1,0 +1,6 @@
+{% set houses_nav = houses|sortByState %}
+{% for state in houses_nav %}
+    {% for house in state.houses %}
+        <option value="{{- house.house_id -}}">{{ house.state_short }} - {{ house.name|replace({"Marquee Cinemas - ": ""}) }}({{ house.city }})</option>
+    {% endfor %}
+{% endfor %}

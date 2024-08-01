@@ -1,0 +1,5 @@
+{% if site.config.site_country == "GBR" %}
+    {{ time|date('G:i') }}
+{% else %}
+    {{ time|date('g:i A') }}
+{% endif %}

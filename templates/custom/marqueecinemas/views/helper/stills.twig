@@ -1,0 +1,7 @@
+<table id="stills">
+    <tr>
+        {% for still in stills %}
+            <td><img src="{{ still }}" alt="Still #{{ loop.index }}"/></td>
+        {% endfor %}
+    </tr>
+</table>

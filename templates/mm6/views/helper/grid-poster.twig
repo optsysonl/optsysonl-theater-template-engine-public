@@ -1,0 +1,30 @@
+{%- for this in movies -%}
+    <figure class='grid-poster'>
+        <a href='{{- this.url -}}'>
+            <div class="poster">
+                {%- if this.stills.0 is defined -%}
+                    <img class="mobile" src='{{ this.stills.0 }}' alt='Poster of {{ this.name }}'/>
+                {%- endif -%}
+                <img class="desktop" src='{{ this.poster }}' alt='Poster of {{ this.name }}'/>
+                <i class="icon-info"></i>
+            </div>{#
+        #}
+            <figcaption class='info'>
+                <h1 class="name">{{ this.name }}</h1>
+                <div class="mpaa_runtime">
+                    {% if this.mpaa and this.mpaa != 'NR' %}
+                        <span class="mpaa">{{ this.mpaa }}</span>
+                    {% endif %}
+
+                    {% if this.mpaa and this.mpaa != 'NR' and this.runtime %}
+                        <span class="dot"></span>
+                    {% endif %}
+
+                    {% if this.runtime and this.runtime != 0 %}
+                        <span class="runtime">{{ this.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</span>
+                    {% endif %}
+                </div>
+            </figcaption>
+        </a>
+    </figure>
+{%- endfor -%}

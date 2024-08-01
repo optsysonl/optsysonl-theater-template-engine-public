@@ -1,0 +1,111 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div id="wrapper">
+        <main id="main-content" class="clearfix">
+            {% if site_house is defined %}
+                {{ include('parts/locations.twig') }}
+            {% else %}
+                <div class="width-wrapper">
+                    <div id="content-slider">
+                        {{ include('helper/slider.twig', {slides: data.slides.slides.home.images}, with_context = false) }}
+                    </div>
+
+                    <section class="row clearfix">
+                        <div class="placeholder-300 slider">
+                            {% if data.slides.slides.left is defined %}
+                                {{ include('helper/slider.twig', {slides: data.slides.slides.left.images}, with_context = false) }}
+                            {% endif %}
+                        </div>
+                        <div class="placeholder-300">
+                            {% if data.slides.slides.center is defined %}
+                                {{ include('helper/slider.twig', {slides: data.slides.slides.center.images}, with_context = false) }}
+                            {% endif %}
+                        </div>
+                        <div class="placeholder-300 slider">
+                            {% if data.slides.slides.right is defined %}
+                                {{ include('helper/slider.twig', {slides: data.slides.slides.right.images}, with_context = false) }}
+                            {% endif %}
+                        </div>
+                    </section>
+                </div>
+                {% set movies = nowPlayingComingSoon(data.movies.movies, data.showdates) %}
+                {% if movies.np is not empty %}
+                    <div class="carousel-container">
+                        <section class="carousel clearfix">
+                            <h1>Now Playing</h1>
+                            <div id="carousel-np">
+                                {{ include('helper/carousel.twig', {carousel: movies.np}, with_context = false) }}
+                            </div>
+                        </section>
+                    </div>
+                {% endif %}
+                {% if movies.cs is not empty %}
+                    <div class="carousel-container">
+                        <section class="carousel clearfix">
+                            <h1>Coming Soon</h1>
+                            <div id="carousel-cs">
+                                {{ include('helper/carousel.twig', {carousel: movies.cs}, with_context = false) }}
+                            </div>
+                        </section>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </main>
+        {{ include('common/footer.twig') }}
+    </div>
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <!-- Footer JS -->
+    <script>
+        $(document).ready(function () {
+
+            $('#content-slider').slick({
+                autoplay: true,
+                fade: true,
+                useCSS: 'linear',
+                arrows: true,
+                autoplaySpeed: {{ site.config['slider_speed'] }}
+            });
+
+            if ($('#theatre-info').length == 0) {
+                $('.slider').slick({
+                    autoplay: true,
+                    fade: true,
+                    css: 'linear',
+                    arrows: false,
+                });
+
+                $('#carousel-np').slick(carouselSettings(true, false));
+                $('#carousel-cs').slick(carouselSettings(true, false));
+            }
+
+
+            //start showdate carousel
+            $('#showdates').slick(carouselSettings(false, false));
+
+
+            //load initial showtimes
+            $('.showdate:first').trigger('click');
+            $('#showtimes-tab').addClass('tab-selected');
+        });
+    </script>
+{% endblock %}

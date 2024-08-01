@@ -1,0 +1,28 @@
+{%- for format, comments in showtimes -%}
+    {%- for comment, times in comments|sort -%}
+        <div class="clearfix times_box">
+			<span class="times">
+				{%- for time, time_item in times -%}
+                    <div class="button_container">
+                		{%- if time_item.details.soldout is defined -%}
+                            <span class="showtime_expired">
+                                {{- time|date('g:ia') -}}
+                            </span>
+	                	{%- elseif not time_item.details.expired and time_item.details.link is defined -%}
+                            <a class="showtime hvr-sweep-to-right" href="{{ time_item.details.link }}" target="_blank">
+                                {{- time|date('g:ia') -}}
+                            </a>
+                        {%- else -%}
+                            <span class="showtime_{{ time_item.details.expired ? 'expired' : '' }}">
+                                {{- time|date('g:ia') -}}
+                            </span>
+                        {%- endif -%}
+            		</div>
+                {%- endfor -%}
+			</span>
+        </div>
+        <span class="comment">{{- comment -}}</span>
+    {%- endfor -%}
+{%- endfor -%}
+
+

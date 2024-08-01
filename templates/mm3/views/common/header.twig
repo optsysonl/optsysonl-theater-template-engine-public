@@ -1,0 +1,37 @@
+<div id="header">
+	<div id="header_content">
+        <figure id="slide_menu"><img src="/assets/img/hamburger.svg" id="hamburger" alt="mobile menu" class="svg"></figure>
+    	<a href="/">
+            <img src="{{- this_page.header.logo -}}" class="logo" alt="Logo for {{ site.config.title }}" />
+        </a>
+        <div id='social'>
+			Connect with {{ site.config.title }}
+        	{{ include('helper/social_media.twig', {icons: this_page.header.social_icons}, with_context = false)  }}
+        </div>
+        <nav id="nav">
+            <ul>
+	            <li><a href="/" id="home_nav">Home</a></li>
+                {% if data.houses|length > 1 %}
+	                <li class="subNavContainer">
+    	                <a href="/locations" id="locations_nav">Locations</a>
+        	            <ul class="subNav">
+            	        	{{ include('helper/houses_nav.twig') }}
+                	    </ul>
+	                </li>
+                {% endif %}
+                <li class="subNavContainer">
+                    <a href="/movies" id="movies_nav">Movies</a>
+                    <ul class="subNav">
+                        {{ include('helper/movies_nav.twig') }}
+                    </ul>
+                </li>
+                {{ include('parts/pages_top_nav.twig') }}
+              
+            </ul>
+            
+        </nav>
+        
+        <div class="clearfix"></div>
+    </div>
+</div>
+

@@ -1,0 +1,29 @@
+{% extends "common/base.twig" %}
+{% block meta_title %}{{ parent() }} | Page Not Found {% endblock %}
+
+
+{% block content %}
+    {{ include('common/header.twig') }}
+
+    <div id="intro" class="short">
+        <div class="inner">
+            <h1>404 - Page Not Found</h1>
+        </div>
+    </div>
+
+    <div id="lower">
+        <div class="col3 double first">
+            <h2 id="error-sorry">Sorry, the page you were looking for seems to be missing</h2>
+            <strong>Try using one of the links above or search our site or return to the homepage</strong>
+            <a href="/"><button class="cta-404">Return to homepage</button></a>
+        </div>
+        <div class="col3">
+            {{ include('helper/signup.twig', {cust_id:site.config['cust_id'], house_id:data.houses|first.house_id}, with_context = false) }}
+        </div>
+    </div>
+
+    {{ include('common/footer.twig') }}
+{% endblock %}
+
+
+

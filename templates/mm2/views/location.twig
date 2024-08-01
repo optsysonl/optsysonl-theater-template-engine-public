@@ -1,0 +1,221 @@
+{% extends "common/base.twig" %}
+{% set house = data.houses[this_page.house_id] %}
+{% set showtimes = getHouseTimes(data.showdates, this_page.house_id) %}
+{% if showtimes.dates[0] is defined %}
+    {% set _date = showtimes.dates[0] %}
+{% else %}
+    {% set _date = "now"|date("Y-m-d") %}
+{% endif %}
+
+{% block meta_title %}{{ house.name }} Showtimes | {{ parent() }} {% endblock %}
+
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div class="container" id="main">
+
+        {{ include('helper/leaderboard.twig') }}
+
+        <h1>{{ house.name }} <span class='subnote'>{{ house.city }}, {{ house.state_short }}</span></h1>
+        <div class="row">
+            <div class="col-md-6" id="showtimes">
+                <div id="theater_showtimes">
+                    <div class="showtimes_selector">
+                        {% if site.config.timestype == 'weekly' %}
+                            {{- include('parts/weekly_showdates.twig', {showdates: showtimes.dates}, false) -}}
+                        {% else %}
+                            <form id="form">
+                                <input id="datepicker" type="text" name="date" value="Select new date" aria-labelledby="form" readonly/>
+                            </form>
+                        {% endif %}
+
+                        {% if site.config.timestype == 'weekly' %}
+                            <h2>For the week of<br> {{ showtimes.dates[0]|date('l, F d, Y') }}</h2>
+                        {% else %}
+                            <h2>{{ _date|date('l, F j, Y') }}</h2>
+                        {% endif %}
+
+                        <div class="button-printer">
+                            <a id='print-friendly'
+                               href='http://www.exhibitorads.com/csentry/print.asp?house_id={{ house.house_id }}&date={{ _date }}'
+                               target='_blank'>
+                                <span style="display: none">Print</span>
+                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                     width="64px" height="64px" viewBox="0 0 144 144" enable-background="new 0 0 144 144"
+                                     xml:space="preserve">
+								<g>
+                                    <path fill="none" d="M107.833,17.833c0-1.103-0.897-2-2-2h-63.5c-1.103,0-2,0.897-2,2V46h67.5V17.833z"/>
+                                    <path fill="#231F20"
+                                          d="M125.88,56.137c0.495,0.497,0.92,1.062,1.269,1.677C127.076,57.045,126.574,56.404,125.88,56.137z"/>
+                                    <path fill="#231F20" d="M125.167,46h-7.334V17.833c0-6.627-5.373-12-12-12h-63.5c-6.627,0-12,5.373-12,12V46h-7.166
+										c-6.627,0-12,5.373-12,12v33.332c0,6.629,5.373,12,12,12h7.166v18.001c0,6.627,5.373,12,12,12h63.5c6.627,0,12-5.373,12-12v-18.001
+										h7.334c6.627,0,12-5.371,12-12V58C137.167,51.373,131.794,46,125.167,46z M107.833,93.332v5v5v11.335v6.666c0,1.103-0.897,2-2,2
+										h-63.5c-1.103,0-2-0.897-2-2v-6.666v-11.335v-5v-5V76.667h67.5V93.332z M107.833,46h-67.5V17.833c0-1.103,0.897-2,2-2h63.5
+										c1.103,0,2,0.897,2,2V46z M127.167,65.489c-1.341,2.392-3.896,4.011-6.834,4.011c-0.875,0-1.714-0.15-2.5-0.415
+										c-3.099-1.044-5.333-3.967-5.333-7.418c0-2.231,0.938-4.24,2.436-5.667c0.817-0.779,1.803-1.382,2.897-1.751
+										c0.786-0.265,1.625-0.415,2.5-0.415c2.168,0,4.129,0.881,5.547,2.303c0.694,0.267,1.196,0.908,1.269,1.677
+										c0.645,1.138,1.018,2.451,1.018,3.853C128.166,63.056,127.801,64.358,127.167,65.489z"/>
+                                    <rect x="50.167" y="83.5" fill="#231F20" width="48.167" height="7.5"/>
+                                    <rect x="50.167" y="98.332" fill="#231F20" width="48.167" height="4.918"/>
+                                    <rect x="50.167" y="95.75" fill="#231F20" width="48.167" height="2.582"/>
+                                    <rect x="50.167" y="114.667" fill="#231F20" width="32.167" height="0.833"/>
+                                    <rect x="50.167" y="108" fill="#231F20" width="32.167" height="6.667"/>
+                                </g>
+							</svg>
+                            </a>
+                        </div>
+                    </div>
+                    {% if (house.ticketing == 1) %}
+                        <h5>CLICK SHOWTIMES TO PURCHASE TICKETS</h5>
+                    {% endif %}
+                    {% if site.config.timestype == 'weekly' %}
+                        {{- include('parts/showdates_house_weekly.twig', {showdates: data.showdates, house_id:this_page.house_id, movies: data.movies, ticketing: house.ticketing }, false) -}}
+                    {% else %}
+                        {{- include('parts/showdates_house.twig', {showtimes: showtimes, movies: data.movies.movies, ticketing: house.ticketing}, false) -}}
+                    {% endif %}
+                </div><!-- End of theatre_showtimes -->
+            </div><!-- End of showtimes -->
+            <div class="col-md-4" id="theater_info">
+                <div id="info_buttons">
+                    <div data-role="info" class="toggle active">Information</div>
+                    <div data-role="prices" class="toggle">Pricing</div>
+                </div>
+                <div id="info_wrapper">
+                    <div id="address_info">
+                        {% if house.photo is defined and house.photo != '' %}
+                            <img src='{{- house.photo -}}'/>
+                        {% endif %}
+                        {% if house.tagline is defined and house.tagline != '' %}
+                            <h3>{{ house.tagline|raw }}</h3>
+                        {% endif %}
+
+                        {{ house.name }}<br/>
+                        {{ house.address }},<br/>
+                        {{ house.city }}, {{ house.state_short }} {{ house.zip }}
+
+                        {% if house['movieline'] != '0' and house['movieline'] != '' %}
+                            <br/>Movieline: <a href='tel://{{ house['movieline'] }}'>{{ house['movieline'] }}</a>
+                        {% endif %}
+                        {% if house['phone'] != '0' and house['phone'] != '' %}
+                            <br/>Office: <a href='tel://{{ house['phone'] }}'>{{ house['phone'] }}</a>
+                        {% endif %}
+
+                        <div id="social-location">
+                            {{ include('helper/social_media.twig', {icons: house.social_icons}, with_context = false) }}
+                        </div>
+
+                        {% if house.amenities is not empty %}
+                            <h3>Amenities</h3>
+                            {{ include('helper/amenities.twig', {amenities: house.amenities}, with_context = false) }}
+                        {% endif %}
+
+                        <div id="map_wrapper">
+                            <a href="{{- house.map.url -}}" target="_blank">
+                                <div class="button-compass">
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                         width="44px" height="44px" viewBox="0 0 144 144" enable-background="new 0 0 144 144"
+                                         xml:space="preserve">
+                                    <path fill="#ff0000" d="M122.423,20.898C109.54,8,91.643-0.004,71.967,0C52.292-0.004,34.395,8,21.51,20.898
+	C8.612,33.783,0.607,51.68,0.611,71.355c-0.004,19.674,8,37.571,20.899,50.454c12.885,12.9,30.781,20.904,50.457,20.9
+	c19.676,0.004,37.573-8,50.456-20.9c12.898-12.883,20.904-30.779,20.899-50.454C143.327,51.68,135.321,33.783,122.423,20.898z
+	 M109.525,108.91c-7.552,7.539-17.301,12.791-28.231,14.723c-0.468-5.02-4.69-8.951-9.833-8.951c-5.084,0-9.266,3.84-9.816,8.775
+	c-10.527-2.07-19.915-7.24-27.234-14.547c-7.422-7.432-12.63-17.002-14.634-27.727c4.979-0.51,8.864-4.715,8.864-9.829
+	c0-5.115-3.885-9.321-8.865-9.83c2.004-10.726,7.212-20.294,14.635-27.728c7.32-7.309,16.707-12.477,27.234-14.546
+	c0.55,4.936,4.732,8.776,9.816,8.776c5.143,0,9.367-3.932,9.833-8.954c10.931,1.932,20.68,7.187,28.231,14.724
+	c7.421,7.433,12.628,17.001,14.633,27.728c-4.98,0.509-8.865,4.715-8.865,9.83c0,5.114,3.885,9.319,8.865,9.829
+	C122.153,91.908,116.946,101.479,109.525,108.91z"/>
+                                        <g>
+                                            <path fill="#ff0000" d="M76.569,66.484c2.472,2.335,2.818,6.071,0.984,8.803l1.878,1.777l26.219-41.359L65.842,64.224L67.722,66
+		C70.348,64.014,74.096,64.147,76.569,66.484z"/>
+                                            <path fill="#ff0000" d="M67.139,76.465c-2.558-2.416-2.844-6.326-0.797-9.08l-1.842-1.74l-26.216,41.357l39.805-28.518
+		l-1.841-1.738C73.615,78.945,69.693,78.881,67.139,76.465z"/>
+                                        </g>
+                                    </svg>
+                                    <p>Map and directions</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="prices_info">
+                        {% if house.prices is not empty %}
+                            {{ include('helper/prices.twig', {prices: house.prices}, with_context = false) }}
+                        {% else %}
+                            <p>Pricing information not available.</p>
+                        {% endif %}
+                        {% if house.policies is not empty %}
+                            <h3>Policies</h3>{{ house.policies }}
+                        {% endif %}
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                {{ include('helper/box_ad.twig') }}
+            </div>
+
+        </div>
+        <div id="skyscraper" class="col-md-2">
+            {{ include('helper/skyscraper.twig') }}
+        </div>
+    </div>
+    {{ include('common/footer.twig') }}
+    <script type="text/javascript">
+
+        //callpback to datepicker to determine active dates
+        function available(date) {
+            var ymd = date.getFullYear() + '-' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + date.getDate()).slice(-2);
+            if ($.inArray(ymd, availableDates) != -1) {
+                return [true, "", "Available"];
+            } else {
+                return [false, "", "unAvailable"];
+            }
+        }
+
+        //document ready
+        $(function () {
+            //bind datepicker to select day text
+            $('#datepicker').datepicker({
+                minDate: '',
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay: available,
+                onSelect: function (dateText, inst) {
+                    $('.showdate').removeClass('showdate-selected');
+                    $(this).addClass('showdate-selected');
+
+                    let sel_date = $(this).datepicker().val();
+                    $(this).val("SELECT NEW DATE");
+                    openDate("showtimes_movie", sel_date, '{{ site.config.timestype }}');
+                }
+            });
+
+
+            openDate("showtimes_movie", availableDates[0], '{{ site.config.timestype }}');
+
+            //change active info div on click
+            $('.toggle').click(function () {
+
+                var buttonid = $(this).attr("data-role");
+
+                //remove active class from all elements
+                $('.toggle').each(function () {
+                    $(this).removeClass("active");
+                })
+
+                //add active class to clicked element
+                $(this).addClass("active");
+
+                //load the proper content
+                if (buttonid == "prices") {
+                    $('#address_info').hide();
+                    $('#prices_info').fadeIn();
+                } else {
+                    $('#prices_info').hide();
+                    $('#address_info').fadeIn();
+                }
+            });
+        });
+    </script>
+{% endblock %}

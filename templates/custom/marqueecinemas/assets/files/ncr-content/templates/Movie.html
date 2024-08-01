@@ -1,0 +1,140 @@
+﻿<div class="movie-details">
+    <div class="row">
+        <div class="span6">
+            <div style="width: 240px;height:360px" class="movie-placeholder movie-image">
+                <img id="movie-image" onerror="this.src='/assets/files/ncr-content/shared/css/brand/images/movie-poster-default.png';" style="display: <%= (movie.get("image")["large"]) ? 'block' : 'none' %>"
+                    src="<%= movie.get("image")["large"] %>" />
+            </div>
+        </div>
+        <div class="span10 marginL-5">
+            <div class="row movie-details-title">
+                <div class="span8">
+                     <%if(window.appConfig.GroupMovies && movie.get('tMDBName')){%>
+                        <h2><%=movie.get('tMDBName') %></h2>
+                    <%} else {%>
+                        <h2><%=movie.get('name') %></h2>
+                    <%}%>
+                     </div>
+                    <div class="span2">
+                       <% if (window.ConfigurationProvider.allowSharing()) {%>
+                            <div id="facebook-share"></div>
+                        <% } %>
+
+
+                    </div>
+               
+            </div>
+            <% if(movie.get("rating") && movie.get("rating").length > 0){%>
+            <div class="row">
+                <br />
+                <div class="span2">
+                    <%= localize.rating%></div>
+                <div class="span8 bold">
+                    <%= movie.get("rating") %></div>
+            </div>
+            <div class="row">
+                <div class="span2">
+                    <%= localize.features %></div>
+                <div class="span8 bold">
+                    <span class="ddd-badge"  <%= !movie.get('dDDFlag') ? 'style="display:none;"' : '' %>>
+                                <%= window.ObjectCollections.Localization.result.dDDFlag %>
+                            </span>
+                            <span class="imax-badge" <%= !movie.get('imaxFlag') ? 'style="display:none;"' : '' %> >
+                                <%= window.ObjectCollections.Localization.result.imaxFlag %>
+                            </span>
+                </div>
+            </div>
+            <%}%>
+            <% if(movie.get("genre") && movie.get("genre").length > 0){%>
+            <div class="row">
+                <div class="span2">
+                    <%= localize.genre%></div>
+                <div class="span8 bold">
+                    <%= movie.get("genre") %></div>
+            </div>
+            <%}%>
+            <% if(movie.get("length") && movie.get("length") > 0){%>
+            <div class="row">
+                <div class="span2">
+                    <%= localize.runningTime%></div>
+                <div class="span8 bold">
+                    <%=DtHelper.lengthToTime(movie.get("length")) %></div>
+            </div>
+            <%}%>
+            <% if(movie.get("starring") && movie.get("starring").length > 0){%>
+            <div class="row">
+                <div class="span2">
+                    <%= localize.cast%></div>
+                <div class="span8 cast">
+                    <%= movie.get("starring") %></div>
+            </div>
+            <%}%>
+            <br />
+            <div class="row movie-details-title">
+            </div>
+            <% if(movie.get("description") && movie.get("description").length > 0){%>
+            <div class="row">
+                <div class="span10">
+                    <br />
+                    <p class="movie-desc">
+                        <%= movie.get("description") %>
+                    </p>
+                </div>
+            </div>
+            <%}%>
+            <div class="row">
+                <div class="buttonPlaceholder">
+                    <div class="span7">
+                        <a style="display: <%= movie.get("trailerUrl") ? 'block' : 'none' %>" href="#trailerLightbox"
+                            data-toggle="lightbox" style="text-decoration: none;">
+                            <button class="btn btn-white" type="button" id="movie-trailer" data-trailerurl="<%= movie.get('trailerUrl') %>">
+                                <%= localize.watchTrailer%></button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-separator">
+    </div>
+    <div class="row movie-details">
+        <h4><%= localize.theatersNshowtimes%></h4>
+    </div>
+    <div class="row  searchFilter">
+        <div class="span6">
+            <div id="schedule-date-filter">
+            </div>
+        </div>
+        <div class="span10">
+            <div class="searchBar inline">
+                <div style="float: right;" id="zipCodeDistanceFilter">
+                </div>
+                <div style="height: 20px;" class="clear">
+                </div>
+            </div>
+            </div>
+    </div>
+    
+    <div id="theaters-schedules" style="min-height: 50px"></div>
+
+    <div id="trailerLightbox" class="lightbox hide fade" tabindex="-1" role="dialog"
+        aria-hidden="true">
+        <div class='lightbox-header'>
+            <button type="button" class="close" data-dismiss="lightbox" aria-hidden="true">
+                &times;</button>
+        </div>
+        <div class='lightbox-content'>
+            <iframe id="tubeTrailer" width="720" height="480" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+<div id="mapLightBox" class="lightbox hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class='lightbox-header'>
+        <button type="button" class="close" data-dismiss="lightbox" aria-hidden="true">
+            &times;</button>
+    </div>
+    <div id="map_canvas" class='lightbox-content'>
+    </div>
+</div>
+<div id="modal-facebook-container">
+</div>

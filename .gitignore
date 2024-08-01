@@ -1,0 +1,56 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+### Dreamweaver template
+# DW Dreamweaver added files
+_notes
+_compareTemp
+configs/
+dwsync.xml
+dw_php_codehinting.config
+*.mno
+
+.idea/
+cache/
+includes/vendor/chadsikorra/
+includes/vendor/composer/ca4ae437/
+includes/vendor/danielstjules/
+includes/vendor/doctrine/
+includes/vendor/paragonie/
+includes/vendor/psr/simple-cache/
+includes/vendor/symfony/cache/Adapter/MemcachedAdapter.php
+includes/vendor/symfony/cache/Adapter/SimpleCacheAdapter.php
+includes/vendor/symfony/cache/Adapter/TraceableAdapter.php
+includes/vendor/symfony/cache/Adapter/TraceableTagAwareAdapter.php
+includes/vendor/symfony/cache/DataCollector/
+includes/vendor/symfony/cache/PruneableInterface.php
+includes/vendor/symfony/cache/ResettableInterface.php
+includes/vendor/symfony/cache/Simple/
+includes/vendor/symfony/cache/Tests/Adapter/MemcachedAdapterTest.php
+includes/vendor/symfony/cache/Tests/Adapter/SimpleCacheAdapterTest.php
+includes/vendor/symfony/cache/Tests/Adapter/TraceableAdapterTest.php
+includes/vendor/symfony/cache/Tests/Adapter/TraceableTagAwareAdapterTest.php
+includes/vendor/symfony/cache/Tests/Fixtures/ArrayCache.php
+includes/vendor/symfony/cache/Tests/Simple/
+includes/vendor/symfony/cache/Tests/Traits/
+includes/vendor/symfony/cache/Traits/
+includes/vendor/symfony/debug/
+includes/vendor/symfony/finder/
+includes/vendor/symfony/http-foundation/
+includes/vendor/symfony/polyfill-apcu/
+includes/vendor/symfony/polyfill-php70/
+includes/vendor/symfony/routing/
+includes/vendor/twig/twig/lib/Twig/Profiler/Dumper/Base.php
+includes/vendor/twig/twig/src/
+includes/vendor/twig/twig/test/Twig/Tests/Fixtures/exceptions/strict_comparison_operator.test
+includes/vendor/twig/twig/test/Twig/Tests/Fixtures/regression/block_names_unicity.test
+includes/vendor/twig/twig/test/Twig/Tests/Fixtures/tags/use/use_with_parent.test
+
+

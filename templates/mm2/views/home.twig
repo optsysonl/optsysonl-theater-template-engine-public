@@ -1,0 +1,173 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+    {{ parent() }}
+    <!-- Slick Slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {{ include('common/header.twig') }}
+    <div class="container" id="main">
+        {% if data.slides.slides.home is defined %}
+            <ul id="main_slider" class="bxslider">
+                {{ include('helper/slider.twig', {slides: data.slides.slides.home.images}, with_context = false) }}
+            </ul>
+        {% endif %}
+        {% set movies = NowPlayingComingSoon(data.movies.movies, data.showdates) %}
+        <div id="movies" class="row">
+
+            <div class="col-md-4 np_carousel">
+                <div id="np_movies" class="car_wrapper">
+                    <h1>
+                        <a class="prev" id="nowplaying_prev" href="#"><span></span></a>
+                        <span id="nowplaying-span">Now Playing</span>
+                        <a class="next" id="nowplaying_next" href="#"><span></span></a>
+                    </h1>
+                    <div id="carousel_wrapper">
+                        <div id="car_nowplaying" class="image_carousel">
+                            <div id="nowplaying" class="inner_carousel">
+                                {{ include('helper/movie_box.twig', {movies: movies.np}, with_context = false) }}
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="pagination" id="nowplaying_pag"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 cs_carousel">
+                {% if movies.cs > 0 %}
+                    <div id="cs_movies" class="car_wrapper">
+                        <h1>
+                            <a class="prev" id="comingsoon_prev" href="#"><span></span></a>
+                            Coming Soon
+                            <a class="next" id="comingsoon_next" href="#"><span></span></a>
+                        </h1>
+                        <div id="carousel_wrapper">
+                            <div id="car_comingsoon" class="image_carousel">
+                                <div id="comingsoon" class="inner_carousel">
+                                    {{ include('helper/movie_box.twig', {movies: movies.cs}, with_context = false) }}
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="pagination" id="comingsoon_pag"></div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div id="cs_movies" class="ad-tag">
+                        {# //echo $ad_tag; #}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-4  ad">
+                {% if data.slides.slides.homeright is defined %}
+                    <div id="homeright">
+                        {{ include('helper/slider.twig', {slides: data.slides.slides.homeright.images}, with_context = false) }}
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#homeright').slick({
+                                autoplay: true,
+                                fade    : true,
+                                css     : 'linear',
+                                arrows  : false,
+                            });
+                        });
+                    </script>
+                {% else %}
+                    {{ include('helper/box_ad.twig') }}
+                {% endif %}
+
+            </div>
+        </div>
+        {{ include('helper/leaderboard.twig') }}
+    </div>
+    {{ include('common/footer.twig') }}
+{% endblock %}
+
+{% block js_scripts_footer %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+        //document ready
+        $(function () {
+
+            //start the slider
+            $('#main_slider').bxSlider({
+                auto: $('#main_slider figure').length > 1 ? true : false,
+                speed: 800,
+                pause: {{ site.config['slider_speed'] }},
+                randomStart: false,
+                captions: true,
+                easing: 'swing',
+                pager: false
+            });
+
+            //hide the coming soon carousel
+            $('#car_nowplaying,#car_comingsoon').hide().fadeIn('slow');
+
+            //start the now playing carousel
+            $("#nowplaying").carouFredSel({
+                circular: true,
+                infinite: true,
+                items: 1,
+                responsive: true,
+                height: "auto",
+                scroll: {
+                    fx: "crossfade",
+                    items: 1,
+                    duration: 300
+                },
+                auto: 6000,
+                prev: {
+                    button: "#nowplaying_prev",
+                    key: "left"
+                },
+                next: {
+                    button: "#nowplaying_next",
+                    key: "right"
+                },
+                swipe: {
+                    onTouch: true
+                },
+            });
+
+            //start the now playing carousel
+            $("#comingsoon").carouFredSel({
+                circular: true,
+                infinite: true,
+                items: 1,
+                responsive: true,
+                height: "auto",
+                scroll: {
+                    fx: "crossfade",
+                    items: 1,
+                    duration: 300
+                },
+                auto: 6000,
+                prev: {
+                    button: "#comingsoon_prev",
+                    key: "left"
+                },
+                next: {
+                    button: "#comingsoon_next",
+                    key: "right"
+                },
+                swipe: {
+                    onTouch: true
+                }
+            });
+        });
+    </script>
+{% endblock %}

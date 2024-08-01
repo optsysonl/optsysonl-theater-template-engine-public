@@ -1,0 +1,88 @@
+{% extends "common/base.twig" %}
+
+{% block meta_title %}{{ parent() }} | Home {% endblock %}
+
+{% block css %}
+    <!-- Slick Slider -->
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    
+    {{ parent() }}
+{% endblock %}
+
+{% block js_scripts %}
+	{{ parent() }}
+	
+    <!-- Slick Slider -->
+	<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    
+{% endblock %}
+
+
+{% block content %}
+	{{ include('common/header.twig') }}
+    <div id="background_wrap">
+		<div id="main-content">
+            {% if data.slides.slides.top is defined %}
+    		<div id="main-slider">
+            	{{ include('helper/slider.twig', {slides: data.slides.slides.top.images}, with_context = false) }}
+			</div>
+            {% endif %}
+        <div class="clearfix"></div>
+        <div id='gpt-rd-leaderboard'>
+			<script type='text/javascript'>
+            googletag.cmd.push(function() { googletag.display('gpt-rd-leaderboard'); });
+            </script>
+        </div>
+			{% if data.houses|length == 1 %}
+				<div class="clearfix"></div>
+                {{ include('helper/home_location_single.twig') }}
+            {% elseif data.houses|length > 1 %}
+                {{ include('helper/home_location_multi.twig') }}
+            {% endif %}
+	        <div class="clearfix"></div>
+	    </div>
+	{{ include('common/footer.twig') }}
+	</div>    
+{% endblock %}
+
+{% block js_scripts_footer %}
+	{{ parent() }}
+    <script type="text/javascript">
+		
+		//Document ready
+		$(function () {
+			
+			$('#special_message').hide();
+			
+			//slide out the special message if it exists
+			if ($('#special_message') !== null) {
+				$('#special_message').delay(1000).slideDown('slow');
+			}
+			
+			$('#main-slider').slick({
+				slidesToShow:1,
+				arrows:true,
+				autoplay:true,
+				infinite: true,
+				dots:true,
+				accessibility: false,
+				autoplaySpeed: {{ site.config['slider_speed'] }},
+			});
+
+            $('.featured').slick({
+                slidesToShow:1,
+                arrows:true,
+                autoplay:true,
+                infinite: true,
+                dots:true,
+                accessibility: false,
+                autoplaySpeed: {{ site.config['slider_speed'] }},
+            });
+
+	
+			
+		});
+	</script>
+    
+{% endblock %}

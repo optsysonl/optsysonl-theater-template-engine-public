@@ -1,0 +1,55 @@
+<div class="cs-slider-inner">
+    {% for movie_id, movie in movies %}
+        {% set movie_showdates = [] %}
+        {% for showdate, house_movie in movie if showdate != 'movie' %}
+            {% set movie_showdates = movie_showdates|merge([showdate]) %}
+            {% if showdate not in movies_showdates %}
+                {% set movies_showdates = movies_showdates|merge([showdate]) %}
+            {% endif %}
+        {% endfor %}
+        {% if movie_showdates|length != 0 %}
+            <section class='showtimes-details clearfix {{ movie_showdates|join(" ") }}'>
+                <div class="poster">
+                    <a href='{{- movie.movie.url -}}'>
+                        <img class="desktop" src='{{ movie.movie.poster }}' alt='Poster of {{ movie.movie.name }}'/>
+                    </a>
+                    <a class="more-details" href="{{- movie.movie.url -}}"><span>More Info</span></a>
+                </div>
+                <div class="bottom">
+                    <div class="info">
+                        <h2 class="name">{{ movie.movie.name }}</h2>
+                        <div class="movie-tags">
+                            <span class="mpaa">{{ movie.movie.mpaa }}</span>
+
+                            {% if movie.movie.runtime %}
+                                <span class="runtime">{{ movie.movie.runtime|date('g\\h\\. i\\m\\i\\n\\.') }}</span>
+                            {% endif %}
+
+                            {% if movie.movie.genres is defined %}
+                                <span class="genres">{{ movie.movie.genres|join(', ') }}</span>
+                            {% endif %}
+                        </div>
+                        <span class="synopsis">{{ movie.movie.synopsis|cropString(140) }}</span>
+                        <div class="movie-controls">
+                            <a class="more-details" href="{{- movie.movie.url -}}">More Info</a>
+                            {% if movie.movie.trailer.url is defined %}
+                                <a href='/trailer/{{- movie.movie.trailer.url -}}' class="movies-trailer trailer"
+                                   target='_blank'
+                                   id='play-trailer{{ movie.movie.id }}' data-fancybox-type='iframe'
+                                   title='{{ movie.movie.name }}'>
+                                    View Trailer
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class='showtimes'>
+                        {{ include('helper/showtimes.twig', {showdates: movie}, false) }}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    {% endfor %}
+</div>
+<script type="text/javascript">
+    var availableDates_np = {{ movies_showdates|json_encode|raw }};
+</script>
